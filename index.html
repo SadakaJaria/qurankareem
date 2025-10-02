@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>📖 القرآن الكريم – صدقة جارية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:"Noto Naskh Arabic UI","Segoe UI",sans-serif;transition:background 0.5s,color 0.5s}
+    .overlay{position:fixed;inset:0;z-index:-1;transition:background 0.5s}
+    .btn-circle{display:flex;flex-direction:column;align-items:center;font-size:0.9rem}
+    .btn-circle sub{font-size:0.7rem}
+    body.day{background:url('https://i.imgur.com/io7rTeG.jpg') no-repeat center center fixed;background-size:cover;color:#1e293b}
+    body.day .overlay{background:rgba(255,255,255,0.85)}
+    body.night{background:url('https://i.imgur.com/IWBrdsA.jpg') no-repeat center center fixed;background-size:cover;color:#fff}
+    body.night .overlay{background:rgba(0,0,0,0.7)}
+    .card{border-radius:0.75rem;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+    body.day .card{background:rgba(255,255,255,0.9);color:#1e293b}
+    body.night .card{background:rgba(0,0,0,0.8);color:#fff}
+    .btn-danger{background:#ef4444;color:#fff;border-radius:0.5rem;padding:0.35rem 0.6rem}
+    .btn-danger:hover{background:#dc2626}
+    #progressBar{width:100%;height:6px;background:#ddd;border-radius:4px;cursor:pointer}
+    #progressFill{height:100%;width:0%;background:#10b981;border-radius:4px}
+  </style>
+</head>
+<body class="min-h-screen relative day">
+<div class="overlay"></div>
+<header class="sticky top-0 bg-emerald-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-lg font-bold">📖 القرآن الكريم – <span class="font-normal">صدقة جارية</span></h1>
+  <div class="flex items-center gap-2">
+    <button id="themeBtn" class="px-3 py-2 bg-slate-800 text-white rounded">🌙 وضع ليلي</button>
+    <a href="https://wa.me/905533331339" target="_blank" class="flex items-center gap-2 bg-green-500 px-3 py-2 rounded-lg shadow">
+      <span class="text-sm font-semibold">لإضافة قارئ عبر الواتس أب</span>
+    </a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto p-4 space-y-6">
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="card p-4">
+      <h2 class="mb-2 font-semibold">اختيار السورة</h2>
+      <input type="text" id="surahSearch" placeholder="🔎 ابحث عن سورة" class="mb-2 w-full p-2 border rounded text-black"/>
+      <select id="surahSelect" class="w-full p-2 rounded border text-black"></select>
+    </div>
+    <div class="card p-4">
+      <h2 class="mb-2 font-semibold">اختيار القارئ</h2>
+      <input type="text" id="reciterSearch" placeholder="🔎 ابحث عن قارئ" class="mb-2 w-full p-2 border rounded text-black"/>
+      <select id="reciterSelect" class="w-full p-2 rounded border text-black"></select>
+    </div>
+  </section>
+
+  <!-- وضع التشغيل -->
+  <section class="card p-4">
+    <h2 class="font-semibold mb-2">وضع التشغيل</h2>
+    <label class="mr-4"><input type="radio" name="mode" value="single" checked> قارئ واحد</label>
+    <label><input type="radio" name="mode" value="multi"> عدة قراء</label>
+  </section>
+
+  <section class="flex gap-3">
+    <button id="addBtn" class="flex-1 bg-emerald-700 text-white px-4 py-2 rounded">➕ إضافة للمشغل</button>
+    <button id="favBtn" class="flex-1 bg-yellow-400 text-black px-4 py-2 rounded">⭐ مفضلة</button>
+  </section>
+
+  <section class="card p-4">
+    <h2 class="font-semibold mb-2 flex items-center justify-between">
+      <span>قائمة التشغيل</span>
+      <button id="clearBtn" class="btn-danger text-sm">🗑️ مسح الكل</button>
+    </h2>
+    <ul id="playlist" class="space-y-2"></ul>
+  </section>
+
+  <section class="card p-4">
+    <h2 class="font-semibold mb-2">المشغّل</h2>
+    <div id="playerBox"></div>
+    <div id="progressBar"><div id="progressFill"></div></div>
+    <div class="flex justify-center gap-3 mt-2 text-center">
+      <button id="back10" class="btn-circle px-3 py-2 border rounded-full">⏪ 10<sub>ثوانٍ</sub></button>
+      <button id="playPause" class="px-3 py-2 border rounded-full">⏯️ تشغيل/إيقاف</button>
+      <button id="fwd10" class="btn-circle px-3 py-2 border rounded-full">⏩ 10<sub>ثوانٍ</sub></button>
+    </div>
+    <div class="text-center mt-1"><span id="timeNow">00:00</span> / <span id="timeTotal">00:00</span></div>
+  </section>
+
+  <section class="card p-4">
+    <h2 class="font-semibold mb-2 flex items-center justify-between">
+      <span>⭐ المفضلة</span>
+      <button id="clearFavBtn" class="btn-danger text-sm">🗑️ مسح الكل</button>
+    </h2>
+    <ul id="favorites" class="space-y-2"></ul>
+  </section>
+</main>
+
+<script>
+const RECITERS=[
+  {name:"ماهر المعيقلي",base:"https://server12.mp3quran.net/maher"},
+  {name:"أحمد العجمي",base:"https://server10.mp3quran.net/ajm"},
+  {name:"عبدالباسط",base:"https://server7.mp3quran.net/basit/Almusshaf-Al-Mojawwad"},
+  {name:"العفاسي",base:"https://server8.mp3quran.net/afs"},
+  {name:"سعد الغامدي",base:"https://server7.mp3quran.net/s_gmd"},
+  {name:"الحصري",base:"https://server13.mp3quran.net/husr"},
+  {name:"سعود الشريم",base:"https://server7.mp3quran.net/shur"},
+  {name:"أبو بكر الشاطري",base:"https://server11.mp3quran.net/shatri"},
+  {name:"المنشاوي",base:"https://server10.mp3quran.net/minsh"},
+  {name:"السديس",base:"https://server11.mp3quran.net/sds"}
+];
+const pad3=n=>String(n).padStart(3,"0");
+let chapters=[];
+const state={playlist:[],favorites:[],reciter:RECITERS[0],surah:null,idx:0,mode:"single"};
+
+fetch("https://api.quran.com/api/v4/chapters")
+.then(r=>r.json()).then(j=>{chapters=j.chapters;initUI();});
+
+function initUI(){
+  const recSel=document.getElementById("reciterSelect");
+  recSel.innerHTML=RECITERS.map(r=>`<option>${r.name}</option>`).join("");
+  const surSel=document.getElementById("surahSelect");
+  surSel.innerHTML=chapters.map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
+
+  document.getElementById("reciterSearch").oninput=e=>{
+    const v=e.target.value;
+    recSel.innerHTML=RECITERS.filter(r=>r.name.includes(v)).map(r=>`<option>${r.name}</option>`).join("");
+  };
+  document.getElementById("surahSearch").oninput=e=>{
+    const v=e.target.value;
+    surSel.innerHTML=chapters.filter(c=>c.name_arabic.includes(v)).map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
+  };
+
+  document.getElementById("addBtn").onclick=add;
+  document.getElementById("favBtn").onclick=addToFavorites;
+  document.getElementById("clearFavBtn").onclick=clearFavorites;
+  document.getElementById("back10").onclick=()=>skip(-10);
+  document.getElementById("fwd10").onclick=()=>skip(10);
+  document.getElementById("clearBtn").onclick=clearAll;
+  document.getElementById("playPause").onclick=togglePlay;
+
+  document.querySelectorAll("input[name='mode']").forEach(el=>{
+    el.onchange=()=>{state.mode=el.value;state.playlist=[];state.idx=0;render();saveData();};
+  });
+
+  const btn=document.getElementById("themeBtn");
+  let theme=localStorage.getItem("theme")||"day";
+  setTheme(theme);
+  btn.onclick=()=>{setTheme(document.body.classList.contains("day")?"night":"day");};
+
+  state.playlist=JSON.parse(localStorage.getItem("playlist")||"[]");
+  state.favorites=JSON.parse(localStorage.getItem("favorites")||"[]");
+  render();
+  renderFavorites();
+
+  document.addEventListener("keydown",e=>{
+    if(e.code==="Space"){e.preventDefault();togglePlay();}
+    if(e.code==="ArrowRight"){skip(10);}
+    if(e.code==="ArrowLeft"){skip(-10);}
+  });
+}
+
+function setTheme(t){
+  document.body.classList.remove("day","night");
+  document.body.classList.add(t);
+  localStorage.setItem("theme",t);
+  document.getElementById("themeBtn").textContent=t==="day"?"🌙 وضع ليلي":"🌞 وضع نهاري";
+}
+
+function add(){
+  const recName=document.getElementById("reciterSelect").value;
+  const rec=RECITERS.find(r=>r.name===recName);
+  const surId=parseInt(document.getElementById("surahSelect").value);
+  if(!surId) return;
+  const sur=chapters.find(c=>c.id===surId);
+  const newItem={title:sur.name_arabic,reciter:rec.name,src:`${rec.base}/${pad3(surId)}.mp3`};
+
+  if(state.mode==="single"){
+    if(state.playlist.length>0 && state.playlist[0].reciter!==rec.name){
+      alert("تنبيه: في هذا الوضع يُسمح باختيار قارئ واحد فقط. إذا رغبت في إضافة قراء آخرين، فضلاً غيّر الوضع إلى (عدة قراء).");
+      return;
+    }
+  }
+  state.playlist.push(newItem);
+  state.idx=state.playlist.length-1;
+  saveData();
+  render(true);
+}
+
+function clearAll(){
+  if(confirm("هل أنت متأكد أنك تريد مسح قائمة التشغيل بالكامل؟")){
+    state.playlist=[];
+    state.idx=0;
+    saveData();
+    render(false);
+  }
+}
+
+function playAt(i){state.idx=i;render(true)}
+function removeAt(i){state.playlist.splice(i,1);saveData();render(false)}
+
+function render(auto){
+  const cur=state.playlist[state.idx];
+  const box=document.getElementById("playerBox");
+  if(cur){
+    box.innerHTML=`<div>${cur.title} - ${cur.reciter}</div><audio id="player" src="${cur.src}" controls ${auto?'autoplay':''}></audio>`;
+    const a=document.getElementById("player");
+    a.ontimeupdate=updateProgress;
+    a.onloadedmetadata=()=>{document.getElementById("timeTotal").textContent=formatTime(a.duration)};
+    a.onended=()=>{if(state.idx+1<state.playlist.length){state.idx++;render(true);}}
+  }else{
+    box.innerHTML="لا يوجد تشغيل";
+  }
+  document.getElementById("playlist").innerHTML=state.playlist.map((t,i)=>`<li class="flex items-center justify-between gap-2">
+    <span>${t.title} - ${t.reciter}</span>
+    <span class="shrink-0">
+      <button onclick="playAt(${i})" class="underline">▶️</button>
+      <button onclick="removeAt(${i})" class="underline text-red-400">🗑️</button>
+    </span>
+  </li>`).join("");
+}
+
+function togglePlay(){
+  const a=document.getElementById("player");
+  if(!a) return;
+  if(a.paused) a.play(); else a.pause();
+}
+
+function updateProgress(){
+  const a=document.getElementById("player");
+  if(!a || !isFinite(a.duration)) return;
+  const percent=(a.currentTime/a.duration)*100;
+  document.getElementById("progressFill").style.width=percent+"%";
+  document.getElementById("timeNow").textContent=formatTime(a.currentTime);
+}
+
+document.getElementById("progressBar").onclick=(e)=>{
+  const a=document.getElementById("player"); if(!a || !isFinite(a.duration)) return;
+  const rect=e.currentTarget.getBoundingClientRect();
+  const percent=(e.clientX-rect.left)/rect.width;
+  a.currentTime=percent*a.duration;
+};
+
+function formatTime(s){
+  if(!s || !isFinite(s)) return "00:00";
+  const m=Math.floor(s/60), sec=Math.floor(s%60);
+  return `${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+}
+
+function addToFavorites(){
+  const cur=state.playlist[state.idx];
+  if(!cur) return;
+  if(!state.favorites.some(f=>f.title===cur.title && f.reciter===cur.reciter)){
+    state.favorites.push(cur);
+    saveData();
+    renderFavorites();
+  }
+}
+
+function renderFavorites(){
+  document.getElementById("favorites").innerHTML = state.favorites.map((f,i)=>`
+    <li class="flex items-center justify-between gap-2">
+      <span>${f.title} - ${f.reciter}</span>
+      <span class="shrink-0">
+        <button onclick="playFavorite(${i})" class="underline">▶️</button>
+        <button onclick="removeFavorite(${i})" class="underline text-red-400">🗑️</button>
+      </span>
+    </li>
+  `).join("");
+}
+
+function playFavorite(i){
+  const fav = state.favorites[i];
+  if(!fav) return;
+  state.playlist=[fav];
+  state.idx=0;
+  saveData();
+  render(true);
+}
+
+function removeFavorite(i){
+  state.favorites.splice(i,1);
+  saveData();
+  renderFavorites();
+}
+
+function clearFavorites(){
+  if(confirm("هل أنت متأكد أنك تريد مسح قائمة المفضلة بالكامل؟")){
+    state.favorites=[];
+    saveData();
+    renderFavorites();
+  }
+}
+
+function skip(sec){const a=document.getElementById("player");if(a){a.currentTime+=sec}}
+
+function saveData(){
+  localStorage.setItem("playlist",JSON.stringify(state.playlist));
+  localStorage.setItem("favorites",JSON.stringify(state.favorites));
+}
+</script>
+</body>
+</html>
