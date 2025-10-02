@@ -133,23 +133,21 @@ async function fetchChapters(){
   document.getElementById("reciterSelect").innerHTML=RECITERS.map(r=>`<option value="${r.slug}">${r.name}</option>`).join("");
 }
 
-// === التاريخ ===
-function toHijri(gDate){
-  const day=gDate.getDate(), month=gDate.getMonth()+1, year=gDate.getFullYear();
-  let jd=Math.floor((1461*(year+4800+Math.floor((month-14)/12)))/4)+Math.floor((367*(month-2-12*((month-14)/12)))/12)-Math.floor((3*((year+4900+Math.floor((month-14)/12))/100))/4)+day-32075;
-  let l=jd-1948440+10632,n=Math.floor((l-1)/10631),j=l-10631*n,s=Math.floor((j-1)/354.366),iy=30*n+s+1,jd2=j-Math.floor(354.366*s)+1,im=Math.min(12,Math.ceil(jd2/29.5)),id=jd2-Math.floor(29.5*(im-1));
-  return {y:iy,m:im,d:id};
-}
-function fmtHijri(h){
-  const months=["محرم","صفر","ربيع الأول","ربيع الآخر","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
-  return `${h.d} ${months[h.m-1]} ${h.y}`;
-}
-function updateClock(){
+// === التاريخ الميلادي + الهجري من API ===
+async function updateClock(){
   const d=new Date();
-  const gDate=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  const gDate=`${String(d.getDate()).padStart(2,"0")}-${String(d.getMonth()+1).padStart(2,"0")}-${d.getFullYear()}`;
   const t=`${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-  const h=toHijri(d);
-  document.getElementById('clockBox').innerHTML=`<div>${fmtHijri(h)}</div><div>${gDate}</div><div class="time">${t}</div>`;
+  try {
+    const resp = await fetch(`https://api.aladhan.com/v1/gToH?date=${gDate}`);
+    const data = await resp.json();
+    const hijriDate = data.data.hijri.date + " هـ";
+    document.getElementById('clockBox').innerHTML=
+      `<div>${hijriDate}</div><div>${gDate}</div><div class="time">${t}</div>`;
+  } catch (e) {
+    document.getElementById('clockBox').innerHTML=
+      `<div>📅 ${gDate}</div><div class="time">${t}</div><div>(الهجري غير متاح)</div>`;
+  }
 }
 setInterval(updateClock,60000); updateClock();
 
@@ -229,7 +227,6 @@ function setSleepTimer(){
 }
 function cancelSleepTimer(){
   if(state.sleepTimeout)clearTimeout(state.sleepTimeout);
-  state.sleep
   state.sleepTimeout=null;
   document.getElementById("sleepStatus").textContent="تم إلغاء المؤقّت";
 }
@@ -249,7 +246,7 @@ function setupUI(){
   document.getElementById("clearFavBtn").onclick=clearFavorites;
   document.getElementById("back10").onclick=()=>skip(-10);
   document.getElementById("fwd10").onclick=()=>skip(10);
-  document.getElementById("playPause").onclick=togglePlay;
+document.getElementById("playPause").onclick=togglePlay;
   document.getElementById("sleepSet").onclick=setSleepTimer;
   document.getElementById("sleepCancel").onclick=cancelSleepTimer;
   document.getElementById("loopToggle").onchange=e=>{
