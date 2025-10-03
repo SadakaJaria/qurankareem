@@ -28,7 +28,7 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 .tab-active{background:#1f2937;color:#f1f5f9}
 .tab-inactive{background:#eee;color:#1f2937}
 
-/* 📖 المصحف المصوَّر بخلفية بيضاء وصورة كبيرة */
+/* 📖 المصحف المصوَّر */
 #imagesSection {
   background: #fff !important;
   color: #000 !important;
@@ -63,7 +63,6 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 <button id="tabImages" class="btn tab-inactive">🖼️ المصحف المصوَّر</button>
 </nav>
 <main class="max-w-4xl mx-auto p-4 space-y-6">
-
 <!-- AUDIO SECTION -->
 <section id="audioSection" class="space-y-4">
 <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,19 +125,22 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 <section id="imagesSection" class="space-y-4 hidden">
 <div class="card p-4">
 <h2 class="font-semibold mb-2">📖 المصحف بالصور</h2>
-<div class="flex flex-wrap gap-3 mb-2 items-center">
-  <button id="prevPage" class="btn">⬅ السابق</button>
-  <input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 border rounded text-black">
-  <span>/ 604</span>
-  <button id="nextPage" class="btn">التالي ➡</button>
-  <button id="fullscreenBtn" class="btn">📺 ملء الشاشة</button>
+<div class="flex gap-3 mb-2 items-center">
+<button id="nextPage" class="btn">⬅ التالي</button>
+<input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 border rounded text-black">
+<span>/ 604</span>
+<button id="prevPage" class="btn">السابق ➡</button>
+<button id="fullscreenBtn" class="btn">📺 ملء الشاشة</button>
 </div>
 <div class="flex justify-center">
-  <img id="quranPage" src="images/000.png" alt="صفحة المصحف">
+<div id="quranContainer" style="width:100%;max-width:800px">
+<img id="quranPage" src="images/000.png" alt="صفحة المصحف">
+</div>
 </div>
 </div>
 </section>
 </main>
+
 <script>
 // === القراء ===
 const RECITERS=[
@@ -188,28 +190,53 @@ async function updateClock(){
 }
 setInterval(updateClock,60000); updateClock();
 
-// === الأوضاع (الثيمات) ===
-const THEMES=['day','night','special'];
-let currentThemeIndex=0;
-function applyTheme(t){
-  document.body.classList.remove('theme-day','theme-night','theme-special');
-  document.body.classList.add('theme-'+t);
-  localStorage.setItem('theme_choice',t);
+// === Tabs ===
+const tabAudio=document.getElementById("tabAudio");
+const tabImages=document.getElementById("tabImages");
+const audioSection=document.getElementById("audioSection");
+const imagesSection=document.getElementById("imagesSection");
+function setTab(tab){
+  if(tab==="audio"){
+    tabAudio.classList.add("tab-active"); tabImages.classList.remove("tab-active");
+    audioSection.classList.remove("hidden"); imagesSection.classList.add("hidden");
+  } else {
+    tabImages.classList.add("tab-active"); tabAudio.classList.remove("tab-active");
+    imagesSection.classList.remove("hidden"); audioSection.classList.add("hidden");
+  }
 }
-function autoPickTheme(){
-  const h=(new Date()).getHours();
-  applyTheme((h>=6&&h<19)?'day':'night');
+tabAudio.onclick=()=>setTab("audio");
+tabImages.onclick=()=>setTab("images");
+
+// === Images Viewer ===
+const TOTAL_PAGES = 604;
+const imgEl = document.getElementById("quranPage");
+const pageInput = document.getElementById("pageNum");
+function loadPage(n){
+  let p = Math.max(1, Math.min(TOTAL_PAGES, parseInt(n)||1));
+  pageInput.value = p;
+  imgEl.src = "images/"+String(p).padStart(3,"0")+".png";
 }
-function initTheme(){
-  const saved=localStorage.getItem('theme_choice');
-  if(saved){ applyTheme(saved); currentThemeIndex=THEMES.indexOf(saved); }
-  else{ autoPickTheme(); currentThemeIndex=0; }
-}
-document.getElementById('themeToggle').onclick=()=>{
-  currentThemeIndex=(currentThemeIndex+1)%THEMES.length;
-  applyTheme(THEMES[currentThemeIndex]);
+document.getElementById("nextPage").onclick=()=>loadPage(parseInt(pageInput.value)+1);
+document.getElementById("prevPage").onclick=()=>loadPage(pageInput.value-1);
+pageInput.onchange=()=>loadPage(pageInput.value);
+
+// === Fullscreen ===
+document.getElementById("fullscreenBtn").onclick=()=>{
+  const container=document.getElementById("quranContainer");
+  if(container.requestFullscreen){ container.requestFullscreen(); }
 };
 
+// === Swipe Events ===
+let touchStartX=0;
+imgEl.addEventListener("touchstart", e=>{touchStartX=e.changedTouches[0].screenX;});
+imgEl.addEventListener("touchend", e=>{
+  let touchEndX=e.changedTouches[0].screenX;
+  if(touchEndX-touchStartX>50){
+    loadPage(parseInt(pageInput.value)+1); // سحب يمين => التالي
+  } else if(touchStartX-touchEndX>50){
+    loadPage(pageInput.value-1); // سحب يسار => السابق
+  }
+});
 // === Player Functions ===
 function add(auto=false){
   const recSlug=document.getElementById("reciterSelect").value;
@@ -268,62 +295,14 @@ function cancelSleepTimer(){
   document.getElementById("sleepStatus").textContent="تم إلغاء المؤقّت";
 }
 
-// === Tabs ===
-const tabAudio=document.getElementById("tabAudio");
-const tabImages=document.getElementById("tabImages");
-const audioSection=document.getElementById("audioSection");
-const imagesSection=document.getElementById("imagesSection");
-function setTab(tab){
-  if(tab==="audio"){
-    tabAudio.classList.add("tab-active"); tabImages.classList.remove("tab-active");
-    audioSection.classList.remove("hidden"); imagesSection.classList.add("hidden");
-  } else {
-    tabImages.classList.add("tab-active"); tabAudio.classList.remove("tab-active");
-    imagesSection.classList.remove("hidden"); audioSection.classList.add("hidden");
-  }
-}
-tabAudio.onclick=()=>setTab("audio");
-tabImages.onclick=()=>setTab("images");
-
-// === Images Viewer ===
-const TOTAL_PAGES = 604;
-const imgEl = document.getElementById("quranPage");
-const pageInput = document.getElementById("pageNum");
-
-function loadPage(n){
-  let p = Math.max(1, Math.min(TOTAL_PAGES, parseInt(n)||1));
-  pageInput.value = p;
-  imgEl.src = "images/"+String(p).padStart(3,"0")+".png";
-}
-document.getElementById("prevPage").onclick=()=>loadPage(pageInput.value-1);
-document.getElementById("nextPage").onclick=()=>loadPage(parseInt(pageInput.value)+1);
-pageInput.onchange=()=>loadPage(pageInput.value);
-
-// === Fullscreen + Swipe ===
-document.getElementById("fullscreenBtn").onclick = () => {
-  if (imgEl.requestFullscreen) {
-    imgEl.requestFullscreen();
-  }
-};
-let touchStartX = 0;
-imgEl.addEventListener("touchstart", e => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-imgEl.addEventListener("touchend", e => {
-  let touchEndX = e.changedTouches[0].screenX;
-  if (touchEndX - touchStartX > 50) {
-    loadPage(pageInput.value-1); // السابق
-  } else if (touchStartX - touchEndX > 50) {
-    loadPage(parseInt(pageInput.value)+1); // التالي
-  }
-});
-
-// === حفظ وإعادة تحميل ===
+// === حفظ البيانات ===
 function persist(){
   localStorage.setItem("playlist",JSON.stringify(state.playlist));
   localStorage.setItem("favorites",JSON.stringify(state.favorites));
   localStorage.setItem("resume",JSON.stringify(state.resume));
 }
+
+// === Init ===
 function setupUI(){
   document.getElementById("addBtn").onclick=()=>add(true);
   document.getElementById("favBtn").onclick=addToFavorites;
@@ -342,7 +321,6 @@ function setupUI(){
   document.querySelectorAll("input[name='mode']").forEach(r=>r.onchange=()=>state.mode=r.value);
 }
 
-// === Init ===
 window.onload=()=>{
   initTheme();
   fetchChapters();
