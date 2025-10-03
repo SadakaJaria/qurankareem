@@ -28,7 +28,7 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 .tab-active{background:#1f2937;color:#f1f5f9}
 .tab-inactive{background:#eee;color:#1f2937}
 
-/* 📖 المصحف المصوَّر */
+/* 📖 المصحف المصوَّر بخلفية بيضاء */
 #imagesSection {
   background: #fff !important;
   color: #000 !important;
@@ -36,13 +36,13 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
   padding: 10px;
 }
 #imagesSection img {
-  width: 100%;  /* عرض كامل */
-  max-width: 100%;
-  height: auto;
   background: #fff;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0,0,0,.2);
+  width:100%;
+  max-width:100%;
+  height:auto;
 }
 </style>
 </head>
@@ -63,6 +63,7 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 <button id="tabImages" class="btn tab-inactive">🖼️ المصحف المصوَّر</button>
 </nav>
 <main class="max-w-4xl mx-auto p-4 space-y-6">
+
 <!-- AUDIO SECTION -->
 <section id="audioSection" class="space-y-4">
 <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,21 +127,20 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 <div class="card p-4">
 <h2 class="font-semibold mb-2">📖 المصحف بالصور</h2>
 <div class="flex gap-3 mb-2 items-center">
-<button id="nextPage" class="btn">⬅ التالي</button>
-<input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 border rounded text-black">
-<span>/ 604</span>
-<button id="prevPage" class="btn">السابق ➡</button>
-<button id="fullscreenBtn" class="btn">📺 ملء الشاشة</button>
+  <button id="nextPage" class="btn">⬅ التالي</button>
+  <input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 border rounded text-black">
+  <span>/ 604</span>
+  <button id="prevPage" class="btn">السابق ➡</button>
+  <button id="fullscreenBtn" class="btn">📺 ملء الشاشة</button>
 </div>
 <div class="flex justify-center">
-<div id="quranContainer" style="width:100%;max-width:800px">
-<img id="quranPage" src="images/000.png" alt="صفحة المصحف">
-</div>
+  <div id="quranContainer" style="width:100%;max-width:800px">
+    <img id="quranPage" src="images/000.png" alt="صفحة المصحف">
+  </div>
 </div>
 </div>
 </section>
 </main>
-
 <script>
 // === القراء ===
 const RECITERS=[
@@ -168,11 +168,13 @@ async function fetchChapters(){
   }catch(e){
     chapters=[...Array(114)].map((_,i)=>({id:i+1,name_arabic:`سورة ${i+1}`}));
   }
-  document.getElementById("surahSelect").innerHTML=chapters.map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
-  document.getElementById("reciterSelect").innerHTML=RECITERS.map(r=>`<option value="${r.slug}">${r.name}</option>`).join("");
+  document.getElementById("surahSelect").innerHTML=
+    chapters.map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
+  document.getElementById("reciterSelect").innerHTML=
+    RECITERS.map(r=>`<option value="${r.slug}">${r.name}</option>`).join("");
 }
 
-// === التاريخ الميلادي + الهجري من API ===
+// === التاريخ الميلادي + الهجري ===
 async function updateClock(){
   const d=new Date();
   const gDate=`${String(d.getDate()).padStart(2,"0")}-${String(d.getMonth()+1).padStart(2,"0")}-${d.getFullYear()}`;
@@ -190,54 +192,29 @@ async function updateClock(){
 }
 setInterval(updateClock,60000); updateClock();
 
-// === Tabs ===
-const tabAudio=document.getElementById("tabAudio");
-const tabImages=document.getElementById("tabImages");
-const audioSection=document.getElementById("audioSection");
-const imagesSection=document.getElementById("imagesSection");
-function setTab(tab){
-  if(tab==="audio"){
-    tabAudio.classList.add("tab-active"); tabImages.classList.remove("tab-active");
-    audioSection.classList.remove("hidden"); imagesSection.classList.add("hidden");
-  } else {
-    tabImages.classList.add("tab-active"); tabAudio.classList.remove("tab-active");
-    imagesSection.classList.remove("hidden"); audioSection.classList.add("hidden");
-  }
+// === الأوضاع ===
+const THEMES=['day','night','special'];
+let currentThemeIndex=0;
+function applyTheme(t){
+  document.body.classList.remove('theme-day','theme-night','theme-special');
+  document.body.classList.add('theme-'+t);
+  localStorage.setItem('theme_choice',t);
 }
-tabAudio.onclick=()=>setTab("audio");
-tabImages.onclick=()=>setTab("images");
-
-// === Images Viewer ===
-const TOTAL_PAGES = 604;
-const imgEl = document.getElementById("quranPage");
-const pageInput = document.getElementById("pageNum");
-function loadPage(n){
-  let p = Math.max(1, Math.min(TOTAL_PAGES, parseInt(n)||1));
-  pageInput.value = p;
-  imgEl.src = "images/"+String(p).padStart(3,"0")+".png";
+function autoPickTheme(){
+  const h=(new Date()).getHours();
+  applyTheme((h>=6&&h<19)?'day':'night');
 }
-document.getElementById("nextPage").onclick=()=>loadPage(parseInt(pageInput.value)+1);
-document.getElementById("prevPage").onclick=()=>loadPage(pageInput.value-1);
-pageInput.onchange=()=>loadPage(pageInput.value);
-
-// === Fullscreen ===
-document.getElementById("fullscreenBtn").onclick=()=>{
-  const container=document.getElementById("quranContainer");
-  if(container.requestFullscreen){ container.requestFullscreen(); }
+function initTheme(){
+  const saved=localStorage.getItem('theme_choice');
+  if(saved){ applyTheme(saved); currentThemeIndex=THEMES.indexOf(saved); }
+  else{ autoPickTheme(); currentThemeIndex=0; }
+}
+document.getElementById('themeToggle').onclick=()=>{
+  currentThemeIndex=(currentThemeIndex+1)%THEMES.length;
+  applyTheme(THEMES[currentThemeIndex]);
 };
 
-// === Swipe Events ===
-let touchStartX=0;
-imgEl.addEventListener("touchstart", e=>{touchStartX=e.changedTouches[0].screenX;});
-imgEl.addEventListener("touchend", e=>{
-  let touchEndX=e.changedTouches[0].screenX;
-  if(touchEndX-touchStartX>50){
-    loadPage(parseInt(pageInput.value)+1); // سحب يمين => التالي
-  } else if(touchStartX-touchEndX>50){
-    loadPage(pageInput.value-1); // سحب يسار => السابق
-  }
-});
-// === Player Functions ===
+// === Player ===
 function add(auto=false){
   const recSlug=document.getElementById("reciterSelect").value;
   const rec=RECITERS.find(r=>r.slug===recSlug);
@@ -245,7 +222,9 @@ function add(auto=false){
   if(!surId || !rec) return;
   const sur=chapters.find(c=>c.id===surId);
   const newItem={title:sur.name_arabic,reciter:rec.name,src:`${rec.base}/${pad3(surId)}.mp3`};
-  if(state.mode==="single" && state.playlist.length>0 && state.playlist[0].reciter!==rec.name){ alert("في وضع قارئ واحد فقط."); return; }
+  if(state.mode==="single" && state.playlist.length>0 && state.playlist[0].reciter!==rec.name){ 
+    alert("في وضع قارئ واحد فقط."); return; 
+  }
   state.playlist.push(newItem); state.idx=state.playlist.length-1; persist(); render(auto);
 }
 function render(auto){
@@ -259,21 +238,39 @@ function render(auto){
     a.onloadedmetadata=()=>{document.getElementById("timeTotal").textContent=formatTime(a.duration);if(state.resume[cur.src])a.currentTime=state.resume[cur.src];};
     a.onended=()=>{if(state.loop){a.currentTime=0;a.play();return;}if(state.idx+1<state.playlist.length){state.idx++;render(true);}};
   } else { box.innerHTML="<div class='text-slate-500'>لا يوجد تشغيل</div>"; }
-  document.getElementById("playlist").innerHTML=state.playlist.map((t,i)=>`<li class="flex justify-between items-center gap-2 bg-white/60 rounded px-3 py-2"><span>${t.title} - ${t.reciter}</span><span><button onclick="addSpecificToFavorites(${i})" class="text-amber-500">⭐</button><button onclick="playAt(${i})">▶️</button><button onclick="removeAt(${i})" class="text-red-500">🗑️</button></span></li>`).join("");
+  document.getElementById("playlist").innerHTML=
+    state.playlist.map((t,i)=>`<li class="flex justify-between items-center gap-2 bg-white/60 rounded px-3 py-2">
+    <span>${t.title} - ${t.reciter}</span>
+    <span><button onclick="addSpecificToFavorites(${i})" class="text-amber-500">⭐</button>
+    <button onclick="playAt(${i})">▶️</button>
+    <button onclick="removeAt(${i})" class="text-red-500">🗑️</button></span></li>`).join("");
 }
 function playAt(i){state.idx=i;render(true)}
 function removeAt(i){state.playlist.splice(i,1); if(state.idx>=state.playlist.length) state.idx=state.playlist.length-1; persist(); render(false)}
 function clearAll(){if(confirm("مسح الكل؟")){state.playlist=[];state.idx=0;persist();render(false);}}
 function togglePlay(){const a=document.getElementById("player");if(a)(a.paused?a.play():a.pause());}
-function updateProgress(){const a=document.getElementById("player");if(!a||!isFinite(a.duration))return;document.getElementById("progressFill").style.width=(a.currentTime/a.duration*100)+"%";document.getElementById("timeNow").textContent=formatTime(a.currentTime);}
-document.getElementById("progressBar").onclick=(e)=>{const a=document.getElementById("player");if(!a||!isFinite(a.duration))return;const rect=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-rect.left)/rect.width)*a.duration;};
-function formatTime(s){if(!s||!isFinite(s))return"00:00";const m=Math.floor(s/60),sec=Math.floor(s%60);return`${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;}
+function updateProgress(){const a=document.getElementById("player");if(!a||!isFinite(a.duration))return;
+  document.getElementById("progressFill").style.width=(a.currentTime/a.duration*100)+"%";
+  document.getElementById("timeNow").textContent=formatTime(a.currentTime);}
+document.getElementById("progressBar").onclick=(e)=>{
+  const a=document.getElementById("player");if(!a||!isFinite(a.duration))return;
+  const rect=e.currentTarget.getBoundingClientRect();
+  a.currentTime=((e.clientX-rect.left)/rect.width)*a.duration;
+};
+function formatTime(s){if(!s||!isFinite(s))return"00:00";const m=Math.floor(s/60),sec=Math.floor(s%60);
+  return`${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;}
 function skip(sec){const a=document.getElementById("player");if(a)a.currentTime+=sec;}
 
 // === Favorites ===
-function addToFavorites(){const cur=state.playlist[state.idx];if(cur&&!state.favorites.some(f=>f.title===cur.title&&f.reciter===cur.reciter)){state.favorites.push(cur);persist();renderFavorites();}}
-function addSpecificToFavorites(i){const it=state.playlist[i];if(!it) return;if(!state.favorites.some(f=>f.title===it.title&&f.reciter===it.reciter)){state.favorites.push(it);persist();renderFavorites();}}
-function renderFavorites(){document.getElementById("favorites").innerHTML=state.favorites.map((f,i)=>`<li class="flex justify-between"><span>${f.title} - ${f.reciter}</span><button onclick="removeFav(${i})" class="text-red-500">🗑️</button></li>`).join("");}
+function addToFavorites(){const cur=state.playlist[state.idx];
+  if(cur&&!state.favorites.some(f=>f.title===cur.title&&f.reciter===cur.reciter)){
+    state.favorites.push(cur);persist();renderFavorites();}}
+function addSpecificToFavorites(i){const it=state.playlist[i];if(!it) return;
+  if(!state.favorites.some(f=>f.title===it.title&&f.reciter===it.reciter)){
+    state.favorites.push(it);persist();renderFavorites();}}
+function renderFavorites(){document.getElementById("favorites").innerHTML=
+  state.favorites.map((f,i)=>`<li class="flex justify-between"><span>${f.title} - ${f.reciter}</span>
+  <button onclick="removeFav(${i})" class="text-red-500">🗑️</button></li>`).join("");}
 function clearFavorites(){if(confirm("مسح المفضلة؟")){state.favorites=[];persist();renderFavorites();}}
 function removeFav(i){state.favorites.splice(i,1);persist();renderFavorites();}
 
@@ -283,8 +280,7 @@ function setSleepTimer(){
   if(isNaN(min)||min<=0)return alert("أدخل دقائق صحيحة");
   if(state.sleepTimeout)clearTimeout(state.sleepTimeout);
   state.sleepTimeout=setTimeout(()=>{
-    const a=document.getElementById("player");
-    if(a)a.pause();
+    const a=document.getElementById("player"); if(a)a.pause();
     document.getElementById("sleepStatus").textContent="⏹️ تم إيقاف التشغيل تلقائياً";
   },min*60000);
   document.getElementById("sleepStatus").textContent=`سيتم الإيقاف بعد ${min} دقيقة`;
@@ -295,14 +291,58 @@ function cancelSleepTimer(){
   document.getElementById("sleepStatus").textContent="تم إلغاء المؤقّت";
 }
 
-// === حفظ البيانات ===
+// === Tabs ===
+const tabAudio=document.getElementById("tabAudio");
+const tabImages=document.getElementById("tabImages");
+const audioSection=document.getElementById("audioSection");
+const imagesSection=document.getElementById("imagesSection");
+function setTab(tab){
+  if(tab==="audio"){tabAudio.classList.add("tab-active"); tabImages.classList.remove("tab-active");
+    audioSection.classList.remove("hidden"); imagesSection.classList.add("hidden");}
+  else{tabImages.classList.add("tab-active"); tabAudio.classList.remove("tab-active");
+    imagesSection.classList.remove("hidden"); audioSection.classList.add("hidden");}
+}
+tabAudio.onclick=()=>setTab("audio");
+tabImages.onclick=()=>setTab("images");
+
+// === Images Viewer ===
+const TOTAL_PAGES=604;
+const imgEl=document.getElementById("quranPage");
+const pageInput=document.getElementById("pageNum");
+function loadPage(n){
+  let p=Math.max(1,Math.min(TOTAL_PAGES,parseInt(n)||1));
+  pageInput.value=p;
+  imgEl.src="images/"+String(p).padStart(3,"0")+".png";
+}
+document.getElementById("nextPage").onclick=()=>loadPage(parseInt(pageInput.value)+1);
+document.getElementById("prevPage").onclick=()=>loadPage(pageInput.value-1);
+pageInput.onchange=()=>loadPage(pageInput.value);
+
+// === Fullscreen ===
+document.getElementById("fullscreenBtn").onclick=()=>{
+  const container=document.getElementById("quranContainer");
+  if(container.requestFullscreen) container.requestFullscreen();
+  else if(container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+  else if(container.msRequestFullscreen) container.msRequestFullscreen();
+};
+
+// === Swipe التحكم باللمس ===
+let touchStartX=0;
+imgEl.addEventListener("touchstart",(e)=>{touchStartX=e.changedTouches[0].screenX;});
+imgEl.addEventListener("touchend",(e)=>{
+  let diffX=e.changedTouches[0].screenX-touchStartX;
+  if(Math.abs(diffX)>50){
+    if(diffX<0) loadPage(parseInt(pageInput.value)+1); // سحب لليسار = التالي
+    else loadPage(pageInput.value-1);                  // سحب لليمين = السابق
+  }
+});
+
+// === Init ===
 function persist(){
   localStorage.setItem("playlist",JSON.stringify(state.playlist));
   localStorage.setItem("favorites",JSON.stringify(state.favorites));
   localStorage.setItem("resume",JSON.stringify(state.resume));
 }
-
-// === Init ===
 function setupUI(){
   document.getElementById("addBtn").onclick=()=>add(true);
   document.getElementById("favBtn").onclick=addToFavorites;
@@ -320,7 +360,6 @@ function setupUI(){
   };
   document.querySelectorAll("input[name='mode']").forEach(r=>r.onchange=()=>state.mode=r.value);
 }
-
 window.onload=()=>{
   initTheme();
   fetchChapters();
