@@ -383,15 +383,19 @@ document.addEventListener("keydown",(e)=>{
 
 // === السحب لليمين/اليسار (مصحح الاتجاه) ===
 let touchStartX=0;
-imgEl.addEventListener("touchstart",(e)=>{touchStartX=e.changedTouches[0].screenX;});
+imgEl.addEventListener("touchstart",(e)=>{
+  touchStartX=e.changedTouches[0].screenX;
+});
 imgEl.addEventListener("touchend",(e)=>{
   let dx=e.changedTouches[0].screenX-touchStartX;
   if(Math.abs(dx)>50){
-    if(dx>0){ loadPage(pageInput.value-1); }   // يمين = السابق
-    else { loadPage(parseInt(pageInput.value)+1); } // يسار = التالي
+    if(dx>0){ 
+      loadPage(parseInt(pageInput.value)+1); // يمين = التالي
+    } else { 
+      loadPage(pageInput.value-1);           // يسار = السابق
+    }
   }
 });
-
 // === Pinch to Zoom ===
 let scale=1;
 let startDist=0;
