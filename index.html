@@ -35,10 +35,7 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
   border-radius: 12px;
   padding: 10px;
 }
-#imageWrapper {
-  touch-action: none; 
-  overflow: hidden;
-}
+#imageWrapper { touch-action: none; overflow: hidden; }
 #quranPage {
   background:#fff;
   padding:10px;
@@ -138,21 +135,30 @@ body{font-family:"Noto Naskh Arabic UI","Segoe UI",system-ui,sans-serif;transiti
 <section id="imagesSection" class="space-y-4 hidden">
 <div class="card p-4">
 <h2 class="font-semibold mb-2">📖 المصحف بالصور</h2>
+
+<!-- اختيار السورة في الصور -->
+<div class="mb-3">
+  <label class="block mb-1 font-medium">اختيار السورة</label>
+  <select id="surahImageSelect" class="w-full p-2 rounded border text-black"></select>
+</div>
+
 <div class="flex gap-3 mb-2 items-center">
 <button id="prevPage" class="btn">⬅ السابق</button>
 <input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 border rounded text-black">
 <span>/ 604</span>
 <button id="nextPage" class="btn">التالي ➡</button>
 </div>
+
 <div class="flex justify-center" id="imageWrapper">
   <img id="quranPage" src="images/000.png" alt="صفحة المصحف">
 </div>
 <div class="flex justify-center mt-3">
-  <button id="fullscreenBtn" class="btn btn-gold">📺 ملء الشاشة للكمبيوتر فقط</button>
+  <button id="fullscreenBtn" class="btn btn-gold">📺 ملء الشاشة</button>
 </div>
 </div>
 </section>
 </main>
+
 <script>
 // === القراء ===
 const RECITERS=[
@@ -170,8 +176,29 @@ const RECITERS=[
 const pad3=n=>String(n).padStart(3,"0");
 let chapters=[];
 const state={playlist:[],favorites:[],idx:0,mode:"single",loop:false,resume:{},sleepTimeout:null};
+// === خريطة صفحات السور للمصحف المصوَّر ===
+// (القيم تقريبية: بداية كل سورة ضمن 604 صفحة)
+const SURAH_PAGES = {
+  1: 1, 2: 2, 3: 50, 4: 77, 5: 106, 6: 128, 7: 151, 8: 177, 9: 187,
+  10: 208, 11: 221, 12: 235, 13: 249, 14: 255, 15: 262, 16: 267,
+  17: 282, 18: 293, 19: 305, 20: 312, 21: 322, 22: 332, 23: 342,
+  24: 350, 25: 359, 26: 367, 27: 377, 28: 385, 29: 396, 30: 404,
+  31: 411, 32: 415, 33: 418, 34: 428, 35: 434, 36: 440, 37: 446,
+  38: 453, 39: 458, 40: 467, 41: 477, 42: 483, 43: 489, 44: 496,
+  45: 499, 46: 502, 47: 507, 48: 511, 49: 515, 50: 518, 51: 520,
+  52: 523, 53: 526, 54: 528, 55: 531, 56: 534, 57: 537, 58: 542,
+  59: 545, 60: 549, 61: 551, 62: 553, 63: 554, 64: 556, 65: 558,
+  66: 560, 67: 562, 68: 564, 69: 566, 70: 568, 71: 570, 72: 572,
+  73: 574, 74: 575, 75: 577, 76: 578, 77: 580, 78: 582, 79: 583,
+  80: 585, 81: 586, 82: 587, 83: 589, 84: 590, 85: 591, 86: 592,
+  87: 593, 88: 594, 89: 595, 90: 596, 91: 597, 92: 598, 93: 599,
+  94: 599, 95: 600, 96: 600, 97: 601, 98: 601, 99: 602, 100: 602,
+  101: 603, 102: 603, 103: 603, 104: 604, 105: 604, 106: 604,
+  107: 604, 108: 604, 109: 604, 110: 604, 111: 604, 112: 604,
+  113: 604, 114: 604
+};
 
-// === السور ===
+// === السور (API + تعبئة select الصوت + الصور) ===
 async function fetchChapters(){
   try{
     const r=await fetch("https://api.quran.com/api/v4/chapters");
@@ -180,8 +207,14 @@ async function fetchChapters(){
   }catch(e){
     chapters=[...Array(114)].map((_,i)=>({id:i+1,name_arabic:`سورة ${i+1}`}));
   }
+  // الصوت
   document.getElementById("surahSelect").innerHTML=chapters.map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
   document.getElementById("reciterSelect").innerHTML=RECITERS.map(r=>`<option value="${r.slug}">${r.name}</option>`).join("");
+
+  // الصور
+  let surahImageSelect=document.getElementById("surahImageSelect");
+  surahImageSelect.innerHTML=`<option value="0">📖 كامل القرآن (604 صفحة)</option>`+
+    chapters.map(c=>`<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
 }
 
 // === التاريخ الميلادي + الهجري ===
@@ -223,7 +256,6 @@ document.getElementById('themeToggle').onclick=()=>{
   currentThemeIndex=(currentThemeIndex+1)%THEMES.length;
   applyTheme(THEMES[currentThemeIndex]);
 };
-
 // === Player Functions ===
 function add(auto=false){
   const recSlug=document.getElementById("reciterSelect").value;
@@ -312,6 +344,13 @@ document.getElementById("nextPage").onclick=()=>loadPage(parseInt(pageInput.valu
 document.getElementById("prevPage").onclick=()=>loadPage(pageInput.value-1);
 pageInput.onchange=()=>loadPage(pageInput.value);
 
+// === اختيار سورة للمصحف المصور ===
+document.getElementById("surahImageSelect").onchange=(e)=>{
+  let surahId=parseInt(e.target.value);
+  if(surahId===0){ loadPage(1); }
+  else if(SURAH_PAGES[surahId]){ loadPage(SURAH_PAGES[surahId]); }
+};
+
 // === Fullscreen مع Scroll ===
 const fullscreenBtn=document.getElementById("fullscreenBtn");
 const imageWrapper=document.getElementById("imageWrapper");
@@ -342,14 +381,14 @@ document.addEventListener("keydown",(e)=>{
   }
 });
 
-// === السحب لليمين/اليسار ===
+// === السحب لليمين/اليسار (مصحح الاتجاه) ===
 let touchStartX=0;
 imgEl.addEventListener("touchstart",(e)=>{touchStartX=e.changedTouches[0].screenX;});
 imgEl.addEventListener("touchend",(e)=>{
   let dx=e.changedTouches[0].screenX-touchStartX;
   if(Math.abs(dx)>50){
-    if(dx>0){ loadPage(parseInt(pageInput.value)+1); } // يمين = التالي
-    else { loadPage(pageInput.value-1); }             // يسار = السابق
+    if(dx>0){ loadPage(pageInput.value-1); }   // يمين = السابق
+    else { loadPage(parseInt(pageInput.value)+1); } // يسار = التالي
   }
 });
 
