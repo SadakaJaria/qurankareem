@@ -20,7 +20,7 @@ body{
 
 /* البطاقات والأزرار */
 .card{border-radius:.75rem;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.btn{padding:.4rem .8rem;border-radius:.6rem;font-weight:600;transition:.2s}
+.btn{padding:.45rem .85rem;border-radius:.6rem;font-weight:600;transition:.2s}
 .btn-gold{background:var(--gold);color:#1f2937}
 .btn-danger{background:#ef4444;color:#fff}
 .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.15)}
@@ -37,7 +37,7 @@ body{
 /* الهيدر */
 header#appHeader{
   padding:1rem;background:transparent;backdrop-filter:blur(6px);
-  border-bottom:1px solid rgba(0,0,0,.1);
+  border-bottom:1px solid rgba(0,0,0,.08);
 }
 #themeToggle, #whatsappTop{
   width:2.3rem;height:2.3rem;border-radius:.65rem;
@@ -51,25 +51,27 @@ header#appHeader{
 .clock-box{text-align:end;line-height:1.25}
 .clock-box div{font-size:.9rem}
 
-/* التبويبات */
+/* التبويبات (واضحة في كل الثيمات) */
 nav.top-tabs{max-width:80rem;margin:auto}
-.top-tabs .btn{border-radius:1.1rem;padding:.55rem 1.1rem;font-weight:600}
-.tab-active{background:var(--gold);color:#000}
-.tab-inactive{background:#e5e7eb;color:#000;opacity:.85}
+.top-tabs .btn{border-radius:1.1rem;padding:.55rem 1.1rem;font-weight:700}
+.tab-active{background:var(--gold);color:#1f2937}
+.tab-inactive{background:#e5e7eb;color:#111;opacity:.9}
 .theme-night .tab-active{background:var(--gold);color:#1f2937}
-.theme-night .tab-inactive{background:#374151;color:#f9fafb;opacity:.9}
+.theme-night .tab-inactive{background:#374151;color:#f9fafb;opacity:.95}
+.theme-special .tab-inactive{background:#0e5a40;color:#eafff3;opacity:.95}
 
-/* المصحف */
+/* المصحف المصوّر */
 .quran-controls{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;
-  padding:.35rem .55rem;background:#eef2f7;border-radius:8px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;
+  padding:.35rem .6rem;background:#eef2f7;border-radius:8px;
   border:1px solid #cbd5e1;
 }
 .quran-controls select{
-  padding:.34rem .5rem;border-radius:8px;border:1px solid #cbd5e1;
+  padding:.34rem .55rem;border-radius:8px;border:1px solid #cbd5e1;
   background:#fff;color:#0b1423
 }
 .quran-controls .btn-tv{background:var(--gold);color:#1f2937;padding:.34rem .6rem;border-radius:.5rem}
+
 .quran-stage{background:#e8edf5;border-radius:10px;padding:.4rem}
 #imageWrapper{
   width:100%;height:calc(100vh - 165px);overflow:auto;
@@ -83,11 +85,14 @@ nav.top-tabs{max-width:80rem;margin:auto}
 }
 #imageWrapper:fullscreen img{width:auto!important;height:100vh!important;object-fit:contain}
 
+/* ألوان عداد الصفحات حسب الثيم */
+#totalPages{color:#111;transition:color .3s}
+.theme-night #totalPages{color:#f1f5f9}
+.theme-special #totalPages{color:var(--gold)}
+
 /* الصوت */
 #progressBar{width:100%;height:6px;background:#e5e7eb;border-radius:999px;cursor:pointer}
 #progressFill{height:100%;width:0;background:#10b981;border-radius:999px}
-
-/* مؤقت النوم */
 .sleep-row input{
   width:4.8rem;padding:.32rem;border-radius:.5rem;border:1px solid #cbd5e1;background:#fff;color:#0b1423
 }
@@ -105,12 +110,12 @@ nav.top-tabs{max-width:80rem;margin:auto}
     <!-- زر الثيم -->
     <button id="themeToggle" title="تبديل الوضع"><span id="themeIcon">🌞</span></button>
 
-    <!-- واتساب -->
+    <!-- واتساب بجانب الثيم -->
     <a id="whatsappTop" href="https://wa.me/905533331339" target="_blank" title="واتساب">
       <img src="https://i.imgur.com/XC8wuji.png" alt="WhatsApp">
     </a>
 
-    <!-- العنوان -->
+    <!-- العنوان (يبقى نص) -->
     <h1 class="font-bold text-base sm:text-lg">📖 القرآن الكريم – <span class="font-normal">صدقة جارية</span></h1>
   </div>
   <div class="clock-box">
@@ -130,17 +135,20 @@ nav.top-tabs{max-width:80rem;margin:auto}
   <section id="imagesSection" class="space-y-3">
     <div class="card p-3">
       <h2 class="font-semibold mb-2">📖 المصحف المصوّر</h2>
+
       <div class="quran-controls">
         <label class="opacity-80 text-sm">السورة:</label>
         <select id="surahImageSelect" class="text-black"></select>
+
         <div class="flex items-center gap-2 ms-auto">
           <div class="flex items-center gap-1">
             <input id="pageNum" type="number" min="1" max="604" value="1" class="w-20 p-1 rounded border text-black bg-white">
-            <span>/ 604</span>
+            <span id="totalPages" class="font-semibold">/ 604</span>
           </div>
           <button id="fullscreenBtn" class="btn btn-tv" title="ملء الشاشة">📺</button>
         </div>
       </div>
+
       <div class="quran-stage">
         <div id="imageWrapper">
           <img id="quranPage"
@@ -217,11 +225,11 @@ nav.top-tabs{max-width:80rem;margin:auto}
     </div>
   </section>
 
-<!-- 🔽 الكود التالي (الدفعة 2) تلصقه قبل </body> 🔽 -->
+<!-- 🔽 الدفعة الثانية (JavaScript) تُلصق هنا قبل </body> 🔽 -->
 
 </main>
 <script>
-// === إعداد القراء ===
+// ========== الإعدادات العامة ==========
 const RECITERS = [
   { slug: "maher", name: "الشيخ ماهر المعيقلي", base: "https://server12.mp3quran.net/maher" },
   { slug: "ajm", name: "الشيخ أحمد بن علي العجمي", base: "https://server10.mp3quran.net/ajm" },
@@ -238,12 +246,12 @@ const pad3 = n => String(n).padStart(3, "0");
 let chapters = [];
 const state = { playlist: [], favorites: [], idx: 0, mode: "single", loop: false, resume: {}, sleepTimeout: null };
 
-// === تحميل أسماء السور ===
-async function fetchChapters() {
+// ========== تحميل السور ==========
+async function fetchChapters(){
   try {
-    const r = await fetch("https://api.quran.com/api/v4/chapters");
-    const j = await r.json();
-    chapters = j.chapters || [];
+    const res = await fetch("https://api.quran.com/api/v4/chapters");
+    const data = await res.json();
+    chapters = data.chapters || [];
   } catch {
     chapters = [...Array(114)].map((_, i) => ({ id: i + 1, name_arabic: `سورة ${i + 1}` }));
   }
@@ -256,239 +264,135 @@ async function fetchChapters() {
     chapters.map(c => `<option value="${c.id}">${c.id}. ${c.name_arabic}</option>`).join("");
 }
 
-// === تحديث الوقت والتاريخ ===
-async function updateClock() {
+// ========== الساعة ==========
+async function updateClock(){
   const d = new Date();
-  const gDate = `${d.getDate().toString().padStart(2,"0")}-${(d.getMonth()+1).toString().padStart(2,"0")}-${d.getFullYear()}`;
-  const t = `${d.getHours().toString().padStart(2,"0")}:${d.getMinutes().toString().padStart(2,"0")}`;
+  const gDate = `${String(d.getDate()).padStart(2,"0")}-${String(d.getMonth()+1).padStart(2,"0")}-${d.getFullYear()}`;
+  const t = `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
   try {
     const r = await fetch(`https://api.aladhan.com/v1/gToH?date=${gDate}`);
     const j = await r.json();
-    const hijri = j.data.hijri;
-    document.getElementById("hijriLine").innerText = `${hijri.day} ${hijri.month.ar} ${hijri.year} هـ`;
+    const h = j.data.hijri;
+    document.getElementById("hijriLine").textContent = `${h.day} ${h.month.ar} ${h.year} هـ`;
   } catch {
-    document.getElementById("hijriLine").innerText = "(الهجري غير متاح)";
+    document.getElementById("hijriLine").textContent = "(الهجري غير متاح)";
   }
-  document.getElementById("gregLine").innerText = `${gDate} | ${t}`;
+  document.getElementById("gregLine").textContent = `${gDate} | ${t}`;
 }
 setInterval(updateClock, 60000);
-updateClock();
 
-// === تبديل الثيم ===
-const THEMES = ["day", "night", "special"];
+// ========== الثيم ==========
+const THEMES = ["day","night","special"];
 let currentThemeIndex = 0;
-function applyTheme(t) {
-  document.body.classList.remove("theme-day", "theme-night", "theme-special");
-  document.body.classList.add("theme-" + t);
-  localStorage.setItem("theme_choice", t);
-  document.getElementById("themeIcon").textContent =
-    t === "night" ? "🌙" : t === "special" ? "💚" : "🌞";
+function applyTheme(t){
+  document.body.classList.remove("theme-day","theme-night","theme-special");
+  document.body.classList.add("theme-"+t);
+  document.getElementById("themeIcon").textContent = t==="night"?"🌙":t==="special"?"💚":"🌞";
+  localStorage.setItem("theme_choice",t);
 }
-function initTheme() {
-  const saved = localStorage.getItem("theme_choice");
-  if (saved) { applyTheme(saved); currentThemeIndex = THEMES.indexOf(saved); }
-  else applyTheme("day");
+function initTheme(){
+  const s = localStorage.getItem("theme_choice");
+  s ? applyTheme(s) : applyTheme("day");
 }
 document.getElementById("themeToggle").onclick = () => {
-  currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
+  currentThemeIndex = (currentThemeIndex+1)%THEMES.length;
   applyTheme(THEMES[currentThemeIndex]);
 };
 
-// === تبويبات الصوت / الصور ===
-const tabAudio = document.getElementById("tabAudio");
-const tabImages = document.getElementById("tabImages");
-const audioSection = document.getElementById("audioSection");
-const imagesSection = document.getElementById("imagesSection");
-function setTab(tab) {
-  if (tab === "audio") {
-    tabAudio.classList.add("tab-active");
-    tabAudio.classList.remove("tab-inactive");
-    tabImages.classList.add("tab-inactive");
-    tabImages.classList.remove("tab-active");
-    audioSection.classList.remove("hidden");
-    imagesSection.classList.add("hidden");
-  } else {
-    tabImages.classList.add("tab-active");
-    tabImages.classList.remove("tab-inactive");
-    tabAudio.classList.add("tab-inactive");
-    tabAudio.classList.remove("tab-active");
-    imagesSection.classList.remove("hidden");
-    audioSection.classList.add("hidden");
+// ========== التبويبات ==========
+function setTab(tab){
+  const tabA=document.getElementById("tabAudio"), tabI=document.getElementById("tabImages");
+  const secA=document.getElementById("audioSection"), secI=document.getElementById("imagesSection");
+  if(tab==="audio"){
+    tabA.classList.add("tab-active"); tabA.classList.remove("tab-inactive");
+    tabI.classList.add("tab-inactive"); tabI.classList.remove("tab-active");
+    secA.classList.remove("hidden"); secI.classList.add("hidden");
+  }else{
+    tabI.classList.add("tab-active"); tabI.classList.remove("tab-inactive");
+    tabA.classList.add("tab-inactive"); tabA.classList.remove("tab-active");
+    secI.classList.remove("hidden"); secA.classList.add("hidden");
   }
 }
-tabAudio.onclick = () => setTab("audio");
-tabImages.onclick = () => setTab("images");
+document.getElementById("tabAudio").onclick=()=>setTab("audio");
+document.getElementById("tabImages").onclick=()=>setTab("images");
 
-// === مصحف مصوّر ===
-const TOTAL_PAGES = 604;
-const imgEl = document.getElementById("quranPage");
-const pageInput = document.getElementById("pageNum");
-function loadPage(n) {
-  const p = Math.max(1, Math.min(TOTAL_PAGES, parseInt(n) || 1));
-  pageInput.value = p;
-  imgEl.src = `https://easyquran.com/wp-content/uploads/2022/09/${p}-scaled.jpg`;
+// ========== المصحف المصوّر ==========
+const TOTAL_PAGES=604;
+const imgEl=document.getElementById("quranPage");
+const pageInput=document.getElementById("pageNum");
+function loadPage(n){
+  const p=Math.max(1,Math.min(TOTAL_PAGES,parseInt(n)||1));
+  pageInput.value=p;
+  imgEl.src=`https://easyquran.com/wp-content/uploads/2022/09/${p}-scaled.jpg`;
 }
-pageInput.onchange = () => loadPage(pageInput.value);
-document.getElementById("fullscreenBtn").onclick = () => {
-  const el = document.getElementById("imageWrapper");
-  if (el.requestFullscreen) el.requestFullscreen();
-};
+pageInput.onchange=()=>loadPage(pageInput.value);
+document.getElementById("fullscreenBtn").onclick=()=>document.getElementById("imageWrapper").requestFullscreen();
 
-// سحب اللمس (اتجاه عربي)
-let touchStartX = 0;
-imgEl.addEventListener("touchstart", e => touchStartX = e.changedTouches[0].screenX);
-imgEl.addEventListener("touchend", e => {
-  const dx = e.changedTouches[0].screenX - touchStartX;
-  if (Math.abs(dx) > 50) {
-    if (dx < 0) loadPage(parseInt(pageInput.value) + 1);
-    else loadPage(pageInput.value - 1);
+// السحب اليدوي والماوس
+let touchStartX=0;
+imgEl.addEventListener("touchstart",e=>touchStartX=e.changedTouches[0].screenX);
+imgEl.addEventListener("touchend",e=>{
+  const dx=e.changedTouches[0].screenX-touchStartX;
+  if(Math.abs(dx)>50){
+    if(dx>0)loadPage(pageInput.value-1); else loadPage(parseInt(pageInput.value)+1);
   }
 });
-
-// تحريك الماوس (حساسية منخفضة)
-let isDown = false, startX, scrollLeft;
-const wrapper = document.getElementById("imageWrapper");
-wrapper.addEventListener("mousedown", e => { isDown = true; startX = e.pageX - wrapper.offsetLeft; scrollLeft = wrapper.scrollLeft; });
-wrapper.addEventListener("mouseleave", () => isDown = false);
-wrapper.addEventListener("mouseup", () => isDown = false);
-wrapper.addEventListener("mousemove", e => {
-  if (!isDown) return;
+const wrapper=document.getElementById("imageWrapper");
+let isDragging=false,startX=0,scrollLeft=0;
+wrapper.addEventListener("mousedown",e=>{isDragging=true;startX=e.pageX-wrapper.offsetLeft;scrollLeft=wrapper.scrollLeft;});
+wrapper.addEventListener("mouseleave",()=>isDragging=false);
+wrapper.addEventListener("mouseup",()=>isDragging=false);
+wrapper.addEventListener("mousemove",e=>{
+  if(!isDragging)return;
   e.preventDefault();
-  const x = e.pageX - wrapper.offsetLeft;
-  const walk = (x - startX) * 0.2; // حساسية منخفضة
-  wrapper.scrollLeft = scrollLeft - walk;
+  const x=e.pageX-wrapper.offsetLeft;
+  const walk=(x-startX)*0.3;
+  wrapper.scrollLeft=scrollLeft-walk;
+});
+wrapper.addEventListener("wheel",e=>e.stopPropagation(),{passive:true});
+
+// الأسهم يمين/يسار
+document.addEventListener("keydown",e=>{
+  if(!document.getElementById("imagesSection").classList.contains("hidden")){
+    if(e.key==="ArrowRight")loadPage(parseInt(pageInput.value)+1);
+    if(e.key==="ArrowLeft")loadPage(pageInput.value-1);
+  }
 });
 
-// === الصوت ===
-function persist() {
-  localStorage.setItem("playlist", JSON.stringify(state.playlist));
-  localStorage.setItem("favorites", JSON.stringify(state.favorites));
-  localStorage.setItem("resume", JSON.stringify(state.resume));
+// ========== الصوت ==========
+function persist(){
+  localStorage.setItem("playlist",JSON.stringify(state.playlist));
+  localStorage.setItem("favorites",JSON.stringify(state.favorites));
+  localStorage.setItem("resume",JSON.stringify(state.resume));
 }
-
-function add(auto=false) {
-  const recSlug = document.getElementById("reciterSelect").value;
-  const rec = RECITERS.find(r => r.slug === recSlug);
-  const surId = parseInt(document.getElementById("surahSelect").value);
-  if (!rec || !surId) return;
-  const sur = chapters.find(c => c.id === surId);
-  const newItem = { title: sur.name_arabic, reciter: rec.name, src: `${rec.base}/${pad3(surId)}.mp3` };
-
-  // منطق قارئ واحد / عدة قراء
-  if (state.mode === "single" && state.playlist.length > 0) {
-    const currentReciter = state.playlist[0].reciter;
-    if (currentReciter !== rec.name) {
-      alert("❌ لا يمكن خلط القراء في وضع قارئ واحد.");
-      return;
-    }
+function add(auto=false){
+  const recSlug=document.getElementById("reciterSelect").value;
+  const rec=RECITERS.find(r=>r.slug===recSlug);
+  const surId=parseInt(document.getElementById("surahSelect").value);
+  if(!rec||!surId)return;
+  const sur=chapters.find(c=>c.id===surId);
+  const newItem={title:sur.name_arabic,reciter:rec.name,src:`${rec.base}/${pad3(surId)}.mp3`};
+  if(state.mode==="single"&&state.playlist.length>0){
+    if(state.playlist[0].reciter!==rec.name){alert("❌ لا يمكن خلط القراء في وضع قارئ واحد.");return;}
   }
-
-  state.playlist.push(newItem);
-  state.idx = state.playlist.length - 1;
-  persist();
-  render(auto);
+  state.playlist.push(newItem);state.idx=state.playlist.length-1;persist();render(auto);
 }
-
-function render(auto) {
-  const cur = state.playlist[state.idx];
-  const box = document.getElementById("playerBox");
-  if (cur) {
-    box.innerHTML = `<div class="mb-2 font-medium">${cur.title} — <span class="text-emerald-400">${cur.reciter}</span></div>
-    <audio id="player" src="${cur.src}" controls ${auto ? "autoplay" : ""}></audio>`;
-    const a = document.getElementById("player");
-    a.loop = state.loop;
-    a.ontimeupdate = () => {
-      updateProgress();
-      state.resume[cur.src] = a.currentTime;
-      localStorage.setItem("resume", JSON.stringify(state.resume));
-    };
-    a.onloadedmetadata = () => document.getElementById("timeTotal").textContent = formatTime(a.duration);
-    a.onended = () => {
-      if (state.loop) a.play();
-      else if (state.idx + 1 < state.playlist.length) {
-        state.idx++;
-        render(true);
-      }
-    };
-  } else box.innerHTML = "<div class='text-slate-500'>لا يوجد تشغيل</div>";
-
-  document.getElementById("playlist").innerHTML = state.playlist
-    .map((t,i)=>`<li class="flex justify-between items-center bg-white/70 px-3 py-2 rounded">
+function render(auto){
+  const cur=state.playlist[state.idx];
+  const box=document.getElementById("playerBox");
+  if(cur){
+    box.innerHTML=`<div class="mb-2 font-medium">${cur.title} — <span class="text-emerald-400">${cur.reciter}</span></div>
+    <audio id="player" src="${cur.src}" controls ${auto?"autoplay":""}></audio>`;
+    const a=document.getElementById("player");
+    a.loop=state.loop;
+    a.ontimeupdate=()=>{updateProgress();state.resume[cur.src]=a.currentTime;persist();};
+    a.onloadedmetadata=()=>document.getElementById("timeTotal").textContent=formatTime(a.duration);
+    a.onended=()=>{if(state.loop)a.play();else if(state.idx+1<state.playlist.length){state.idx++;render(true);}};
+  }else box.innerHTML="<div class='text-slate-500'>لا يوجد تشغيل</div>";
+  document.getElementById("playlist").innerHTML=state.playlist.map((t,i)=>`
+    <li class="flex justify-between items-center bg-white/70 px-3 py-2 rounded">
       <span>${t.title} - ${t.reciter}</span>
       <span>
-        <button onclick="addSpecificToFavorites(${i})" class="text-amber-500">⭐</button>
-        <button onclick="playAt(${i})">▶️</button>
-        <button onclick="removeAt(${i})" class="text-red-500">🗑️</button>
-      </span></li>`).join("");
-}
-
-function playAt(i){state.idx=i;render(true);}
-function removeAt(i){state.playlist.splice(i,1);if(state.idx>=state.playlist.length)state.idx=state.playlist.length-1;persist();render(false);}
-function updateProgress(){
-  const a=document.getElementById("player");
-  if(!a||!isFinite(a.duration))return;
-  document.getElementById("progressFill").style.width=(a.currentTime/a.duration*100)+"%";
-  document.getElementById("timeNow").textContent=formatTime(a.currentTime);
-}
-function formatTime(s){if(!s||!isFinite(s))return"00:00";const m=Math.floor(s/60),sec=Math.floor(s%60);return`${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;}
-function skip(sec){const a=document.getElementById("player");if(a)a.currentTime+=sec;}
-function togglePlay(){const a=document.getElementById("player");if(a)(a.paused?a.play():a.pause());}
-
-// === مفضلة ===
-function addSpecificToFavorites(i){
-  const it=state.playlist[i];if(!it)return;
-  if(!state.favorites.some(f=>f.title===it.title&&f.reciter===it.reciter)){
-    state.favorites.push(it);persist();renderFavorites();
-  }
-}
-function renderFavorites(){
-  document.getElementById("favorites").innerHTML=state.favorites.map((f,i)=>`<li class="flex justify-between"><span>${f.title} - ${f.reciter}</span><button onclick="removeFav(${i})" class="text-red-500">🗑️</button></li>`).join("");
-}
-function removeFav(i){state.favorites.splice(i,1);persist();renderFavorites();}
-document.getElementById("clearBtn").onclick=()=>{if(confirm("مسح الكل؟")){state.playlist=[];state.idx=0;persist();render(false);}};
-document.getElementById("clearFavBtn").onclick=()=>{if(confirm("مسح المفضلة؟")){state.favorites=[];persist();renderFavorites();}};
-
-// === مؤقت النوم ===
-function setSleepTimer(){
-  const min=parseInt(document.getElementById("sleepMinutes").value);
-  if(isNaN(min)||min<=0)return alert("أدخل دقائق صحيحة");
-  if(state.sleepTimeout)clearTimeout(state.sleepTimeout);
-  const end=Date.now()+min*60000;
-  state.sleepTimeout=setInterval(()=>{
-    const remain=Math.max(0,end-Date.now());
-    const m=Math.floor(remain/60000),s=Math.floor((remain%60000)/1000);
-    document.getElementById("sleepStatus").textContent=`⏱️ متبقٍ ${m}:${String(s).padStart(2,"0")}`;
-    if(remain<=0){
-      clearInterval(state.sleepTimeout);
-      const a=document.getElementById("player");
-      if(a)a.pause();
-      document.getElementById("sleepStatus").textContent="⏹️ تم الإيقاف تلقائيًا";
-    }
-  },1000);
-}
-function cancelSleepTimer(){
-  if(state.sleepTimeout)clearInterval(state.sleepTimeout);
-  document.getElementById("sleepStatus").textContent="تم إلغاء المؤقّت";
-}
-
-// === الأحداث ===
-window.onload=()=>{
-  initTheme();
-  fetchChapters();
-  updateClock();
-  state.playlist=JSON.parse(localStorage.getItem("playlist")||"[]");
-  state.favorites=JSON.parse(localStorage.getItem("favorites")||"[]");
-  state.resume=JSON.parse(localStorage.getItem("resume")||"{}");
-  render(false);
-  renderFavorites();
-  document.getElementById("addBtn").onclick=()=>add(true);
-  document.getElementById("playPause").onclick=togglePlay;
-  document.getElementById("fwd10").onclick=()=>skip(10);
-  document.getElementById("back10").onclick=()=>skip(-10);
-  document.getElementById("sleepSet").onclick=setSleepTimer;
-  document.getElementById("sleepCancel").onclick=cancelSleepTimer;
-  document.querySelectorAll("input[name='mode']").forEach(r=>r.onchange=()=>state.mode=r.value);
-};
-</script>
+        <button onclick="addFavFromList(${
 </body>
 </html>
