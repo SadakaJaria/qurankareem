@@ -277,9 +277,7 @@ select option{color:#000!important;background:#fff!important}
 #hisnCategorySelect option{
   padding:0.5rem;
 }
-#resetHisnBtn{
-  white-space:nowrap;
-}
+
 
 .no-results{
   text-align:center;
@@ -562,7 +560,6 @@ select option{color:#000!important;background:#fff!important}
             <option value="">جميع الفئات (134)</option>
             <!-- Categories will be inserted here by JavaScript -->
           </select>
-          <button id="resetHisnBtn" class="btn btn-emerald text-sm px-4 py-2 whitespace-nowrap">🔄 إعادة تعيين</button>
         </div>
       </div>
     </div>
@@ -2436,17 +2433,7 @@ function renderHisnDropdown() {
     }
   };
   
-  // زر إعادة التعيين
-  const resetBtn = document.getElementById('resetHisnBtn');
-  if (resetBtn) {
-    resetBtn.onclick = () => {
-      dropdown.value = '';
-      hisnState.currentCategory = null;
-      hisnState.searchTerm = '';
-      document.getElementById('hisnSearchInput').value = '';
-      renderHisnContent();
-    };
-  }
+
 }
 
 // تحميل فئة معينة
