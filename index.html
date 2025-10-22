@@ -270,33 +270,15 @@ select option{color:#000!important;background:#fff!important}
   color:#fff;
 }
 
-.tabs-container{
-  display:flex;
-  gap:.4rem;
-  overflow-x:auto;
-  padding:.5rem 0;
-  flex-wrap:nowrap;
-  -webkit-overflow-scrolling:touch;
-}
-.tabs-container::-webkit-scrollbar{display:none}
-
-.tab-btn{
-  padding:.5rem 1rem;
-  background:rgba(212,175,55,.1);
-  border:2px solid rgba(212,175,55,.3);
-  border-radius:.7rem;
+#hisnCategorySelect{
+  font-size:1rem;
   cursor:pointer;
-  font-weight:700;
-  font-size:.9rem;
-  transition:all .2s;
-  white-space:nowrap;
-  flex-shrink:0;
 }
-.tab-btn:hover{background:rgba(212,175,55,.2)}
-.tab-btn.active{
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  color:#111827;
-  border-color:var(--gold);
+#hisnCategorySelect option{
+  padding:0.5rem;
+}
+#resetHisnBtn{
+  white-space:nowrap;
 }
 
 .no-results{
@@ -567,15 +549,21 @@ select option{color:#000!important;background:#fff!important}
     <div class="card p-4 mb-4">
       <h2 class="font-bold text-2xl mb-4 text-center">🤲 حصن المسلم</h2>
       
-      <!-- Search Box -->
-      <div class="mb-4">
+      <!-- Search and Category Selector -->
+      <div class="mb-4 space-y-3">
+        <!-- Search Box -->
         <input type="text" id="hisnSearchInput" placeholder="🔍 ابحث في الأذكار..." 
                class="w-full p-3 border-2 border-gold-300 rounded-lg text-base font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
-      </div>
-
-      <!-- Tabs Container -->
-      <div class="tabs-container mb-4 flex gap-2 overflow-x-auto pb-2" id="hisnTabs" style="-webkit-overflow-scrolling:touch; scrollbar-width:none">
-        <!-- Tabs will be inserted here by JavaScript -->
+        
+        <!-- Category Dropdown -->
+        <div class="flex gap-2 items-center">
+          <label class="font-bold text-sm whitespace-nowrap">📑 الفئة:</label>
+          <select id="hisnCategorySelect" class="flex-1 p-2 border-2 border-gold-300 rounded-lg font-semibold bg-white">
+            <option value="">جميع الفئات (134)</option>
+            <!-- Categories will be inserted here by JavaScript -->
+          </select>
+          <button id="resetHisnBtn" class="btn btn-emerald text-sm px-4 py-2 whitespace-nowrap">🔄 إعادة تعيين</button>
+        </div>
       </div>
     </div>
 
@@ -2392,7 +2380,7 @@ async function loadHisnData() {
       throw new Error('Failed to load hisn_almuslim.json. Make sure the file is in the same directory as index.html');
     }
     hisnData = await response.json();
-    renderHisnTabs();
+    renderHisnDropdown();
     const firstCategory = Object.keys(hisnData)[0];
     loadHisnCategory(firstCategory);
   } catch (error) {
@@ -2418,19 +2406,47 @@ async function loadHisnData() {
   }
 }
 
-// عرض التبويبات
-function renderHisnTabs() {
-  const tabsContainer = document.getElementById('hisnTabs');
-  if (!tabsContainer) return;
+// عرض القائمة المنسدلة للفئات
+function renderHisnDropdown() {
+  const dropdown = document.getElementById('hisnCategorySelect');
+  if (!dropdown) return;
   
-  tabsContainer.innerHTML = '';
+  // مسح الخيارات القديمة (ما عدا الخيار الأول)
+  while (dropdown.options.length > 1) {
+    dropdown.remove(1);
+  }
+  
+  // إضافة جميع الفئات
   Object.keys(hisnData).forEach(category => {
-    const tab = document.createElement('button');
-    tab.className = 'tab-btn';
-    tab.textContent = category;
-    tab.onclick = () => loadHisnCategory(category);
-    tabsContainer.appendChild(tab);
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    dropdown.appendChild(option);
   });
+  
+  // إضافة event listener
+  dropdown.onchange = (e) => {
+    if (e.target.value) {
+      loadHisnCategory(e.target.value);
+    } else {
+      // عرض جميع الفئات
+      hisnState.currentCategory = null;
+      hisnState.searchTerm = '';
+      renderHisnContent();
+    }
+  };
+  
+  // زر إعادة التعيين
+  const resetBtn = document.getElementById('resetHisnBtn');
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      dropdown.value = '';
+      hisnState.currentCategory = null;
+      hisnState.searchTerm = '';
+      document.getElementById('hisnSearchInput').value = '';
+      renderHisnContent();
+    };
+  }
 }
 
 // تحميل فئة معينة
@@ -2440,9 +2456,9 @@ function loadHisnCategory(category) {
   const searchInput = document.getElementById('hisnSearchInput');
   if (searchInput) searchInput.value = '';
   
-  document.querySelectorAll('.tab-btn').forEach(tab => {
-    tab.classList.toggle('active', tab.textContent === category);
-  });
+  // تحديث الـ dropdown
+  const dropdown = document.getElementById('hisnCategorySelect');
+  if (dropdown) dropdown.value = category;
   
   renderHisnContent();
 }
