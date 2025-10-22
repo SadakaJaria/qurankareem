@@ -165,6 +165,157 @@ select option{color:#000!important;background:#fff!important}
   .bottom-nav{padding:.3rem}
   .nav-item{padding:.3rem .4rem}
 }
+
+/* ===== Hisn Al-Muslim Styles ===== */
+.hisn-card{
+  background:rgba(255,255,255,.95);
+  padding:1.2rem;
+  border-radius:1rem;
+  margin-bottom:1rem;
+  border-right:4px solid var(--gold);
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  transition:all .2s;
+  position:relative;
+}
+.theme-night .hisn-card{background:rgba(30,41,59,.95)}
+.theme-special .hisn-card{background:rgba(45,90,61,.95)}
+.hisn-card:hover{transform:translateX(-3px);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+
+.hisn-title{
+  font-size:1.15rem;
+  font-weight:800;
+  margin-bottom:.8rem;
+  color:var(--gold);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+.hisn-text{
+  font-size:1.05rem;
+  line-height:1.9;
+  margin-bottom:.6rem;
+  text-align:justify;
+}
+
+.hisn-footnote{
+  font-size:.85rem;
+  opacity:.65;
+  margin-top:.8rem;
+  padding-top:.8rem;
+  border-top:1px solid rgba(212,175,55,.2);
+}
+
+.hisn-actions{
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+  margin-top:1rem;
+  flex-wrap:wrap;
+}
+
+.counter-box{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  background:rgba(212,175,55,.1);
+  padding:.4rem .7rem;
+  border-radius:.6rem;
+}
+
+.counter-btn{
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));
+  color:#fff;
+  border:none;
+  border-radius:.5rem;
+  cursor:pointer;
+  font-size:1.1rem;
+  font-weight:800;
+  transition:all .2s;
+}
+.counter-btn:hover{transform:scale(1.1)}
+.counter-btn:active{transform:scale(0.95)}
+.counter-btn.reset-counter{background:linear-gradient(135deg,#ef4444,#dc2626)}
+
+.counter-display{
+  font-size:1.1rem;
+  font-weight:800;
+  min-width:40px;
+  text-align:center;
+  font-family:monospace;
+}
+
+.hisn-fav-btn{
+  padding:.4rem .8rem;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#111827;
+  border:none;
+  border-radius:.6rem;
+  cursor:pointer;
+  font-size:.9rem;
+  font-weight:700;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.hisn-fav-btn:hover{transform:translateY(-2px)}
+.hisn-fav-btn.favorited{
+  background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));
+  color:#fff;
+}
+
+.tabs-container{
+  display:flex;
+  gap:.4rem;
+  overflow-x:auto;
+  padding:.5rem 0;
+  flex-wrap:nowrap;
+  -webkit-overflow-scrolling:touch;
+}
+.tabs-container::-webkit-scrollbar{display:none}
+
+.tab-btn{
+  padding:.5rem 1rem;
+  background:rgba(212,175,55,.1);
+  border:2px solid rgba(212,175,55,.3);
+  border-radius:.7rem;
+  cursor:pointer;
+  font-weight:700;
+  font-size:.9rem;
+  transition:all .2s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.tab-btn:hover{background:rgba(212,175,55,.2)}
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#111827;
+  border-color:var(--gold);
+}
+
+.no-results{
+  text-align:center;
+  padding:3rem 1rem;
+  font-size:1.1rem;
+  opacity:.6;
+}
+
+@media(max-width:640px){
+  .hisn-card{padding:1rem}
+  .hisn-title{font-size:1.05rem}
+  .hisn-text{font-size:1rem;line-height:1.8}
+  .hisn-footnote{font-size:.8rem}
+  .counter-btn{width:28px;height:28px;font-size:1rem}
+  .counter-display{font-size:1rem;min-width:35px}
+  .tab-btn{padding:.4rem .8rem;font-size:.85rem}
+}
+
 </style>
 </head>
 <body class="theme-day min-h-screen">
@@ -413,17 +564,26 @@ select option{color:#000!important;background:#fff!important}
   </section>
 
   <section id="hisnSection" class="section">
-    <div class="card p-4">
+    <div class="card p-4 mb-4">
       <h2 class="font-bold text-2xl mb-4 text-center">🤲 حصن المسلم</h2>
       
-      <div class="text-center py-12 opacity-70">
-        <div class="text-6xl mb-4">📿</div>
-        <p class="text-lg font-medium mb-2">قريباً إن شاء الله</p>
-        <p class="text-sm">أذكار الصباح والمساء، أدعية مختارة، والمزيد...</p>
+      <!-- Search Box -->
+      <div class="mb-4">
+        <input type="text" id="hisnSearchInput" placeholder="🔍 ابحث في الأذكار..." 
+               class="w-full p-3 border-2 border-gold-300 rounded-lg text-base font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
+      </div>
+
+      <!-- Tabs Container -->
+      <div class="tabs-container mb-4 flex gap-2 overflow-x-auto pb-2" id="hisnTabs" style="-webkit-overflow-scrolling:touch; scrollbar-width:none">
+        <!-- Tabs will be inserted here by JavaScript -->
       </div>
     </div>
-  </section>
 
+    <!-- Content Container -->
+    <div id="hisnContent" class="space-y-4">
+      <!-- Hisn cards will be inserted here by JavaScript -->
+    </div>
+  </section>
   <section id="favoritesSection" class="section">
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
@@ -2210,6 +2370,252 @@ async function initialize(){
 }
 
 window.addEventListener('load',initialize);
+
+
+// ===== HISN AL-MUSLIM FUNCTIONALITY =====
+let hisnData = {};
+let hisnState = {
+  favorites: JSON.parse(localStorage.getItem('hisnFavorites') || '[]'),
+  counters: JSON.parse(localStorage.getItem('hisnCounters') || '{}'),
+  currentCategory: null,
+  searchTerm: ''
+};
+
+// تحميل بيانات حصن المسلم
+async function loadHisnData() {
+  try {
+    const response = await fetch('hisn_almuslim.json').catch(err => {
+      console.warn('Trying alternative path...');
+      return fetch('./hisn_almuslim.json');
+    });
+    if (!response || !response.ok) {
+      throw new Error('Failed to load hisn_almuslim.json. Make sure the file is in the same directory as index.html');
+    }
+    hisnData = await response.json();
+    renderHisnTabs();
+    const firstCategory = Object.keys(hisnData)[0];
+    loadHisnCategory(firstCategory);
+  } catch (error) {
+    console.error('Error loading Hisn data:', error);
+    const container = document.getElementById('hisnContent');
+    if (container) {
+      container.innerHTML = `
+        <div class="no-results" style="text-align:right; padding:2rem;">
+          <div style="font-size:2rem; margin-bottom:1rem;">❌</div>
+          <h3 style="color:var(--gold); margin-bottom:1rem;">خطأ في تحميل البيانات</h3>
+          <p style="margin-bottom:0.5rem;">⚠️ تأكد من:</p>
+          <ul style="text-align:right; list-style:none; padding-right:1rem;">
+            <li style="margin-bottom:0.5rem;">✓ وجود ملف <code>hisn_almuslim.json</code> في نفس المجلد</li>
+            <li style="margin-bottom:0.5rem;">✓ رفع الملف على GitHub</li>
+            <li style="margin-bottom:0.5rem;">✓ مسح الـ cache (Ctrl+Shift+R)</li>
+          </ul>
+          <p style="margin-top:1rem; opacity:0.7; font-size:0.9rem;">
+            الخطأ: ${error.message}
+          </p>
+        </div>
+      `;
+    }
+  }
+}
+
+// عرض التبويبات
+function renderHisnTabs() {
+  const tabsContainer = document.getElementById('hisnTabs');
+  if (!tabsContainer) return;
+  
+  tabsContainer.innerHTML = '';
+  Object.keys(hisnData).forEach(category => {
+    const tab = document.createElement('button');
+    tab.className = 'tab-btn';
+    tab.textContent = category;
+    tab.onclick = () => loadHisnCategory(category);
+    tabsContainer.appendChild(tab);
+  });
+}
+
+// تحميل فئة معينة
+function loadHisnCategory(category) {
+  hisnState.currentCategory = category;
+  hisnState.searchTerm = '';
+  const searchInput = document.getElementById('hisnSearchInput');
+  if (searchInput) searchInput.value = '';
+  
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.classList.toggle('active', tab.textContent === category);
+  });
+  
+  renderHisnContent();
+}
+
+// عرض المحتوى
+function renderHisnContent() {
+  const container = document.getElementById('hisnContent');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  const searchTerm = hisnState.searchTerm.toLowerCase();
+  let hasResults = false;
+  
+  Object.entries(hisnData).forEach(([title, data]) => {
+    if (hisnState.currentCategory && title !== hisnState.currentCategory) return;
+    
+    if (searchTerm) {
+      const titleMatch = title.toLowerCase().includes(searchTerm);
+      const textMatch = data.text?.some(t => t.toLowerCase().includes(searchTerm));
+      if (!titleMatch && !textMatch) return;
+    }
+    
+    hasResults = true;
+    const card = createHisnCard(title, data);
+    container.appendChild(card);
+  });
+  
+  if (!hasResults) {
+    container.innerHTML = '<div class="no-results">لا توجد نتائج 🔍</div>';
+  }
+}
+
+// إنشاء بطاقة ذكر
+function createHisnCard(title, data) {
+  const card = document.createElement('div');
+  card.className = 'hisn-card fade-in-text';
+  
+  const isFavorite = hisnState.favorites.includes(title);
+  const counter = hisnState.counters[title] || 0;
+  const safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  
+  let html = `
+    <div class="hisn-title">
+      <span>${title}</span>
+      <button class="hisn-fav-btn ${isFavorite ? 'favorited' : ''}" 
+              onclick="toggleHisnFavorite('${safeTitle}')">
+        ${isFavorite ? '⭐ مفضل' : '☆ إضافة'}
+      </button>
+    </div>
+  `;
+  
+  if (data.text && Array.isArray(data.text)) {
+    data.text.forEach(text => {
+      html += `<div class="hisn-text">${text}</div>`;
+    });
+  }
+  
+  if (data.footnote && Array.isArray(data.footnote) && data.footnote.length > 0) {
+    html += '<div class="hisn-footnote">';
+    data.footnote.forEach(note => {
+      html += `<div style="margin-bottom:.3rem">• ${note}</div>`;
+    });
+    html += '</div>';
+  }
+  
+  html += `
+    <div class="hisn-actions">
+      <div class="counter-box">
+        <button class="counter-btn" onclick="decrementCounter('${safeTitle}')">−</button>
+        <span class="counter-display">${counter}</span>
+        <button class="counter-btn" onclick="incrementCounter('${safeTitle}')">+</button>
+        <button class="counter-btn reset-counter" onclick="resetCounter('${safeTitle}')" title="إعادة تعيين">↻</button>
+      </div>
+    </div>
+  `;
+  
+  card.innerHTML = html;
+  return card;
+}
+
+// تبديل المفضلة
+window.toggleHisnFavorite = function(title) {
+  const index = hisnState.favorites.indexOf(title);
+  if (index > -1) {
+    hisnState.favorites.splice(index, 1);
+    showToast('❌ تم إزالة الذكر من المفضلة');
+  } else {
+    hisnState.favorites.push(title);
+    showToast('⭐ تمت إضافة الذكر للمفضلة');
+  }
+  localStorage.setItem('hisnFavorites', JSON.stringify(hisnState.favorites));
+  renderHisnContent();
+  updateFavoritesHisn();
+};
+
+// زيادة العداد
+window.incrementCounter = function(title) {
+  hisnState.counters[title] = (hisnState.counters[title] || 0) + 1;
+  localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
+  renderHisnContent();
+};
+
+// إنقاص العداد
+window.decrementCounter = function(title) {
+  if (hisnState.counters[title] > 0) {
+    hisnState.counters[title]--;
+    localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
+    renderHisnContent();
+  }
+};
+
+// إعادة تعيين العداد
+window.resetCounter = function(title) {
+  hisnState.counters[title] = 0;
+  localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
+  renderHisnContent();
+  showToast('↻ تم إعادة تعيين العداد');
+};
+
+// البحث
+function searchHisn() {
+  hisnState.searchTerm = document.getElementById('hisnSearchInput').value;
+  hisnState.currentCategory = null;
+  document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
+  renderHisnContent();
+}
+
+// تحديث قسم المفضلة بأذكار حصن المسلم
+function updateFavoritesHisn() {
+  const favSection = document.getElementById('favoritesSection');
+  if (!favSection) return;
+  
+  let favHisnContainer = document.getElementById('favHisnContainer');
+  if (!favHisnContainer) {
+    const favCard = favSection.querySelector('.card');
+    if (favCard) {
+      favHisnContainer = document.createElement('div');
+      favHisnContainer.id = 'favHisnContainer';
+      favHisnContainer.className = 'mt-4';
+      favCard.appendChild(favHisnContainer);
+    } else {
+      return;
+    }
+  }
+  
+  if (hisnState.favorites.length === 0) {
+    favHisnContainer.innerHTML = '';
+    return;
+  }
+  
+  let html = '<h3 class="font-semibold text-lg mb-3 mt-4" style="color:var(--gold)">🤲 الأذكار المفضلة</h3>';
+  hisnState.favorites.forEach(title => {
+    if (hisnData[title]) {
+      const cardDiv = createHisnCard(title, hisnData[title]);
+      html += cardDiv.outerHTML;
+    }
+  });
+  favHisnContainer.innerHTML = html;
+}
+
+// تهيئة حصن المسلم
+function initHisn() {
+  const hisnSearchInput = document.getElementById('hisnSearchInput');
+  if (hisnSearchInput) {
+    hisnSearchInput.addEventListener('input', searchHisn);
+  }
+  
+  loadHisnData();
+}
+
+
+// Initialize Hisn Al-Muslim
+window.addEventListener('load', initHisn);
 </script>
 </body>
 </html>
