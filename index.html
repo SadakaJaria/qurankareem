@@ -116,6 +116,23 @@ select option{color:#000!important;background:#fff!important}
 .countdown-box{background:rgba(0,0,0,.1);border-radius:.7rem;padding:.8rem 1.2rem;text-align:center;margin:1rem 0}
 .countdown-time{font-size:2rem;font-weight:900;font-family:monospace;color:var(--emerald)}
 .countdown-label{font-size:.85rem;opacity:.75;margin-top:.3rem}
+.azkar-card{background:rgba(255,255,255,.95);padding:1rem;border-radius:.8rem;border-right:3px solid var(--emerald);box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;margin-bottom:.75rem}
+.theme-night .azkar-card{background:rgba(30,41,59,.95)}
+.theme-special .azkar-card{background:rgba(45,90,61,.95)}
+.azkar-card.completed{opacity:.55;border-right-color:#10b981}
+.azkar-text{font-size:1rem;line-height:1.9;margin-bottom:.75rem;text-align:justify;font-weight:500}
+.azkar-repeat{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:.75rem 0;padding:.6rem;background:rgba(212,175,55,.1);border-radius:.6rem}
+.azkar-repeat-count{font-size:1.5rem;font-weight:900;color:var(--emerald);font-family:monospace}
+.azkar-repeat-label{font-size:.85rem;opacity:.8}
+.azkar-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.azkar-btn{flex:1;min-width:100px;padding:.5rem .7rem;font-size:.85rem}
+.search-result-item{background:rgba(255,255,255,.9);padding:.6rem;border-radius:.5rem;border-right:2px solid var(--gold);cursor:pointer;transition:all .2s;font-size:.85rem}
+.theme-night .search-result-item{background:rgba(30,41,59,.9)}
+.theme-special .search-result-item{background:rgba(45,90,61,.9)}
+.search-result-item:hover{transform:translateX(-2px);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.search-result-title{font-weight:700;margin-bottom:.2rem;font-size:.9rem}
+.search-result-text{opacity:.75;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html{scroll-behavior:smooth}
 @media(max-width:640px){
   #imageWrapper{height:calc(100vh - 160px)}
   .nav-text{font-size:.62rem}
@@ -414,12 +431,61 @@ select option{color:#000!important;background:#fff!important}
 
   <section id="hisnSection" class="section">
     <div class="card p-4">
-      <h2 class="font-bold text-2xl mb-4 text-center">🤲 حصن المسلم</h2>
+      <h2 class="font-bold text-xl mb-4 text-center">🤲 حصن المسلم</h2>
       
-      <div class="text-center py-12 opacity-70">
-        <div class="text-6xl mb-4">📿</div>
-        <p class="text-lg font-medium mb-2">قريباً إن شاء الله</p>
-        <p class="text-sm">أذكار الصباح والمساء، أدعية مختارة، والمزيد...</p>
+      <div id="hisnCategoriesList">
+        <div class="mb-3">
+          <input id="hisnSearchInput" type="text" placeholder="🔍 ابحث عن دعاء..." class="w-full">
+        </div>
+        
+        <div class="mb-4">
+          <select id="hisnCategorySelect" class="w-full text-sm">
+            <option value="">-- اختر القسم --</option>
+          </select>
+        </div>
+        
+        <div id="hisnSearchResults" class="hidden mb-3">
+          <div class="text-sm font-medium mb-2">نتائج البحث:</div>
+          <div id="hisnSearchResultsList" class="space-y-2 max-h-64 overflow-y-auto"></div>
+        </div>
+      </div>
+      
+      <div id="hisnAzkarView" class="hidden">
+        <div class="flex items-center justify-between mb-3">
+          <button onclick="closeHisnCategory()" class="btn btn-gold px-3 py-1 text-sm">→ رجوع</button>
+          <h3 id="hisnCategoryTitle" class="font-bold text-base"></h3>
+          <div></div>
+        </div>
+        
+        <div id="hisnProgress" class="mb-3 p-2 bg-white bg-opacity-10 rounded-lg text-sm">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-medium">التقدم</span>
+            <div class="flex gap-2">
+              <span id="hisnProgressText" class="text-xs font-bold">0 / 0</span>
+              <button onclick="resetHisnProgress()" class="text-xs px-2 py-0.5 bg-red-500 text-white rounded hover:bg-red-600 transition" title="إعادة تعيين">♻️</button>
+            </div>
+          </div>
+          <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-1.5">
+            <div id="hisnProgressBar" class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-1.5 rounded-full transition-all" style="width: 0%"></div>
+          </div>
+        </div>
+        
+        <div id="hisnStats" class="mb-3 grid grid-cols-3 gap-2 text-xs">
+          <div class="text-center p-2 bg-white bg-opacity-5 rounded-lg">
+            <div class="text-lg font-bold text-emerald-500" id="hisnTotalCount">0</div>
+            <div class="text-xs opacity-75">مرات</div>
+          </div>
+          <div class="text-center p-2 bg-white bg-opacity-5 rounded-lg">
+            <div class="text-lg font-bold text-gold" id="hisnStreak">0</div>
+            <div class="text-xs opacity-75">أيام</div>
+          </div>
+          <div class="text-center p-2 bg-white bg-opacity-5 rounded-lg">
+            <div class="text-xs opacity-75 mb-1">آخر مرة</div>
+            <div class="text-xs font-bold" id="hisnLastRead">-</div>
+          </div>
+        </div>
+        
+        <div id="hisnAzkarContainer" class="space-y-3"></div>
       </div>
     </div>
   </section>
@@ -618,7 +684,13 @@ const state={
   prayerTimes:null,
   currentCity:JSON.parse(localStorage.getItem('selected_city')||'null'),
   notificationsEnabled:JSON.parse(localStorage.getItem('notifications_enabled')||'false'),
-  notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}')
+  notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}'),
+  hisnCategory:'',
+  hisnAzkar:[],
+  hisnProgress:JSON.parse(localStorage.getItem('hisn_progress')||'{}'),
+  hisnStats:JSON.parse(localStorage.getItem('hisn_stats')||'{}'),
+  hisnData:null,
+  hisnCurrentCategoryIndex:null
 };
 
 (function(){
@@ -754,6 +826,10 @@ function setActiveSection(id){
   
   state.currentSection=id;
   updateReadingButton();
+  
+  if(id==='hisnSection'&&!state.hisnData){
+    loadHisnData();
+  }
 }
 
 const imgEl=()=>document.getElementById('quranPage');
@@ -1566,6 +1642,345 @@ function toggleNotifications(){
   }
 }
 
+async function loadHisnData(){
+  if(state.hisnData)return;
+  
+  try{
+    showToast('جاري تحميل الأقسام...');
+    
+    // Fallback data - main categories
+    state.hisnData=[
+      {id:1,category:"أذكار النوم",text:["اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْيَا","الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا، وَكَفَانَا، وَآوَانَا، فَكَمْ مِمَّنْ لاَ كَافِيَ لَهُ وَلاَ مُؤْوِيَ","اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ"]},
+      {id:2,category:"أذكار الصباح والمساء",text:["أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ ﴿اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ﴾","أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ","اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا ، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ","سُبْحَانَ اللَّهِ وَبِحَمْدِهِ (100 مرة)"]},
+      {id:3,category:"دعاء لُبْس الثوب",text:["الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا (الثَّوْبَ) وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ"]},
+      {id:4,category:"دعاء لُبْس الثوب الجديد",text:["اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيهِ، أَسْأَلُكَ مِنْ خَيْرِهِ وَخَيْرِ مَا صُنِعَ لَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّهِ وَشَرِّ مَا صُنِعَ لَهُ"]},
+      {id:5,category:"الدعاء لمن لبس ثوباً جديداً",text:["تُبْلِي وَيُخْلِفُ اللَّهُ تَعَالَى، أَوْ: البَسْ جَدِيداً وَعِشْ حَمِيداً، وَمُتْ شَهِيداً"]},
+      {id:6,category:"ما يقول إذا وضع ثوبه",text:["بِسْمِ اللَّهِ"]},
+      {id:7,category:"دعاء دخول الخلاء",text:["اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ"]},
+      {id:8,category:"دعاء الخروج من الخلاء",text:["غُفْرَانَكَ"]},
+      {id:9,category:"الذكر قبل الوضوء",text:["بِسْمِ اللَّهِ"]},
+      {id:10,category:"الذكر بعد الفراغ من الوضوء",text:["أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّداً عَبْدُهُ وَرَسُولُهُ","اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ، وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ"]},
+      {id:11,category:"الذكر عند الخروج من المنزل",text:["بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ","اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أَضِلَّ، أَوْ أُضَلَّ، أَوْ أَزِلَّ، أَوْ أُزَلَّ، أَوْ أَظْلِمَ، أَوْ أُظْلَمَ، أَوْ أَجْهَلَ، أَوْ يُجْهَلَ عَلَيَّ"]},
+      {id:12,category:"الذكر عند دخول المنزل",text:["بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا"]},
+      {id:13,category:"دعاء الذهاب إلى المسجد",text:["اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُوراً، وَفِي لِسَانِي نُوراً، وَاجْعَلْ فِي سَمْعِي نُوراً، وَاجْعَلْ فِي بَصَرِي نُوراً"]},
+      {id:14,category:"دعاء دخول المسجد",text:["أَعُوذُ بِاللَّهِ الْعَظِيمِ، وَبِوَجْهِهِ الْكَرِيمِ، وَسُلْطَانِهِ الْقَدِيمِ، مِنَ الشَّيْطَانِ الرَّجِيمِ","اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ"]},
+      {id:15,category:"دعاء الخروج من المسجد",text:["بِسْمِ اللَّهِ، وَالصَّلاَةُ وَالسَّلاَمُ عَلَى رَسُولِ اللَّهِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ"]},
+      {id:16,category:"أذكار الآذان",text:["يُرَدِّدُ مَعَ الْمُؤَذِّنِ، إِلاَّ فِي: حَيَّ عَلَى الصَّلاَةِ، وَحَيَّ عَلَى الْفَلاَحِ، فَيَقُولُ: لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ","اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ"]},
+      {id:17,category:"دعاء الاستفتاح",text:["سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلاَ إِلَهَ غَيْرُكَ"]},
+      {id:18,category:"دعاء الركوع",text:["سُبْحَانَ رَبِّيَ الْعَظِيمِ (ثلاثاً)","سُبْحَانَكَ اللَّهُمَّ رَبَّنَا وَبِحَمْدِكَ، اللَّهُمَّ اغْفِرْ لِي"]},
+      {id:19,category:"دعاء الرفع من الركوع",text:["سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ","رَبَّنَا وَلَكَ الْحَمْدُ، حَمْداً كَثِيراً طَيِّباً مُبَارَكاً فِيهِ"]},
+      {id:20,category:"دعاء السجود",text:["سُبْحَانَ رَبِّيَ الأَعْلَى (ثلاثاً)","سُبْحَانَكَ اللَّهُمَّ رَبَّنَا وَبِحَمْدِكَ، اللَّهُمَّ اغْفِرْ لِي"]},
+      {id:21,category:"دعاء الجلسة بين السجدتين",text:["رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي"]},
+      {id:22,category:"دعاء سجود التلاوة",text:["سَجَدَ وَجْهِيَ لِلَّذِي خَلَقَهُ، وَشَقَّ سَمْعَهُ وَبَصَرَهُ، بِحَوْلِهِ وَقُوَّتِهِ"]},
+      {id:23,category:"التشهد",text:["التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلاَمُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلاَمُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ، وَأَشْهَدُ أَنَّ مُحَمَّداً عَبْدُهُ وَرَسُولُهُ"]},
+      {id:24,category:"الصلاة على النبي بعد التشهد",text:["اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ، وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ"]},
+      {id:25,category:"الدعاء بعد التشهد الأخير قبل السلام",text:["اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ، وَمِنْ عَذَابِ الْقَبْرِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ"]},
+      {id:26,category:"الأذكار بعد السلام من الصلاة",text:["أَسْتَغْفِرُ اللَّهَ (ثلاثاً)","اللَّهُمَّ أَنْتَ السَّلاَمُ، وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالإِكْرَامِ","لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ","سُبْحَانَ اللَّهِ (33 مرة)، الْحَمْدُ لِلَّهِ (33 مرة)، اللَّهُ أَكْبَرُ (34 مرة)"]},
+      {id:27,category:"دعاء صلاة الاستخارة",text:["اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ"]},
+      {id:28,category:"أذكار الاستيقاظ من النوم",text:["الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا، وَإِلَيْهِ النُّشُورُ"]},
+      {id:29,category:"الدعاء إذا تقلب ليلاً",text:["لاَ إِلَهَ إِلاَّ اللَّهُ الْوَاحِدُ الْقَهَّارُ، رَبُّ السَّمَوَاتِ وَالأَرْضِ وَمَا بَيْنَهُمَا الْعَزِيزُ الْغَفَّارُ"]},
+      {id:30,category:"دعاء الفزع في النوم و من بُلِيَ بالوحشة",text:["أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ، وَشَرِّ عِبَادِهِ، وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ"]}
+    ];
+    
+    populateHisnCategories();
+    showToast('✅ تم تحميل الأقسام');
+    
+  }catch(error){
+    console.error('خطأ في تحميل حصن المسلم:',error);
+    showToast('❌ فشل تحميل البيانات');
+  }
+}
+
+function populateHisnCategories(){
+  if(!state.hisnData)return;
+  
+  const select=document.getElementById('hisnCategorySelect');
+  select.innerHTML='<option value="">-- اختر القسم --</option>'+
+    state.hisnData.map((cat,index)=>`
+      <option value="${index}">${cat.id}. ${cat.category}</option>
+    `).join('');
+}
+
+function openHisnCategory(index){
+  if(!state.hisnData||!state.hisnData[index])return;
+  
+  state.hisnCurrentCategoryIndex=index;
+  const category=state.hisnData[index];
+  state.hisnCategory=`cat_${category.id}`;
+  state.hisnAzkar=category.text||[];
+  
+  document.getElementById('hisnCategoriesList').classList.add('hidden');
+  document.getElementById('hisnAzkarView').classList.remove('hidden');
+  document.getElementById('hisnCategoryTitle').textContent=`${category.id}. ${category.category}`;
+  
+  renderHisnAzkar();
+  updateHisnProgress();
+  updateHisnStats();
+}
+
+function closeHisnCategory(){
+  document.getElementById('hisnCategoriesList').classList.remove('hidden');
+  document.getElementById('hisnAzkarView').classList.add('hidden');
+  document.getElementById('hisnSearchResults').classList.add('hidden');
+  state.hisnCategory='';
+  state.hisnAzkar=[];
+  state.hisnCurrentCategoryIndex=null;
+}
+
+function renderHisnAzkar(){
+  const container=document.getElementById('hisnAzkarContainer');
+  if(!container||!state.hisnAzkar.length)return;
+  
+  const progressKey=state.hisnCategory;
+  const progress=state.hisnProgress[progressKey]||{};
+  
+  container.innerHTML=state.hisnAzkar.map((azkar,index)=>{
+    const azkarId=`${state.hisnCategory}_${index}`;
+    const isCompleted=progress[azkarId]===1;
+    
+    return `
+      <div class="azkar-card ${isCompleted?'completed':''}" id="azkar-${azkarId}">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-emerald-600">${index+1} / ${state.hisnAzkar.length}</span>
+          ${isCompleted?'<span class="text-emerald-600 text-lg">✓</span>':''}
+        </div>
+        
+        <div class="azkar-text">${azkar}</div>
+        
+        <div class="azkar-actions">
+          <button class="btn btn-gold azkar-btn" onclick="markAzkarDone('${azkarId}')" ${isCompleted?'disabled':''}>
+            ${isCompleted?'✓ تم':'✓ أنجزت'}
+          </button>
+        </div>
+        
+        <div class="flex gap-2 mt-2">
+          ${index>0?`
+            <button class="btn btn-emerald text-xs flex-1" onclick="scrollToAzkar(${index-1})">
+              ← السابق
+            </button>
+          `:'<div class="flex-1"></div>'}
+          ${index<state.hisnAzkar.length-1?`
+            <button class="btn btn-emerald text-xs flex-1" onclick="scrollToAzkar(${index+1})">
+              التالي →
+            </button>
+          `:'<div class="flex-1"></div>'}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function scrollToAzkar(index){
+  const azkarId=`${state.hisnCategory}_${index}`;
+  const card=document.getElementById(`azkar-${azkarId}`);
+  if(card){
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+
+function markAzkarDone(azkarId){
+  const progressKey=state.hisnCategory;
+  if(!state.hisnProgress[progressKey]){
+    state.hisnProgress[progressKey]={};
+  }
+  
+  state.hisnProgress[progressKey][azkarId]=1;
+  localStorage.setItem('hisn_progress',JSON.stringify(state.hisnProgress));
+  
+  const card=document.getElementById(`azkar-${azkarId}`);
+  if(card){
+    card.classList.add('completed');
+    const btn=card.querySelector('button[onclick*="markAzkarDone"]');
+    if(btn){
+      btn.disabled=true;
+      btn.textContent='✓ تم';
+    }
+    
+    const header=card.querySelector('.flex.justify-between');
+    if(header&&!header.querySelector('.text-emerald-600.text-lg')){
+      const checkmark=document.createElement('span');
+      checkmark.className='text-emerald-600 text-lg';
+      checkmark.textContent='✓';
+      header.appendChild(checkmark);
+    }
+  }
+  
+  showToast('✅ أحسنت!');
+  checkAndUpdateCompletion();
+  updateHisnProgress();
+}
+
+function checkAndUpdateCompletion(){
+  const progressKey=state.hisnCategory;
+  const progress=state.hisnProgress[progressKey]||{};
+  
+  let completed=0;
+  state.hisnAzkar.forEach((azkar,index)=>{
+    const azkarId=`${state.hisnCategory}_${index}`;
+    if(progress[azkarId]===1)completed++;
+  });
+  
+  if(completed===state.hisnAzkar.length&&state.hisnAzkar.length>0){
+    updateHisnCompletionStats();
+    showToast('🎉 ماشاء الله! أكملت جميع الأذكار',3000);
+  }
+}
+
+function updateHisnCompletionStats(){
+  const statsKey=state.hisnCategory;
+  if(!state.hisnStats[statsKey]){
+    state.hisnStats[statsKey]={count:0,lastRead:'',streak:0};
+  }
+  
+  state.hisnStats[statsKey].count++;
+  const today=new Date().toDateString();
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  
+  if(state.hisnStats[statsKey].lastRead===yesterday){
+    state.hisnStats[statsKey].streak++;
+  }else if(state.hisnStats[statsKey].lastRead!==today){
+    state.hisnStats[statsKey].streak=1;
+  }
+  
+  state.hisnStats[statsKey].lastRead=today;
+  localStorage.setItem('hisn_stats',JSON.stringify(state.hisnStats));
+  
+  updateHisnStats();
+}
+
+function updateHisnStats(){
+  const statsKey=state.hisnCategory;
+  const stats=state.hisnStats[statsKey]||{count:0,lastRead:'',streak:0};
+  
+  document.getElementById('hisnTotalCount').textContent=stats.count||0;
+  document.getElementById('hisnStreak').textContent=stats.streak||0;
+  
+  if(stats.lastRead){
+    const date=new Date(stats.lastRead);
+    const today=new Date().toDateString();
+    if(date.toDateString()===today){
+      document.getElementById('hisnLastRead').textContent='اليوم';
+    }else{
+      document.getElementById('hisnLastRead').textContent=date.toLocaleDateString('ar-EG',{month:'short',day:'numeric'});
+    }
+  }else{
+    document.getElementById('hisnLastRead').textContent='-';
+  }
+}
+
+function resetHisnProgress(){
+  if(!confirm('هل تريد إعادة تعيين التقدم؟')){
+    return;
+  }
+  
+  const progressKey=state.hisnCategory;
+  state.hisnProgress[progressKey]={};
+  localStorage.setItem('hisn_progress',JSON.stringify(state.hisnProgress));
+  
+  renderHisnAzkar();
+  updateHisnProgress();
+  showToast('✅ تم إعادة التعيين');
+}
+
+function updateHisnProgress(){
+  const progressKey=state.hisnCategory;
+  const progress=state.hisnProgress[progressKey]||{};
+  
+  let completed=0;
+  const total=state.hisnAzkar.length;
+  
+  state.hisnAzkar.forEach((azkar,index)=>{
+    const azkarId=`${state.hisnCategory}_${index}`;
+    if(progress[azkarId]===1)completed++;
+  });
+  
+  const percentage=total>0?Math.round((completed/total)*100):0;
+  
+  document.getElementById('hisnProgressText').textContent=`${completed} / ${total}`;
+  document.getElementById('hisnProgressBar').style.width=`${percentage}%`;
+}
+
+function searchHisn(query){
+  if(!state.hisnData||!query||query.length<2){
+    document.getElementById('hisnSearchResults').classList.add('hidden');
+    return;
+  }
+  
+  const results=[];
+  state.hisnData.forEach((cat,catIndex)=>{
+    if(cat.category.includes(query)){
+      results.push({type:'category',index:catIndex,title:cat.category,id:cat.id});
+    }
+    
+    if(cat.text){
+      cat.text.forEach((text,textIndex)=>{
+        if(text.includes(query)){
+          results.push({
+            type:'text',
+            catIndex:catIndex,
+            textIndex:textIndex,
+            title:cat.category,
+            text:text,
+            id:cat.id
+          });
+        }
+      });
+    }
+  });
+  
+  displaySearchResults(results);
+}
+
+function displaySearchResults(results){
+  const container=document.getElementById('hisnSearchResultsList');
+  const wrapper=document.getElementById('hisnSearchResults');
+  
+  if(!results||results.length===0){
+    wrapper.classList.add('hidden');
+    return;
+  }
+  
+  wrapper.classList.remove('hidden');
+  
+  container.innerHTML=results.slice(0,20).map(result=>{
+    if(result.type==='category'){
+      return `
+        <div class="search-result-item" onclick="openHisnCategory(${result.index})">
+          <div class="search-result-title">${result.id}. ${result.title}</div>
+          <div class="search-result-text">قسم كامل</div>
+        </div>
+      `;
+    }else{
+      return `
+        <div class="search-result-item" onclick="openHisnCategory(${result.catIndex});setTimeout(()=>scrollToAzkar(${result.textIndex}),500)">
+          <div class="search-result-title">${result.id}. ${result.title}</div>
+          <div class="search-result-text">${result.text}</div>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+function checkHisnReminder(){
+  const now=new Date();
+  const hour=now.getHours();
+  const today=now.toDateString();
+  
+  const lastReminder=localStorage.getItem('hisn_last_reminder');
+  
+  if(lastReminder===today)return;
+  
+  setTimeout(()=>{
+    if(hour>=6&&hour<12){
+      showToast('🌅 صباح الخير! لا تنس أذكارك',5000);
+    }else if(hour>=17&&hour<21){
+      showToast('🌙 مساء الخير! لا تنس أذكارك',5000);
+    }
+    
+    localStorage.setItem('hisn_last_reminder',today);
+  },3000);
+}
+
 async function loadHadithBook(bookKey){
   if(!bookKey){
     showToast('اختر كتاباً أولاً');
@@ -2146,6 +2561,21 @@ function initializeEvents(){
     if(e.target.id==='cityModal')closeCityModal();
   });
   document.getElementById('notificationToggle').onchange=toggleNotifications;
+  
+  document.getElementById('hisnCategorySelect').onchange=e=>{
+    const index=parseInt(e.target.value);
+    if(!isNaN(index)){
+      openHisnCategory(index);
+    }
+  };
+  
+  let hisnSearchTimeout;
+  document.getElementById('hisnSearchInput').oninput=e=>{
+    clearTimeout(hisnSearchTimeout);
+    hisnSearchTimeout=setTimeout(()=>{
+      searchHisn(e.target.value);
+    },300);
+  };
 }
 
 async function initialize(){
@@ -2195,6 +2625,8 @@ async function initialize(){
 
   initializeEvents();
   initMobileOptimizations();
+  
+  checkHisnReminder();
   
   setTimeout(()=>{
     const lastPage=parseInt(localStorage.getItem('last_quran_page')||'0');
