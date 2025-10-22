@@ -116,19 +116,6 @@ select option{color:#000!important;background:#fff!important}
 .countdown-box{background:rgba(0,0,0,.1);border-radius:.7rem;padding:.8rem 1.2rem;text-align:center;margin:1rem 0}
 .countdown-time{font-size:2rem;font-weight:900;font-family:monospace;color:var(--emerald)}
 .countdown-label{font-size:.85rem;opacity:.75;margin-top:.3rem}
-#qiblaCompass{width:280px;height:280px;margin:2rem auto;position:relative}
-.compass-circle{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(212,175,55,.1));border:3px solid var(--gold);position:relative;transition:transform .3s ease;box-shadow:0 8px 24px rgba(0,0,0,.2)}
-.compass-arrow{position:absolute;top:50%;left:50%;width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:120px solid var(--emerald);transform:translate(-50%,-50%) rotate(0deg);transform-origin:50% 75%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));transition:transform .5s ease}
-.compass-center{position:absolute;top:50%;left:50%;width:40px;height:40px;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:1.3rem;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.compass-directions{position:absolute;inset:0;font-weight:900;font-size:1.1rem}
-.direction{position:absolute;width:30px;height:30px;display:flex;align-items:center;justify-content:center}
-.direction.n{top:5px;left:50%;transform:translateX(-50%)}
-.direction.e{right:5px;top:50%;transform:translateY(-50%)}
-.direction.s{bottom:5px;left:50%;transform:translateX(-50%)}
-.direction.w{left:5px;top:50%;transform:translateY(-50%)}
-.qibla-info{text-align:center;margin-top:1.5rem;padding:1rem;background:rgba(255,255,255,.1);border-radius:.8rem}
-.qibla-degree{font-size:2.5rem;font-weight:900;color:var(--gold);font-family:monospace}
-.qibla-distance{font-size:1.1rem;margin-top:.5rem;opacity:.85}
 @media(max-width:640px){
   #imageWrapper{height:calc(100vh - 160px)}
   .nav-text{font-size:.62rem}
@@ -163,8 +150,6 @@ select option{color:#000!important;background:#fff!important}
   .prayer-name{font-size:1.1rem}
   .prayer-time{font-size:1.3rem}
   .countdown-time{font-size:1.5rem}
-  #qiblaCompass{width:240px;height:240px}
-  .compass-arrow{border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:100px solid var(--emerald)}
 }
 @media(max-width:380px){
   header#appHeader h1{font-size:0.75rem}
@@ -427,46 +412,14 @@ select option{color:#000!important;background:#fff!important}
     </div>
   </section>
 
-  <section id="qiblaSection" class="section">
+  <section id="hisnSection" class="section">
     <div class="card p-4">
-      <h2 class="font-bold text-2xl mb-4 text-center">🧭 اتجاه القبلة</h2>
+      <h2 class="font-bold text-2xl mb-4 text-center">🤲 حصن المسلم</h2>
       
-      <div class="mb-4">
-        <div class="flex flex-wrap gap-2 items-center justify-center mb-3">
-          <button id="detectQiblaBtn" class="btn btn-emerald">📍 تحديد اتجاه القبلة</button>
-          <button id="manualQiblaBtn" class="btn btn-gold">🏙️ اختيار المدينة يدوياً</button>
-        </div>
-        <div id="qiblaLocation" class="text-center text-lg font-bold mb-2"></div>
-      </div>
-
-      <div id="qiblaCompass">
-        <div class="compass-circle" id="compassCircle">
-          <div class="compass-directions">
-            <div class="direction n">N</div>
-            <div class="direction e">E</div>
-            <div class="direction s">S</div>
-            <div class="direction w">W</div>
-          </div>
-          <div class="compass-arrow" id="compassArrow"></div>
-          <div class="compass-center">🕋</div>
-        </div>
-      </div>
-
-      <div class="qibla-info">
-        <div class="qibla-degree" id="qiblaDegree">---°</div>
-        <div class="qibla-distance" id="qiblaDistance">📏 المسافة: --- كم</div>
-        <div class="text-sm mt-2 opacity-60" id="qiblaStatus">حدد موقعك لمعرفة اتجاه القبلة</div>
-      </div>
-    </div>
-
-    <div id="qiblaCityModal" class="modal-mask hidden">
-      <div class="modal">
-        <div class="modal-header">اختر المدينة</div>
-        <div class="modal-body">
-          <input id="qiblaCitySearchInput" type="text" placeholder="🔍 ابحث عن مدينة..." class="w-full mb-3">
-          <ul id="qiblaCityList" class="space-y-2"></ul>
-        </div>
-        <button id="closeQiblaCityModal" class="modal-close">إغلاق</button>
+      <div class="text-center py-12 opacity-70">
+        <div class="text-6xl mb-4">📿</div>
+        <p class="text-lg font-medium mb-2">قريباً إن شاء الله</p>
+        <p class="text-sm">أذكار الصباح والمساء، أدعية مختارة، والمزيد...</p>
       </div>
     </div>
   </section>
@@ -540,7 +493,7 @@ select option{color:#000!important;background:#fff!important}
     <div class="nav-item active" id="navAudio" data-section="audioSection"><div class="nav-icon">📊</div><div class="nav-text">الصوت</div></div>
     <div class="nav-item" id="navQuran" data-section="quranSection"><div class="nav-icon">📖</div><div class="nav-text">المصحف</div></div>
     <div class="nav-item" id="navPrayer" data-section="prayerSection"><div class="nav-icon">🕌</div><div class="nav-text">المواقيت</div></div>
-    <div class="nav-item" id="navQibla" data-section="qiblaSection"><div class="nav-icon">🧭</div><div class="nav-text">القبلة</div></div>
+    <div class="nav-item" id="navHisn" data-section="hisnSection"><div class="nav-icon">🤲</div><div class="nav-text">حصن المسلم</div></div>
     <div class="nav-item" id="navFavorites" data-section="favoritesSection"><div class="nav-icon">⭐</div><div class="nav-text">المفضلة</div></div>
     <div class="nav-item" id="navHadith" data-section="hadithSection"><div class="nav-icon">📚</div><div class="nav-text">الأحاديث</div></div>
   </div>
@@ -551,8 +504,6 @@ const SPLASH_IMAGE_URL="https://i.imgur.com/QIXePvo.png";
 const NIGHT_START=19,NIGHT_END=6;
 const TOTAL_PAGES=604;
 const HADITH_API_BASE="https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions";
-const KAABA_LAT=21.4225;
-const KAABA_LNG=39.8262;
 
 const CITIES=[
   {name:"إسطنبول، تركيا",lat:41.0082,lng:28.9784,country:"TR"},
@@ -667,9 +618,7 @@ const state={
   prayerTimes:null,
   currentCity:JSON.parse(localStorage.getItem('selected_city')||'null'),
   notificationsEnabled:JSON.parse(localStorage.getItem('notifications_enabled')||'false'),
-  notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}'),
-  qiblaAngle:0,
-  userHeading:0
+  notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}')
 };
 
 (function(){
@@ -1046,31 +995,70 @@ function render(auto=false){
   const box=document.getElementById('playerBox');
   
   if(cur){
-    box.innerHTML=`
-      <div class="mb-3 text-center">
-        <div class="font-bold text-lg mb-1">${cur.title}</div>
-        <div class="text-emerald-400 text-sm">${cur.reciter}</div>
-      </div>
-      <audio id="player" src="${cur.src}" controls class="w-full" ${auto?"autoplay":""}></audio>
-    `;
+    // Update title and reciter info
+    let titleDiv=document.getElementById('playerTitle');
+    let reciterDiv=document.getElementById('playerReciter');
+    let audioEl=document.getElementById('player');
     
-    const a=document.getElementById('player');
-    if(a){
-      a.loop=state.loop;
-      a.ontimeupdate=()=>{
-        const now=a.currentTime,total=a.duration||0;
+    // Create elements if they don't exist
+    if(!titleDiv||!reciterDiv||!audioEl){
+      box.innerHTML=`
+        <div class="mb-3 text-center">
+          <div id="playerTitle" class="font-bold text-lg mb-1"></div>
+          <div id="playerReciter" class="text-emerald-400 text-sm"></div>
+        </div>
+        <audio id="player" controls class="w-full" preload="metadata"></audio>
+      `;
+      titleDiv=document.getElementById('playerTitle');
+      reciterDiv=document.getElementById('playerReciter');
+      audioEl=document.getElementById('player');
+    }
+    
+    // Update text content
+    titleDiv.textContent=cur.title;
+    reciterDiv.textContent=cur.reciter;
+    
+    // Update audio source and settings
+    const needsNewSrc=audioEl.src!==cur.src;
+    if(needsNewSrc){
+      audioEl.src=cur.src;
+    }
+    
+    audioEl.loop=state.loop;
+    
+    // Setup event listeners (only once)
+    if(!audioEl.hasEventListeners){
+      audioEl.ontimeupdate=()=>{
+        const now=audioEl.currentTime,total=audioEl.duration||0;
         const tn=document.getElementById('timeNow');
         const tt=document.getElementById('timeTotal');
         if(tn)tn.textContent=fmt(now);
         if(tt)tt.textContent=fmt(total);
       };
       
-      a.onended=()=>{
+      audioEl.onended=()=>{
         if(state.autoPlay&&state.idx<state.playlist.length-1){
           state.idx++;
           render(true);
         }
       };
+      
+      audioEl.hasEventListeners=true;
+    }
+    
+    // Auto-play if requested
+    if(auto&&needsNewSrc){
+      // Use promise-based play with fallback
+      const playPromise=audioEl.play();
+      if(playPromise!==undefined){
+        playPromise.then(()=>{
+          // Autoplay successful
+        }).catch(err=>{
+          // Autoplay prevented by browser
+          console.log('Autoplay prevented:',err);
+          showToast('⏸️ اضغط زر التشغيل ▶️ للمتابعة',3000);
+        });
+      }
     }
   }else{
     box.innerHTML="<div class='text-gray-500 text-center py-2'>اختر سورة للبدء</div>";
@@ -1576,128 +1564,6 @@ function toggleNotifications(){
     document.getElementById('notificationStatus').textContent='';
     showToast('🔕 تم إيقاف إشعارات الأذان');
   }
-}
-
-function calculateQibla(userLat,userLng){
-  const toRad=deg=>deg*(Math.PI/180);
-  const toDeg=rad=>rad*(180/Math.PI);
-  
-  const lat1=toRad(userLat);
-  const lng1=toRad(userLng);
-  const lat2=toRad(KAABA_LAT);
-  const lng2=toRad(KAABA_LNG);
-  
-  const dLng=lng2-lng1;
-  
-  const y=Math.sin(dLng)*Math.cos(lat2);
-  const x=Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLng);
-  
-  let bearing=toDeg(Math.atan2(y,x));
-  bearing=(bearing+360)%360;
-  
-  const R=6371;
-  const dLat=lat2-lat1;
-  const a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)*Math.sin(dLng/2);
-  const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-  const distance=R*c;
-  
-  return{angle:bearing,distance:Math.round(distance)};
-}
-
-async function handleDetectQibla(){
-  try{
-    showToast('📍 جاري تحديد اتجاه القبلة...');
-    const location=await detectLocation();
-    
-    const response=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${location.lat}&longitude=${location.lng}&localityLanguage=ar`);
-    const data=await response.json();
-    
-    const cityName=data.city||data.locality||'موقعك الحالي';
-    const countryName=data.countryName||'';
-    
-    document.getElementById('qiblaLocation').textContent=`📍 ${cityName}${countryName?', '+countryName:''}`;
-    
-    const qibla=calculateQibla(location.lat,location.lng);
-    state.qiblaAngle=qibla.angle;
-    
-    updateQiblaDisplay(qibla.angle,qibla.distance);
-    initCompass();
-    
-    showToast('✅ تم تحديد اتجاه القبلة');
-  }catch(error){
-    console.error('خطأ في تحديد القبلة:',error);
-    showToast('❌ فشل تحديد الموقع. الرجاء اختيار المدينة يدوياً');
-  }
-}
-
-function updateQiblaDisplay(angle,distance){
-  document.getElementById('qiblaDegree').textContent=Math.round(angle)+'°';
-  document.getElementById('qiblaDistance').textContent=`📏 المسافة: ${distance.toLocaleString()} كم`;
-  document.getElementById('qiblaStatus').textContent='✅ اتجه نحو السهم الأخضر';
-  
-  const arrow=document.getElementById('compassArrow');
-  arrow.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`;
-}
-
-function initCompass(){
-  if('DeviceOrientationEvent' in window){
-    if(typeof DeviceOrientationEvent.requestPermission==='function'){
-      DeviceOrientationEvent.requestPermission()
-        .then(permission=>{
-          if(permission==='granted'){
-            window.addEventListener('deviceorientation',handleOrientation);
-          }
-        })
-        .catch(console.error);
-    }else{
-      window.addEventListener('deviceorientation',handleOrientation);
-    }
-  }
-}
-
-function handleOrientation(event){
-  if(event.alpha!==null){
-    const heading=360-event.alpha;
-    state.userHeading=heading;
-    
-    const circle=document.getElementById('compassCircle');
-    circle.style.transform=`rotate(${heading}deg)`;
-    
-    const arrow=document.getElementById('compassArrow');
-    const finalAngle=state.qiblaAngle-heading;
-    arrow.style.transform=`translate(-50%,-50%) rotate(${finalAngle}deg)`;
-  }
-}
-
-function openQiblaCityModal(){
-  document.getElementById('qiblaCityModal').classList.remove('hidden');
-  populateQiblaCityList();
-}
-
-function closeQiblaCityModal(){
-  document.getElementById('qiblaCityModal').classList.add('hidden');
-}
-
-function populateQiblaCityList(filter=''){
-  const list=document.getElementById('qiblaCityList');
-  const filtered=CITIES.filter(c=>c.name.includes(filter));
-  
-  list.innerHTML=filtered.map(city=>`
-    <li class="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition dark:bg-slate-700 dark:hover:bg-slate-600 font-medium" onclick="selectQiblaCity('${city.name}',${city.lat},${city.lng})">
-      ${city.name}
-    </li>
-  `).join('');
-}
-
-function selectQiblaCity(name,lat,lng){
-  document.getElementById('qiblaLocation').textContent=`📍 ${name}`;
-  closeQiblaCityModal();
-  
-  const qibla=calculateQibla(lat,lng);
-  state.qiblaAngle=qibla.angle;
-  
-  updateQiblaDisplay(qibla.angle,qibla.distance);
-  showToast(`✅ تم اختيار ${name}`);
 }
 
 async function loadHadithBook(bookKey){
@@ -2280,14 +2146,6 @@ function initializeEvents(){
     if(e.target.id==='cityModal')closeCityModal();
   });
   document.getElementById('notificationToggle').onchange=toggleNotifications;
-
-  document.getElementById('detectQiblaBtn').onclick=handleDetectQibla;
-  document.getElementById('manualQiblaBtn').onclick=openQiblaCityModal;
-  document.getElementById('closeQiblaCityModal').onclick=closeQiblaCityModal;
-  document.getElementById('qiblaCitySearchInput').oninput=e=>populateQiblaCityList(e.target.value);
-  document.getElementById('qiblaCityModal').addEventListener('click',e=>{
-    if(e.target.id==='qiblaCityModal')closeQiblaCityModal();
-  });
 }
 
 async function initialize(){
