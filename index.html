@@ -273,9 +273,22 @@ select option{color:#000!important;background:#fff!important}
 #hisnCategorySelect{
   font-size:1rem;
   cursor:pointer;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 #hisnCategorySelect option{
   padding:0.5rem;
+  white-space:normal;
+  word-wrap:break-word;
+}
+@media(max-width:640px){
+  #hisnCategorySelect{
+    font-size:0.9rem;
+  }
+  #hisnCategorySelect option{
+    font-size:0.9rem;
+  }
 }
 
 
@@ -554,9 +567,9 @@ select option{color:#000!important;background:#fff!important}
                class="w-full p-3 border-2 border-gold-300 rounded-lg text-base font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
         
         <!-- Category Dropdown -->
-        <div class="flex gap-2 items-center">
-          <label class="font-bold text-sm whitespace-nowrap">📑 الفئة:</label>
-          <select id="hisnCategorySelect" class="flex-1 p-2 border-2 border-gold-300 rounded-lg font-semibold bg-white">
+        <div class="flex gap-2 items-center w-full">
+          <label class="font-bold text-sm whitespace-nowrap flex-shrink-0">📑 الفئة:</label>
+          <select id="hisnCategorySelect" class="flex-1 min-w-0 p-2 border-2 border-gold-300 rounded-lg font-semibold bg-white" style="max-width: 100%;">
             <option value="">جميع الفئات (134)</option>
             <!-- Categories will be inserted here by JavaScript -->
           </select>
@@ -572,7 +585,7 @@ select option{color:#000!important;background:#fff!important}
   <section id="favoritesSection" class="section">
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
-        <h3 class="font-semibold text-lg">⭐ المفضلة (الصوت)</h3>
+        <h3 class="font-semibold text-lg">⭐ المفضلة (استماع)</h3>
         <button id="clearFavBtn" class="btn btn-danger text-sm">🗑️ مسح الكل</button>
       </div>
       <ul id="favorites" class="space-y-2 mb-6"></ul>
@@ -615,7 +628,7 @@ select option{color:#000!important;background:#fff!important}
           <span class="text-sm font-medium">رقم الحديث:</span>
           <input id="hadithNumberInput" type="number" min="1" placeholder="مثال: 1" class="w-28 text-center">
           <button id="loadHadithBtn" class="btn btn-gold px-4">عرض</button>
-          <button id="randomHadithBtn" class="btn btn-emerald px-2 text-sm">🎲 عشوائي</button>
+          <button id="randomHadithBtn" class="btn btn-emerald px-2 text-sm">📜 عشوائي</button>
         </div>
       </div>
     </div>
@@ -635,7 +648,7 @@ select option{color:#000!important;background:#fff!important}
 
 <nav class="bottom-nav" id="bottomNav">
   <div class="nav-container">
-    <div class="nav-item active" id="navAudio" data-section="audioSection"><div class="nav-icon">📊</div><div class="nav-text">الصوت</div></div>
+    <div class="nav-item active" id="navAudio" data-section="audioSection"><div class="nav-icon">📊</div><div class="nav-text">الاستماع</div></div>
     <div class="nav-item" id="navQuran" data-section="quranSection"><div class="nav-icon">📖</div><div class="nav-text">المصحف</div></div>
     <div class="nav-item" id="navPrayer" data-section="prayerSection"><div class="nav-icon">🕌</div><div class="nav-text">المواقيت</div></div>
     <div class="nav-item" id="navHisn" data-section="hisnSection"><div class="nav-icon">🤲</div><div class="nav-text">حصن المسلم</div></div>
@@ -1966,7 +1979,7 @@ function loadRandomHadith(){
   state.displayedCount=1;
   displayHadiths([randomHadith]);
   updateLoadMoreButton();
-  showToast(`🎲 حديث عشوائي رقم ${randomHadith.hadithnumber||randomHadith.id}`);
+  showToast(`📜 حديث اليوم رقم ${randomHadith.hadithnumber||randomHadith.id}`);
 }
 
 function searchHadiths(){
@@ -2078,13 +2091,59 @@ function initializeEvents(){
 
   document.getElementById('fullscreenBtn').onclick=()=>{
     const container=document.getElementById('imageWrapper');
+    const page=document.getElementById('quranPage');
     const d=document;
-    if(!d.fullscreenElement){
-      (container.requestFullscreen||container.webkitRequestFullscreen||
-       container.msRequestFullscreen||container.mozRequestFullScreen).call(container);
+    
+    // التحقق من حالة fullscreen
+    const isFullscreen = d.fullscreenElement || d.webkitFullscreenElement || 
+                         d.mozFullScreenElement || d.msFullscreenElement;
+    
+    if(!isFullscreen){
+      // الدخول لـ fullscreen
+      if(container.requestFullscreen){
+        container.requestFullscreen();
+      }else if(container.webkitRequestFullscreen){
+        container.webkitRequestFullscreen();
+      }else if(container.webkitEnterFullscreen){
+        container.webkitEnterFullscreen();
+      }else if(container.msRequestFullscreen){
+        container.msRequestFullscreen();
+      }else if(container.mozRequestFullScreen){
+        container.mozRequestFullScreen();
+      }else{
+        // Fallback للأيفون: محاكاة fullscreen
+        container.style.position='fixed';
+        container.style.top='0';
+        container.style.left='0';
+        container.style.right='0';
+        container.style.bottom='0';
+        container.style.zIndex='9999';
+        container.style.height='100vh';
+        container.style.width='100vw';
+        if(page){
+          page.style.maxHeight='100vh';
+          page.style.maxWidth='100vw';
+          page.style.width='100%';
+          page.style.height='100%';
+          page.style.objectFit='contain';
+        }
+        document.getElementById('exitFullscreenBtn').style.display='flex';
+        document.body.style.overflow='hidden';
+        document.documentElement.style.overflow='hidden';
+        // إضافة class للتعرف على الحالة
+        container.classList.add('manual-fullscreen');
+      }
     }else{
-      (d.exitFullscreen||d.webkitExitFullscreen||
-       d.msExitFullscreen||d.mozCancelFullScreen).call(d);
+      // الخروج من fullscreen
+      if(d.exitFullscreen){
+        d.exitFullscreen();
+      }else if(d.webkitExitFullscreen){
+        d.webkitExitFullscreen();
+      }else if(d.msExitFullscreen){
+        d.msExitFullscreen();
+      }else if(d.mozCancelFullScreen){
+        d.mozCancelFullScreen();
+      }
     }
   };
 
@@ -2092,17 +2151,64 @@ function initializeEvents(){
   exitBtn.id="exitFullscreenBtn";
   exitBtn.textContent="↩️";
   exitBtn.onclick=()=>{ 
-    if(document.exitFullscreen)document.exitFullscreen(); 
+    const container=document.getElementById('imageWrapper');
+    const page=document.getElementById('quranPage');
+    const d=document;
+    
+    // التحقق من fullscreen الحقيقي أو المحاكي
+    if(container.classList.contains('manual-fullscreen')){
+      // الخروج من fullscreen المحاكي
+      container.style.position='';
+      container.style.top='';
+      container.style.left='';
+      container.style.right='';
+      container.style.bottom='';
+      container.style.zIndex='';
+      container.style.height='';
+      container.style.width='';
+      if(page){
+        page.style.maxHeight='';
+        page.style.maxWidth='';
+        page.style.width='';
+        page.style.height='';
+        page.style.objectFit='';
+      }
+      exitBtn.style.display='none';
+      document.body.style.overflow='';
+      document.documentElement.style.overflow='';
+      container.classList.remove('manual-fullscreen');
+    }else if(d.exitFullscreen){
+      d.exitFullscreen();
+    }else if(d.webkitExitFullscreen){
+      d.webkitExitFullscreen();
+    }else if(d.msExitFullscreen){
+      d.msExitFullscreen();
+    }else if(d.mozCancelFullScreen){
+      d.mozCancelFullScreen();
+    }
   };
   document.body.appendChild(exitBtn);
 
-  document.addEventListener('fullscreenchange',()=>{
-    if(document.fullscreenElement){
+  // دعم جميع المتصفحات لـ fullscreenchange
+  const handleFullscreenChange=()=>{
+    const container=document.getElementById('imageWrapper');
+    const isFullscreen = document.fullscreenElement || 
+                         document.webkitFullscreenElement || 
+                         document.mozFullScreenElement || 
+                         document.msFullscreenElement ||
+                         container.classList.contains('manual-fullscreen');
+    
+    if(isFullscreen){
       exitBtn.style.display="flex";
     }else{
       exitBtn.style.display="none";
     }
-  });
+  };
+  
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+  document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+  document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
   document.getElementById('addBtn').onclick=()=>add(true);
   
@@ -2167,7 +2273,7 @@ function initializeEvents(){
   };
 
   document.getElementById('clearFavBtn').onclick=()=>{
-    if(confirm('مسح المفضلة (الصوت)؟')){
+    if(confirm('مسح المفضلة (استماع)؟')){
       state.favorites=[];
       persist();
       renderFavorites();
@@ -2352,6 +2458,25 @@ async function initialize(){
       },800);
     }
   },2500);
+}
+
+
+// Event listeners لـ fullscreen على جميع المتصفحات
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+function handleFullscreenChange(){
+  const isFullscreen = document.fullscreenElement || 
+                       document.webkitFullscreenElement || 
+                       document.mozFullScreenElement || 
+                       document.msFullscreenElement;
+  
+  const exitBtn = document.getElementById('exitFullscreenBtn');
+  if(exitBtn){
+    exitBtn.style.display = isFullscreen ? 'flex' : 'none';
+  }
 }
 
 window.addEventListener('load',initialize);
