@@ -152,6 +152,7 @@ body.fullscreen-active .bottom-nav {
   .nav-item{padding:.3rem .35rem;min-width:48px;gap:.15rem}
   .quran-topbar{gap:.4rem}
   header#appHeader h1{font-size:0.85rem}
+  header#appHeader img[alt="صدقة جارية"]{height:35px}
   .btn{padding:.5rem .7rem;font-size:0.85rem;min-height:38px}
   .quran-topbar .btn{padding:.4rem .6rem;font-size:0.75rem}
   select,input[type="number"]{font-size:16px!important;padding:.35rem .5rem}
@@ -339,6 +340,9 @@ body.fullscreen-active .bottom-nav {
 </style>
 </head>
 <body class="theme-day min-h-screen">
+<div id="splash" style="position:fixed;inset:0;z-index:9999;background:#1e3a2e;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s ease">
+  <img src="splash.png" alt="صدقة جارية" style="max-width:85%;max-height:85%;object-fit:contain">
+</div>
 
 <header id="appHeader" class="sticky top-0 z-40 flex items-center justify-between gap-3">
   <div class="flex items-center gap-3">
@@ -346,7 +350,7 @@ body.fullscreen-active .bottom-nav {
     <a id="whatsappTop" href="https://wa.me/905533331339" target="_blank" aria-label="واتساب" title="تواصل معنا">
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
     </a>
-    <h1 class="font-bold text-base sm:text-lg">📖 القرآن الكريم – صدقة جارية</h1>
+    <img src="logo.png" alt="" style="height:45px;width:auto;object-fit:contain;display:block">
   </div>
   <div class="text-xs sm:text-sm text-right leading-tight">
     <div id="hijriLine" class="opacity-90 font-semibold">—</div>
@@ -1850,11 +1854,23 @@ async function loadHadithBook(bookKey){
     currentHadithData=data;
     document.getElementById('hadithLoadingMsg').classList.add('hidden');
     
-    state.searchResults=data.hadiths.slice(0,10);
-    state.displayedCount=10;
+    // تصفية الأحاديث الفارغة
+    const validHadiths = data.hadiths.filter(h => {
+      const text = h.text || h.hadith || h.arab || h.arabic || h.body || h.htext || '';
+      return text && text.trim().length >= 10;
+    });
+    
+    if(validHadiths.length === 0){
+      document.getElementById('hadithContainer').innerHTML='<div class="card p-6 text-center opacity-75"><p>⚠️ لا توجد أحاديث متاحة في هذا الكتاب حالياً. جرب كتاباً آخر.</p></div>';
+      showToast('⚠️ لا توجد أحاديث متاحة');
+      return;
+    }
+    
+    state.searchResults=validHadiths.slice(0,20);
+    state.displayedCount=20;
     displayHadiths(state.searchResults);
     
-    showToast(`تم تحميل ${book.name} ✅`);
+    showToast(`تم تحميل ${book.name} - ${validHadiths.length} حديث ✅`);
   }catch(error){
     console.error('خطأ في تحميل الأحاديث:',error);
     document.getElementById('hadithLoadingMsg').classList.add('hidden');
@@ -1876,12 +1892,20 @@ function displayHadiths(hadiths,append=false){
   }
   
   hadiths.forEach((h,index)=>{
+    // محاولة استخراج النص من حقول مختلفة
+    let hadithText = h.text || h.hadith || h.arab || h.arabic || h.body || h.htext || '';
+    
+    // إذا كان النص فارغاً أو قصير جداً، نتجاهل الحديث
+    if(!hadithText || hadithText.trim().length < 10){
+      return; // تخطي هذا الحديث
+    }
+    
     const card=document.createElement('div');
     card.className='hadith-card';
     
     const textDiv=document.createElement('div');
     textDiv.className='hadith-text';
-    textDiv.textContent=h.text||h.hadith||h.arab||h.arabic||'نص الحديث غير متوفر';
+    textDiv.textContent=hadithText;
     
     const metaDiv=document.createElement('div');
     metaDiv.className='hadith-meta';
@@ -1893,8 +1917,9 @@ function displayHadiths(hadiths,append=false){
     const infoDiv=document.createElement('div');
     infoDiv.className='flex items-center gap-2';
     
+    const hadithNum = h.hadithnumber || h.hadithNumber || h.id || h.number || '—';
     const numSpan=document.createElement('span');
-    numSpan.textContent=`📖 الحديث رقم ${h.hadithnumber||h.hadithNumber||h.id||'—'}`;
+    numSpan.textContent=`📖 الحديث رقم ${hadithNum}`;
     infoDiv.appendChild(numSpan);
     
     if(h.grade){
@@ -1917,6 +1942,11 @@ function displayHadiths(hadiths,append=false){
     card.appendChild(metaDiv);
     container.appendChild(card);
   });
+  
+  // إذا لم يتم إضافة أي أحاديث (كلها فارغة)
+  if(container.children.length === 0){
+    container.innerHTML='<div class="card p-6 text-center opacity-75"><p>⚠️ لم يتم العثور على أحاديث صالحة في هذا النطاق. جرب البحث أو رقم حديث آخر.</p></div>';
+  }
 }
 
 function addHadithToFavorites(index){
@@ -1932,7 +1962,7 @@ function addHadithToFavorites(index){
     return;
   }
   
-  const hadithNum=hadith.hadithnumber||hadith.hadithNumber||hadith.id||'—';
+  const hadithNum=hadith.hadithnumber||hadith.hadithNumber||hadith.id||hadith.number||'—';
   const exists=state.favoritesHadith.some(h=>h.id===hadithNum&&h.bookKey===state.currentHadithBook);
   
   if(exists){
@@ -1940,9 +1970,12 @@ function addHadithToFavorites(index){
     return;
   }
   
+  // استخراج النص من حقول متعددة
+  const hadithText = hadith.text || hadith.hadith || hadith.arab || hadith.arabic || hadith.body || hadith.htext || 'نص الحديث غير متوفر';
+  
   const favHadith={
     id:hadithNum,
-    text:hadith.text||hadith.hadith||hadith.arab||hadith.arabic||'نص الحديث غير متوفر',
+    text:hadithText,
     bookKey:state.currentHadithBook,
     bookName:book.name,
     grade:hadith.grade||''
@@ -2149,7 +2182,11 @@ function searchHadiths(){
   }
   
   const results=currentHadithData.hadiths.filter(h=>{
-    const text=(h.text||h.hadith||h.arab||'');
+    const text=(h.text||h.hadith||h.arab||h.arabic||h.body||h.htext||'');
+    
+    // تخطي الأحاديث الفارغة
+    if(!text || text.trim().length < 10) return false;
+    
     const normalizedText=text.replace(/[\u064B-\u065F]/g,'');
     const normalizedQuery=query.replace(/[\u064B-\u065F]/g,'');
     return normalizedText.includes(normalizedQuery);
@@ -2534,6 +2571,17 @@ function initializeEvents(){
 }
 
 async function initialize(){
+  // إخفاء السبلاش بعد 2.5 ثانية
+  setTimeout(()=>{
+    const splash=document.getElementById('splash');
+    if(splash){
+      splash.style.opacity='0';
+      setTimeout(()=>{
+        splash.style.display='none';
+      },800);
+    }
+  },2500);
+  
   initTheme();
   await fetchChapters();
   updateClock();
