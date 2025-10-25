@@ -40,7 +40,6 @@ header#appHeader{padding:1rem;background:rgba(255,255,255,.95);backdrop-filter:b
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(212,175,55,.25);padding:.5rem;z-index:50;transition:transform .25s ease}
 .theme-night .bottom-nav{background:rgba(15,23,42,.98)}
 .theme-special .bottom-nav{background:rgba(30,58,46,.98)}
-.bottom-nav.hidden{transform:translateY(100%)}
 .nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;overflow-x:auto;gap:0.15rem;padding:0 .25rem}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .4rem;border-radius:.75rem;min-width:50px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex-shrink:0}
 .nav-item:hover{background:rgba(212,175,55,.1)}
@@ -65,11 +64,6 @@ header#appHeader{padding:1rem;background:rgba(255,255,255,.95);backdrop-filter:b
 .read-mark{outline:3px solid rgba(16,185,129,.9);box-shadow:0 0 0 8px rgba(16,185,129,.2);animation:readPulse 1s ease}
 @keyframes readPulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.02);opacity:1}100%{transform:scale(1);opacity:1}}
 .read-check{position:absolute;top:.75rem;right:.75rem;background:rgba(16,185,129,.95);color:#fff;border-radius:9999px;font-size:.85rem;padding:.25rem .5rem;display:none;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-#splash{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#000}
-#splash img{width:100%;height:100%;object-fit:cover}
-#splash.fade{animation:fadeSplash .8s ease forwards}
-#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-@keyframes fadeSplash{to{opacity:0;visibility:hidden}}
 .loading-spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-radius:50%;border-top-color:#fff;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .theme-day select,.theme-special select,select,.theme-day input[type="number"],.theme-special input[type="number"],#pageNum{color:#000!important;background:#fff!important}
@@ -116,6 +110,41 @@ select option{color:#000!important;background:#fff!important}
 .countdown-box{background:rgba(0,0,0,.1);border-radius:.7rem;padding:.8rem 1.2rem;text-align:center;margin:1rem 0}
 .countdown-time{font-size:2rem;font-weight:900;font-family:monospace;color:var(--emerald)}
 .countdown-label{font-size:.85rem;opacity:.75;margin-top:.3rem}
+
+/* Fullscreen styles for iPhone */
+.fullscreen-mode {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  background: #000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.fullscreen-mode #quranPage {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  object-fit: contain !important;
+}
+
+body.fullscreen-active {
+  overflow: hidden !important;
+}
+
+body.fullscreen-active #appHeader,
+body.fullscreen-active .bottom-nav {
+  display: none !important;
+}
+
 @media(max-width:640px){
   #imageWrapper{height:calc(100vh - 160px)}
   .nav-text{font-size:.62rem}
@@ -166,7 +195,6 @@ select option{color:#000!important;background:#fff!important}
   .nav-item{padding:.3rem .4rem}
 }
 
-/* ===== Hisn Al-Muslim Styles ===== */
 .hisn-card{
   background:rgba(255,255,255,.95);
   padding:1.2rem;
@@ -291,7 +319,6 @@ select option{color:#000!important;background:#fff!important}
   }
 }
 
-
 .no-results{
   text-align:center;
   padding:3rem 1rem;
@@ -312,7 +339,6 @@ select option{color:#000!important;background:#fff!important}
 </style>
 </head>
 <body class="theme-day min-h-screen">
-<div id="splash"><img id="splashImg" alt="القرآن الكريم"/></div>
 
 <header id="appHeader" class="sticky top-0 z-40 flex items-center justify-between gap-3">
   <div class="flex items-center gap-3">
@@ -560,47 +586,20 @@ select option{color:#000!important;background:#fff!important}
     <div class="card p-4 mb-4">
       <h2 class="font-bold text-2xl mb-4 text-center">🤲 حصن المسلم</h2>
       
-      <!-- Search and Category Selector -->
       <div class="mb-4 space-y-3">
-        <!-- Search Box -->
         <input type="text" id="hisnSearchInput" placeholder="🔍 ابحث في الأذكار..." 
                class="w-full p-3 border-2 border-gold-300 rounded-lg text-base font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
         
-        <!-- Category Dropdown -->
         <div class="flex gap-2 items-center w-full">
           <label class="font-bold text-sm whitespace-nowrap flex-shrink-0">📑 الفئة:</label>
           <select id="hisnCategorySelect" class="flex-1 min-w-0 p-2 border-2 border-gold-300 rounded-lg font-semibold bg-white" style="max-width: 100%;">
             <option value="">جميع الفئات (134)</option>
-            <!-- Categories will be inserted here by JavaScript -->
           </select>
         </div>
       </div>
     </div>
 
-    <!-- Content Container -->
-    <div id="hisnContent" class="space-y-4">
-      <!-- Hisn cards will be inserted here by JavaScript -->
-    </div>
-  </section>
-  <section id="favoritesSection" class="section">
-    <div class="card p-4">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="font-semibold text-lg">⭐ المفضلة (استماع)</h3>
-        <button id="clearFavBtn" class="btn btn-danger text-sm">🗑️ مسح الكل</button>
-      </div>
-      <ul id="favorites" class="space-y-2 mb-6"></ul>
-      <div class="border-t pt-4 mt-4">
-        <h4 class="font-semibold mb-3 text-base">⭐ صفحات مفضلة</h4>
-        <ul id="favoritesPages" class="space-y-2"></ul>
-      </div>
-      <div class="border-t pt-4 mt-4">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-semibold text-base">⭐ أحاديث مفضلة</h4>
-          <button id="clearFavHadithBtn" class="btn btn-danger text-sm px-2 py-1">🗑️ مسح</button>
-        </div>
-        <ul id="favoritesHadith" class="space-y-2"></ul>
-      </div>
-    </div>
+    <div id="hisnContent" class="space-y-4"></div>
   </section>
 
   <section id="hadithSection" class="section">
@@ -644,6 +643,27 @@ select option{color:#000!important;background:#fff!important}
       <p class="text-lg">اختر كتاباً وابدأ بتصفح الأحاديث الشريفة 📖</p>
     </div>
   </section>
+
+  <section id="favoritesSection" class="section">
+    <div class="card p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-lg">⭐ المفضلة (استماع)</h3>
+        <button id="clearFavBtn" class="btn btn-danger text-sm">🗑️ مسح الكل</button>
+      </div>
+      <ul id="favorites" class="space-y-2 mb-6"></ul>
+      <div class="border-t pt-4 mt-4">
+        <h4 class="font-semibold mb-3 text-base">⭐ صفحات مفضلة</h4>
+        <ul id="favoritesPages" class="space-y-2"></ul>
+      </div>
+      <div class="border-t pt-4 mt-4">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="font-semibold text-base">⭐ أحاديث مفضلة</h4>
+          <button id="clearFavHadithBtn" class="btn btn-danger text-sm px-2 py-1">🗑️ مسح</button>
+        </div>
+        <ul id="favoritesHadith" class="space-y-2"></ul>
+      </div>
+    </div>
+  </section>
 </main>
 
 <nav class="bottom-nav" id="bottomNav">
@@ -652,13 +672,12 @@ select option{color:#000!important;background:#fff!important}
     <div class="nav-item" id="navQuran" data-section="quranSection"><div class="nav-icon">📖</div><div class="nav-text">المصحف</div></div>
     <div class="nav-item" id="navPrayer" data-section="prayerSection"><div class="nav-icon">🕌</div><div class="nav-text">المواقيت</div></div>
     <div class="nav-item" id="navHisn" data-section="hisnSection"><div class="nav-icon">🤲</div><div class="nav-text">حصن المسلم</div></div>
-    <div class="nav-item" id="navFavorites" data-section="favoritesSection"><div class="nav-icon">⭐</div><div class="nav-text">المفضلة</div></div>
     <div class="nav-item" id="navHadith" data-section="hadithSection"><div class="nav-icon">📚</div><div class="nav-text">الأحاديث</div></div>
+    <div class="nav-item" id="navFavorites" data-section="favoritesSection"><div class="nav-icon">⭐</div><div class="nav-text">المفضلة</div></div>
   </div>
 </nav>
 
 <script>
-const SPLASH_IMAGE_URL="https://i.imgur.com/QIXePvo.png";
 const NIGHT_START=19,NIGHT_END=6;
 const TOTAL_PAGES=604;
 const HADITH_API_BASE="https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions";
@@ -667,47 +686,81 @@ const CITIES=[
   {name:"إسطنبول، تركيا",lat:41.0082,lng:28.9784,country:"TR"},
   {name:"أنقرة، تركيا",lat:39.9334,lng:32.8597,country:"TR"},
   {name:"إزمير، تركيا",lat:38.4237,lng:27.1428,country:"TR"},
+  {name:"بورصة، تركيا",lat:40.1828,lng:29.0667,country:"TR"},
+  {name:"أنطاليا، تركيا",lat:36.8969,lng:30.7133,country:"TR"},
   {name:"القاهرة، مصر",lat:30.0444,lng:31.2357,country:"EG"},
   {name:"الإسكندرية، مصر",lat:31.2001,lng:29.9187,country:"EG"},
+  {name:"الجيزة، مصر",lat:30.0131,lng:31.2089,country:"EG"},
   {name:"الرياض، السعودية",lat:24.7136,lng:46.6753,country:"SA"},
   {name:"جدة، السعودية",lat:21.5433,lng:39.1728,country:"SA"},
   {name:"مكة المكرمة، السعودية",lat:21.3891,lng:39.8579,country:"SA"},
   {name:"المدينة المنورة، السعودية",lat:24.5247,lng:39.5692,country:"SA"},
   {name:"الدمام، السعودية",lat:26.4207,lng:50.0888,country:"SA"},
+  {name:"الطائف، السعودية",lat:21.2703,lng:40.4150,country:"SA"},
+  {name:"تبوك، السعودية",lat:28.3838,lng:36.5550,country:"SA"},
   {name:"دبي، الإمارات",lat:25.2048,lng:55.2708,country:"AE"},
   {name:"أبوظبي، الإمارات",lat:24.4539,lng:54.3773,country:"AE"},
   {name:"الشارقة، الإمارات",lat:25.3463,lng:55.4209,country:"AE"},
+  {name:"العين، الإمارات",lat:24.2075,lng:55.7447,country:"AE"},
   {name:"بيروت، لبنان",lat:33.8886,lng:35.4955,country:"LB"},
+  {name:"طرابلس، لبنان",lat:34.4333,lng:35.8333,country:"LB"},
+  {name:"صيدا، لبنان",lat:33.5630,lng:35.3688,country:"LB"},
   {name:"عمان، الأردن",lat:31.9454,lng:35.9284,country:"JO"},
+  {name:"إربد، الأردن",lat:32.5556,lng:35.8500,country:"JO"},
+  {name:"الزرقاء، الأردن",lat:32.0728,lng:36.0881,country:"JO"},
   {name:"دمشق، سوريا",lat:33.5138,lng:36.2765,country:"SY"},
+  {name:"حلب، سوريا",lat:36.2021,lng:37.1343,country:"SY"},
+  {name:"حمص، سوريا",lat:34.7333,lng:36.7167,country:"SY"},
   {name:"بغداد، العراق",lat:33.3152,lng:44.3661,country:"IQ"},
   {name:"الموصل، العراق",lat:36.3350,lng:43.1189,country:"IQ"},
   {name:"البصرة، العراق",lat:30.5085,lng:47.7835,country:"IQ"},
+  {name:"أربيل، العراق",lat:36.1911,lng:44.0091,country:"IQ"},
   {name:"الكويت، الكويت",lat:29.3759,lng:47.9774,country:"KW"},
   {name:"المنامة، البحرين",lat:26.0667,lng:50.5577,country:"BH"},
   {name:"الدوحة، قطر",lat:25.2854,lng:51.5310,country:"QA"},
   {name:"مسقط، عمان",lat:23.5880,lng:58.3829,country:"OM"},
+  {name:"صلالة، عمان",lat:17.0150,lng:54.0924,country:"OM"},
   {name:"صنعاء، اليمن",lat:15.3694,lng:44.1910,country:"YE"},
   {name:"عدن، اليمن",lat:12.8654,lng:45.0367,country:"YE"},
+  {name:"تعز، اليمن",lat:13.5796,lng:44.0172,country:"YE"},
   {name:"الدار البيضاء، المغرب",lat:33.5731,lng:-7.5898,country:"MA"},
   {name:"الرباط، المغرب",lat:34.0209,lng:-6.8416,country:"MA"},
+  {name:"فاس، المغرب",lat:34.0181,lng:-5.0078,country:"MA"},
+  {name:"مراكش، المغرب",lat:31.6295,lng:-7.9811,country:"MA"},
+  {name:"طنجة، المغرب",lat:35.7595,lng:-5.8340,country:"MA"},
   {name:"الجزائر، الجزائر",lat:36.7538,lng:3.0588,country:"DZ"},
   {name:"وهران، الجزائر",lat:35.6969,lng:-0.6331,country:"DZ"},
+  {name:"قسنطينة، الجزائر",lat:36.3650,lng:6.6147,country:"DZ"},
   {name:"تونس، تونس",lat:36.8065,lng:10.1815,country:"TN"},
+  {name:"صفاقس، تونس",lat:34.7406,lng:10.7603,country:"TN"},
   {name:"طرابلس، ليبيا",lat:32.8872,lng:13.1913,country:"LY"},
   {name:"بنغازي، ليبيا",lat:32.1191,lng:20.0869,country:"LY"},
   {name:"الخرطوم، السودان",lat:15.5007,lng:32.5599,country:"SD"},
+  {name:"أم درمان، السودان",lat:15.6452,lng:32.4777,country:"SD"},
   {name:"رام الله، فلسطين",lat:31.9038,lng:35.2034,country:"PS"},
   {name:"غزة، فلسطين",lat:31.3547,lng:34.3088,country:"PS"},
+  {name:"الخليل، فلسطين",lat:31.5326,lng:35.0998,country:"PS"},
+  {name:"نابلس، فلسطين",lat:32.2211,lng:35.2544,country:"PS"},
   {name:"لندن، بريطانيا",lat:51.5074,lng:-0.1278,country:"GB"},
+  {name:"مانشستر، بريطانيا",lat:53.4808,lng:-2.2426,country:"GB"},
+  {name:"برمنغهام، بريطانيا",lat:52.4862,lng:-1.8904,country:"GB"},
   {name:"باريس، فرنسا",lat:48.8566,lng:2.3522,country:"FR"},
+  {name:"مارسيليا، فرنسا",lat:43.2965,lng:5.3698,country:"FR"},
+  {name:"ليون، فرنسا",lat:45.7640,lng:4.8357,country:"FR"},
   {name:"برلين، ألمانيا",lat:52.5200,lng:13.4050,country:"DE"},
+  {name:"ميونخ، ألمانيا",lat:48.1351,lng:11.5820,country:"DE"},
+  {name:"فرانكفورت، ألمانيا",lat:50.1109,lng:8.6821,country:"DE"},
   {name:"روما، إيطاليا",lat:41.9028,lng:12.4964,country:"IT"},
+  {name:"ميلانو، إيطاليا",lat:45.4642,lng:9.1900,country:"IT"},
   {name:"مدريد، إسبانيا",lat:40.4168,lng:-3.7038,country:"ES"},
+  {name:"برشلونة، إسبانيا",lat:41.3851,lng:2.1734,country:"ES"},
   {name:"نيويورك، أمريكا",lat:40.7128,lng:-74.0060,country:"US"},
   {name:"لوس أنجلوس، أمريكا",lat:34.0522,lng:-118.2437,country:"US"},
   {name:"شيكاغو، أمريكا",lat:41.8781,lng:-87.6298,country:"US"},
+  {name:"هيوستن، أمريكا",lat:29.7604,lng:-95.3698,country:"US"},
+  {name:"ديترويت، أمريكا",lat:42.3314,lng:-83.0458,country:"US"},
   {name:"تورنتو، كندا",lat:43.6532,lng:-79.3832,country:"CA"},
+  {name:"مونتريال، كندا",lat:45.5017,lng:-73.5673,country:"CA"},
   {name:"سيدني، أستراليا",lat:-33.8688,lng:151.2093,country:"AU"},
   {name:"ملبورن، أستراليا",lat:-37.8136,lng:144.9631,country:"AU"}
 ];
@@ -778,17 +831,6 @@ const state={
   notificationsEnabled:JSON.parse(localStorage.getItem('notifications_enabled')||'false'),
   notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}')
 };
-
-(function(){
-  const s=document.getElementById('splash');
-  const i=document.getElementById('splashImg');
-  i.src=SPLASH_IMAGE_URL;
-  const hide=()=>{
-    s.classList.add('fade');
-    setTimeout(()=>s.classList.add('hide'),800);
-  };
-  setTimeout(hide,2000);
-})();
 
 function showToast(m,d=2500){
   const t=document.createElement('div');
@@ -992,7 +1034,8 @@ function populateSurahList(){
   ul.innerHTML='';
   chapters.forEach(ch=>{
     const li=document.createElement('li');
-    li.className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition dark:bg-slate-700 dark:hover:bg-slate-600 font-medium";
+    li.className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition font-medium";
+    li.style.color='#111827';
     li.innerHTML=`${ch.id}. ${ch.name_arabic}`;
     li.onclick=()=>{
       const target=SURAH_START_PAGES[ch.id]||1;
@@ -1012,10 +1055,9 @@ function initSwipe(){
   w.addEventListener('touchstart',e=>{
     const c=e.changedTouches[0];
     sx=c.clientX;sy=c.clientY;t=true;
-    hideBottomNavSmart();
   },{passive:true});
   
-  w.addEventListener('touchmove',()=>{hideBottomNavSmart()},{passive:true});
+  w.addEventListener('touchmove',()=>{},{passive:true});
   
   w.addEventListener('touchend',e=>{
     if(!t)return;t=false;
@@ -1025,21 +1067,16 @@ function initSwipe(){
     if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
       if(dx>0)nextPage();else prevPage();
     }
-    showBottomNavDelayed();
   });
   
   let lock=false;
   w.addEventListener('wheel',e=>{
-    hideBottomNavSmart();
     if(lock)return;lock=true;
     setTimeout(()=>lock=false,220);
     
     if(e.deltaY>0)nextPage();
     if(e.deltaY<0)prevPage();
-    showBottomNavDelayed();
   },{passive:true});
-  
-  w.addEventListener('mousemove',()=>{showBottomNavNow()},{passive:true});
   
   document.addEventListener('keydown',e=>{
     if(state.currentSection!=='quranSection')return;
@@ -1047,19 +1084,6 @@ function initSwipe(){
     if(e.key==='ArrowLeft')prevPage();
   });
 }
-
-let navTimer=null;
-function hideBottomNavSmart(){
-  const nav=document.getElementById('bottomNav');
-  if(!nav.classList.contains('hidden'))nav.classList.add('hidden');
-  if(navTimer){clearTimeout(navTimer);navTimer=null}
-}
-function showBottomNavDelayed(){
-  const nav=document.getElementById('bottomNav');
-  if(navTimer)clearTimeout(navTimer);
-  navTimer=setTimeout(()=>nav.classList.remove('hidden'),1000);
-}
-function showBottomNavNow(){document.getElementById('bottomNav').classList.remove('hidden')}
 
 function persist(){
   localStorage.setItem('playlist',JSON.stringify(state.playlist));
@@ -1137,15 +1161,34 @@ function renderFavoritesPages(){
     return;
   }
   
-  ul.innerHTML=state.favoritesPages.map((p,i)=>`
-    <li class="flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item">
-      <div class="font-medium">⭐ صفحة ${p}</div>
-      <div class="flex items-center gap-2">
-        <button onclick="openFavPage(${p})" class="btn btn-gold text-sm px-3 py-1">فتح</button>
-        <button onclick="removeFavPageAt(${i})" class="btn btn-danger text-sm px-2 py-1">🗑️</button>
-      </div>
-    </li>
-  `).join("");
+  ul.innerHTML='';
+  state.favoritesPages.forEach((p,i)=>{
+    const li=document.createElement('li');
+    li.className='flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item';
+    
+    const pageDiv=document.createElement('div');
+    pageDiv.className='font-medium';
+    pageDiv.textContent=`⭐ صفحة ${p}`;
+    
+    const btnContainer=document.createElement('div');
+    btnContainer.className='flex items-center gap-2';
+    
+    const openBtn=document.createElement('button');
+    openBtn.className='btn btn-gold text-sm px-3 py-1';
+    openBtn.textContent='فتح';
+    openBtn.onclick=()=>openFavPage(p);
+    
+    const deleteBtn=document.createElement('button');
+    deleteBtn.className='btn btn-danger text-sm px-2 py-1';
+    deleteBtn.textContent='🗑️';
+    deleteBtn.onclick=()=>removeFavPageAt(i);
+    
+    btnContainer.appendChild(openBtn);
+    btnContainer.appendChild(deleteBtn);
+    li.appendChild(pageDiv);
+    li.appendChild(btnContainer);
+    ul.appendChild(li);
+  });
 }
 
 function render(auto=false){
@@ -1153,12 +1196,10 @@ function render(auto=false){
   const box=document.getElementById('playerBox');
   
   if(cur){
-    // Update title and reciter info
     let titleDiv=document.getElementById('playerTitle');
     let reciterDiv=document.getElementById('playerReciter');
     let audioEl=document.getElementById('player');
     
-    // Create elements if they don't exist
     if(!titleDiv||!reciterDiv||!audioEl){
       box.innerHTML=`
         <div class="mb-3 text-center">
@@ -1172,11 +1213,9 @@ function render(auto=false){
       audioEl=document.getElementById('player');
     }
     
-    // Update text content
     titleDiv.textContent=cur.title;
     reciterDiv.textContent=cur.reciter;
     
-    // Update audio source and settings
     const needsNewSrc=audioEl.src!==cur.src;
     if(needsNewSrc){
       audioEl.src=cur.src;
@@ -1184,7 +1223,6 @@ function render(auto=false){
     
     audioEl.loop=state.loop;
     
-    // Setup event listeners (only once)
     if(!audioEl.hasEventListeners){
       audioEl.ontimeupdate=()=>{
         const now=audioEl.currentTime,total=audioEl.duration||0;
@@ -1204,15 +1242,11 @@ function render(auto=false){
       audioEl.hasEventListeners=true;
     }
     
-    // Auto-play if requested
     if(auto&&needsNewSrc){
-      // Use promise-based play with fallback
       const playPromise=audioEl.play();
       if(playPromise!==undefined){
         playPromise.then(()=>{
-          // Autoplay successful
         }).catch(err=>{
-          // Autoplay prevented by browser
           console.log('Autoplay prevented:',err);
           showToast('⏸️ اضغط زر التشغيل ▶️ للمتابعة',3000);
         });
@@ -1222,19 +1256,54 @@ function render(auto=false){
     box.innerHTML="<div class='text-gray-500 text-center py-2'>اختر سورة للبدء</div>";
   }
   
-  document.getElementById('playlist').innerHTML=state.playlist.map((t,i)=>`
-    <li class="flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item ${i===state.idx?'ring-2 ring-gold':''}">
-      <div class="flex-1">
-        <div class="font-medium">${t.title}</div>
-        <div class="text-sm opacity-75">${t.reciter}</div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button onclick="addFavFromPlaylist(${i})" class="p-2 hover:scale-110 transition" title="إضافة للمفضلة">⭐</button>
-        <button onclick="playAt(${i})" class="p-2 hover:scale-110 transition">▶️</button>
-        <button onclick="removeAt(${i})" class="p-2 hover:scale-110 transition">🗑️</button>
-      </div>
-    </li>
-  `).join("");
+  const playlistEl=document.getElementById('playlist');
+  playlistEl.innerHTML='';
+  
+  state.playlist.forEach((t,i)=>{
+    const li=document.createElement('li');
+    li.className=`flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item ${i===state.idx?'ring-2 ring-gold':''}`;
+    
+    const contentDiv=document.createElement('div');
+    contentDiv.className='flex-1';
+    
+    const titleDiv=document.createElement('div');
+    titleDiv.className='font-medium';
+    titleDiv.textContent=t.title;
+    
+    const reciterDiv=document.createElement('div');
+    reciterDiv.className='text-sm opacity-75';
+    reciterDiv.textContent=t.reciter;
+    
+    contentDiv.appendChild(titleDiv);
+    contentDiv.appendChild(reciterDiv);
+    
+    const btnContainer=document.createElement('div');
+    btnContainer.className='flex items-center gap-2';
+    
+    const favBtn=document.createElement('button');
+    favBtn.className='p-2 hover:scale-110 transition';
+    favBtn.textContent='⭐';
+    favBtn.title='إضافة للمفضلة';
+    favBtn.onclick=()=>addFavFromPlaylist(i);
+    
+    const playBtn=document.createElement('button');
+    playBtn.className='p-2 hover:scale-110 transition';
+    playBtn.textContent='▶️';
+    playBtn.onclick=()=>playAt(i);
+    
+    const delBtn=document.createElement('button');
+    delBtn.className='p-2 hover:scale-110 transition';
+    delBtn.textContent='🗑️';
+    delBtn.onclick=()=>removeAt(i);
+    
+    btnContainer.appendChild(favBtn);
+    btnContainer.appendChild(playBtn);
+    btnContainer.appendChild(delBtn);
+    
+    li.appendChild(contentDiv);
+    li.appendChild(btnContainer);
+    playlistEl.appendChild(li);
+  });
 }
 
 function add(auto=false){
@@ -1352,18 +1421,45 @@ function renderFavorites(){
     return;
   }
   
-  ul.innerHTML=state.favorites.map((f,i)=>`
-    <li class="flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item">
-      <div class="flex-1">
-        <div class="font-medium">${f.title}</div>
-        <div class="text-sm opacity-75">${f.reciter}</div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button onclick="playFavorite(${i})" class="p-2 hover:scale-110 transition">▶️</button>
-        <button onclick="removeFav(${i})" class="p-2 hover:scale-110 transition">🗑️</button>
-      </div>
-    </li>
-  `).join("");
+  ul.innerHTML='';
+  state.favorites.forEach((f,i)=>{
+    const li=document.createElement('li');
+    li.className='flex justify-between items-center bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item';
+    
+    const contentDiv=document.createElement('div');
+    contentDiv.className='flex-1';
+    
+    const titleDiv=document.createElement('div');
+    titleDiv.className='font-medium';
+    titleDiv.textContent=f.title;
+    
+    const reciterDiv=document.createElement('div');
+    reciterDiv.className='text-sm opacity-75';
+    reciterDiv.textContent=f.reciter;
+    
+    contentDiv.appendChild(titleDiv);
+    contentDiv.appendChild(reciterDiv);
+    
+    const btnContainer=document.createElement('div');
+    btnContainer.className='flex items-center gap-2';
+    
+    const playBtn=document.createElement('button');
+    playBtn.className='p-2 hover:scale-110 transition';
+    playBtn.textContent='▶️';
+    playBtn.onclick=()=>playFavorite(i);
+    
+    const delBtn=document.createElement('button');
+    delBtn.className='p-2 hover:scale-110 transition';
+    delBtn.textContent='🗑️';
+    delBtn.onclick=()=>removeFav(i);
+    
+    btnContainer.appendChild(playBtn);
+    btnContainer.appendChild(delBtn);
+    
+    li.appendChild(contentDiv);
+    li.appendChild(btnContainer);
+    ul.appendChild(li);
+  });
 }
 
 function playFavorite(i){
@@ -1678,11 +1774,15 @@ function populateCityList(filter=''){
   const list=document.getElementById('cityList');
   const filtered=CITIES.filter(c=>c.name.includes(filter));
   
-  list.innerHTML=filtered.map(city=>`
-    <li class="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition dark:bg-slate-700 dark:hover:bg-slate-600 font-medium" onclick="selectCity('${city.name}',${city.lat},${city.lng},'${city.country}')">
-      ${city.name}
-    </li>
-  `).join('');
+  list.innerHTML='';
+  filtered.forEach(city=>{
+    const li=document.createElement('li');
+    li.className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition font-medium";
+    li.style.color='#111827';
+    li.textContent=city.name;
+    li.onclick=()=>selectCity(city.name,city.lat,city.lng,city.country);
+    list.appendChild(li);
+  });
 }
 
 async function selectCity(name,lat,lng,country){
@@ -1771,32 +1871,52 @@ function displayHadiths(hadiths,append=false){
     return;
   }
   
-  const html=hadiths.map((h,index)=>{
-    const text=h.text||h.hadith||h.arab||h.arabic||'نص الحديث غير متوفر';
-    const grade=h.grade?`<span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded">${h.grade}</span>`:'';
-    const hadithNum=h.hadithnumber||h.hadithNumber||h.id||'—';
-    
-    return `
-      <div class="hadith-card">
-        <div class="hadith-text">${text}</div>
-        <div class="hadith-meta" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-          <div class="flex items-center gap-2">
-            <span>📖 الحديث رقم ${hadithNum}</span>
-            ${grade}
-          </div>
-          <button onclick="addHadithToFavorites(${index})" class="btn btn-gold px-4 py-2 text-lg" title="إضافة للمفضلة">
-            ⭐ إضافة للمفضلة
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
-  
-  if(append){
-    container.innerHTML+=html;
-  }else{
-    container.innerHTML=html;
+  if(!append){
+    container.innerHTML='';
   }
+  
+  hadiths.forEach((h,index)=>{
+    const card=document.createElement('div');
+    card.className='hadith-card';
+    
+    const textDiv=document.createElement('div');
+    textDiv.className='hadith-text';
+    textDiv.textContent=h.text||h.hadith||h.arab||h.arabic||'نص الحديث غير متوفر';
+    
+    const metaDiv=document.createElement('div');
+    metaDiv.className='hadith-meta';
+    metaDiv.style.display='flex';
+    metaDiv.style.justifyContent='space-between';
+    metaDiv.style.alignItems='center';
+    metaDiv.style.flexWrap='wrap';
+    
+    const infoDiv=document.createElement('div');
+    infoDiv.className='flex items-center gap-2';
+    
+    const numSpan=document.createElement('span');
+    numSpan.textContent=`📖 الحديث رقم ${h.hadithnumber||h.hadithNumber||h.id||'—'}`;
+    infoDiv.appendChild(numSpan);
+    
+    if(h.grade){
+      const gradeSpan=document.createElement('span');
+      gradeSpan.className='text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded';
+      gradeSpan.textContent=h.grade;
+      infoDiv.appendChild(gradeSpan);
+    }
+    
+    const favBtn=document.createElement('button');
+    favBtn.className='btn btn-gold px-4 py-2 text-lg';
+    favBtn.textContent='⭐ إضافة للمفضلة';
+    favBtn.title='إضافة للمفضلة';
+    favBtn.onclick=()=>addHadithToFavorites(index);
+    
+    metaDiv.appendChild(infoDiv);
+    metaDiv.appendChild(favBtn);
+    
+    card.appendChild(textDiv);
+    card.appendChild(metaDiv);
+    container.appendChild(card);
+  });
 }
 
 function addHadithToFavorites(index){
@@ -1843,21 +1963,47 @@ function renderFavoritesHadith(){
     return;
   }
   
-  ul.innerHTML=state.favoritesHadith.map((h,i)=>{
+  ul.innerHTML='';
+  state.favoritesHadith.forEach((h,i)=>{
     const shortText=h.text.length>100?h.text.substring(0,100)+'...':h.text;
-    return `
-      <li class="bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item">
-        <div class="mb-2">
-          <div class="text-sm font-bold text-emerald-400 mb-1">${h.bookName} - الحديث رقم ${h.id}</div>
-          <div class="text-sm leading-relaxed">${shortText}</div>
-        </div>
-        <div class="flex items-center gap-2 justify-end">
-          <button onclick="viewFavHadith(${i})" class="btn btn-gold text-sm px-3 py-1">عرض</button>
-          <button onclick="removeFavHadith(${i})" class="btn btn-danger text-sm px-2 py-1">🗑️</button>
-        </div>
-      </li>
-    `;
-  }).join("");
+    
+    const li=document.createElement('li');
+    li.className='bg-white bg-opacity-10 backdrop-blur px-4 py-3 rounded-lg playlist-item';
+    
+    const contentDiv=document.createElement('div');
+    contentDiv.className='mb-2';
+    
+    const titleDiv=document.createElement('div');
+    titleDiv.className='text-sm font-bold text-emerald-400 mb-1';
+    titleDiv.textContent=`${h.bookName} - الحديث رقم ${h.id}`;
+    
+    const textDiv=document.createElement('div');
+    textDiv.className='text-sm leading-relaxed';
+    textDiv.textContent=shortText;
+    
+    contentDiv.appendChild(titleDiv);
+    contentDiv.appendChild(textDiv);
+    
+    const btnContainer=document.createElement('div');
+    btnContainer.className='flex items-center gap-2 justify-end';
+    
+    const viewBtn=document.createElement('button');
+    viewBtn.className='btn btn-gold text-sm px-3 py-1';
+    viewBtn.textContent='عرض';
+    viewBtn.onclick=()=>viewFavHadith(i);
+    
+    const delBtn=document.createElement('button');
+    delBtn.className='btn btn-danger text-sm px-2 py-1';
+    delBtn.textContent='🗑️';
+    delBtn.onclick=()=>removeFavHadith(i);
+    
+    btnContainer.appendChild(viewBtn);
+    btnContainer.appendChild(delBtn);
+    
+    li.appendChild(contentDiv);
+    li.appendChild(btnContainer);
+    ul.appendChild(li);
+  });
 }
 
 function viewFavHadith(index){
@@ -1920,11 +2066,13 @@ function updateLoadMoreButton(){
     btn=document.createElement('div');
     btn.id='loadMoreBtn';
     btn.className='text-center mt-4';
-    btn.innerHTML=`
-      <button onclick="showMoreResults()" class="btn btn-gold px-6 py-3">
-        📖 عرض المزيد (${remaining} متبقي)
-      </button>
-    `;
+    
+    const loadBtn=document.createElement('button');
+    loadBtn.className='btn btn-gold px-6 py-3';
+    loadBtn.textContent=`📖 عرض المزيد (${remaining} متبقي)`;
+    loadBtn.onclick=showMoreResults;
+    
+    btn.appendChild(loadBtn);
     container.insertAdjacentElement('afterend',btn);
   }
 }
@@ -2070,6 +2218,38 @@ function initMobileOptimizations(){
   });
 }
 
+function enableManualFullscreen(){
+  const container=document.getElementById('imageWrapper');
+  container.classList.add('fullscreen-mode');
+  document.body.classList.add('fullscreen-active');
+  const exitBtn=document.getElementById('exitFullscreenBtn');
+  if(exitBtn)exitBtn.style.display='flex';
+  
+  if(screen.orientation && screen.orientation.lock){
+    screen.orientation.lock('portrait').catch(()=>{});
+  }
+  
+  document.body.style.overflow='hidden';
+  document.documentElement.style.overflow='hidden';
+  
+  showToast('📱 ملء الشاشة مُفعّل - اضغط ↩️ للخروج');
+}
+
+function disableManualFullscreen(){
+  const container=document.getElementById('imageWrapper');
+  container.classList.remove('fullscreen-mode');
+  document.body.classList.remove('fullscreen-active');
+  const exitBtn=document.getElementById('exitFullscreenBtn');
+  if(exitBtn)exitBtn.style.display='none';
+  
+  if(screen.orientation && screen.orientation.unlock){
+    screen.orientation.unlock();
+  }
+  
+  document.body.style.overflow='';
+  document.documentElement.style.overflow='';
+}
+
 function initializeEvents(){
   document.getElementById('themeToggle').onclick=()=>{
     ti=(ti+1)%THEMES.length;
@@ -2079,7 +2259,6 @@ function initializeEvents(){
 
   document.querySelectorAll('.nav-item').forEach(i=>
     i.addEventListener('click',()=>{
-      showBottomNavNow();
       setActiveSection(i.getAttribute('data-section'));
     })
   );
@@ -2091,17 +2270,15 @@ function initializeEvents(){
 
   document.getElementById('fullscreenBtn').onclick=()=>{
     const container=document.getElementById('imageWrapper');
-    const page=document.getElementById('quranPage');
     const d=document;
     
-    // التحقق من حالة fullscreen
     const isFullscreen = d.fullscreenElement || d.webkitFullscreenElement || 
-                         d.mozFullScreenElement || d.msFullscreenElement;
+                         d.mozFullScreenElement || d.msFullscreenElement ||
+                         container.classList.contains('fullscreen-mode');
     
     if(!isFullscreen){
-      // الدخول لـ fullscreen
       if(container.requestFullscreen){
-        container.requestFullscreen();
+        container.requestFullscreen().catch(()=>enableManualFullscreen());
       }else if(container.webkitRequestFullscreen){
         container.webkitRequestFullscreen();
       }else if(container.webkitEnterFullscreen){
@@ -2111,30 +2288,34 @@ function initializeEvents(){
       }else if(container.mozRequestFullScreen){
         container.mozRequestFullScreen();
       }else{
-        // Fallback للأيفون: محاكاة fullscreen
-        container.style.position='fixed';
-        container.style.top='0';
-        container.style.left='0';
-        container.style.right='0';
-        container.style.bottom='0';
-        container.style.zIndex='9999';
-        container.style.height='100vh';
-        container.style.width='100vw';
-        if(page){
-          page.style.maxHeight='100vh';
-          page.style.maxWidth='100vw';
-          page.style.width='100%';
-          page.style.height='100%';
-          page.style.objectFit='contain';
-        }
-        document.getElementById('exitFullscreenBtn').style.display='flex';
-        document.body.style.overflow='hidden';
-        document.documentElement.style.overflow='hidden';
-        // إضافة class للتعرف على الحالة
-        container.classList.add('manual-fullscreen');
+        enableManualFullscreen();
       }
     }else{
-      // الخروج من fullscreen
+      if(container.classList.contains('fullscreen-mode')){
+        disableManualFullscreen();
+      }else{
+        if(d.exitFullscreen){
+          d.exitFullscreen();
+        }else if(d.webkitExitFullscreen){
+          d.webkitExitFullscreen();
+        }else if(d.msExitFullscreen){
+          d.msExitFullscreen();
+        }else if(d.mozCancelFullScreen){
+          d.mozCancelFullScreen();
+        }
+      }
+    }
+  };
+
+  const exitBtn=document.createElement('button');
+  exitBtn.id="exitFullscreenBtn";
+  exitBtn.textContent="↩️";
+  exitBtn.onclick=()=>{ 
+    const container=document.getElementById('imageWrapper');
+    if(container.classList.contains('fullscreen-mode')){
+      disableManualFullscreen();
+    }else{
+      const d=document;
       if(d.exitFullscreen){
         d.exitFullscreen();
       }else if(d.webkitExitFullscreen){
@@ -2146,57 +2327,15 @@ function initializeEvents(){
       }
     }
   };
-
-  const exitBtn=document.createElement('button');
-  exitBtn.id="exitFullscreenBtn";
-  exitBtn.textContent="↩️";
-  exitBtn.onclick=()=>{ 
-    const container=document.getElementById('imageWrapper');
-    const page=document.getElementById('quranPage');
-    const d=document;
-    
-    // التحقق من fullscreen الحقيقي أو المحاكي
-    if(container.classList.contains('manual-fullscreen')){
-      // الخروج من fullscreen المحاكي
-      container.style.position='';
-      container.style.top='';
-      container.style.left='';
-      container.style.right='';
-      container.style.bottom='';
-      container.style.zIndex='';
-      container.style.height='';
-      container.style.width='';
-      if(page){
-        page.style.maxHeight='';
-        page.style.maxWidth='';
-        page.style.width='';
-        page.style.height='';
-        page.style.objectFit='';
-      }
-      exitBtn.style.display='none';
-      document.body.style.overflow='';
-      document.documentElement.style.overflow='';
-      container.classList.remove('manual-fullscreen');
-    }else if(d.exitFullscreen){
-      d.exitFullscreen();
-    }else if(d.webkitExitFullscreen){
-      d.webkitExitFullscreen();
-    }else if(d.msExitFullscreen){
-      d.msExitFullscreen();
-    }else if(d.mozCancelFullScreen){
-      d.mozCancelFullScreen();
-    }
-  };
   document.body.appendChild(exitBtn);
 
-  // دعم جميع المتصفحات لـ fullscreenchange
   const handleFullscreenChange=()=>{
     const container=document.getElementById('imageWrapper');
     const isFullscreen = document.fullscreenElement || 
                          document.webkitFullscreenElement || 
                          document.mozFullScreenElement || 
                          document.msFullscreenElement ||
-                         container.classList.contains('manual-fullscreen');
+                         container.classList.contains('fullscreen-mode');
     
     if(isFullscreen){
       exitBtn.style.display="flex";
@@ -2372,11 +2511,6 @@ function initializeEvents(){
     }
   };
 
-  document.getElementById('imageWrapper').addEventListener('click',()=>{
-    showBottomNavNow();
-    showBottomNavDelayed();
-  });
-
   document.getElementById('hadithBookSelect').onchange=e=>{
     loadHadithBook(e.target.value);
   };
@@ -2460,29 +2594,8 @@ async function initialize(){
   },2500);
 }
 
-
-// Event listeners لـ fullscreen على جميع المتصفحات
-document.addEventListener('fullscreenchange', handleFullscreenChange);
-document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-
-function handleFullscreenChange(){
-  const isFullscreen = document.fullscreenElement || 
-                       document.webkitFullscreenElement || 
-                       document.mozFullScreenElement || 
-                       document.msFullscreenElement;
-  
-  const exitBtn = document.getElementById('exitFullscreenBtn');
-  if(exitBtn){
-    exitBtn.style.display = isFullscreen ? 'flex' : 'none';
-  }
-}
-
 window.addEventListener('load',initialize);
 
-
-// ===== HISN AL-MUSLIM FUNCTIONALITY =====
 let hisnData = {};
 let hisnState = {
   favorites: JSON.parse(localStorage.getItem('hisnFavorites') || '[]'),
@@ -2491,7 +2604,6 @@ let hisnState = {
   searchTerm: ''
 };
 
-// تحميل بيانات حصن المسلم
 async function loadHisnData() {
   try {
     const response = await fetch('hisn_almuslim.json').catch(err => {
@@ -2528,17 +2640,14 @@ async function loadHisnData() {
   }
 }
 
-// عرض القائمة المنسدلة للفئات
 function renderHisnDropdown() {
   const dropdown = document.getElementById('hisnCategorySelect');
   if (!dropdown) return;
   
-  // مسح الخيارات القديمة (ما عدا الخيار الأول)
   while (dropdown.options.length > 1) {
     dropdown.remove(1);
   }
   
-  // إضافة جميع الفئات
   Object.keys(hisnData).forEach(category => {
     const option = document.createElement('option');
     option.value = category;
@@ -2546,36 +2655,29 @@ function renderHisnDropdown() {
     dropdown.appendChild(option);
   });
   
-  // إضافة event listener
   dropdown.onchange = (e) => {
     if (e.target.value) {
       loadHisnCategory(e.target.value);
     } else {
-      // عرض جميع الفئات
       hisnState.currentCategory = null;
       hisnState.searchTerm = '';
       renderHisnContent();
     }
   };
-  
-
 }
 
-// تحميل فئة معينة
 function loadHisnCategory(category) {
   hisnState.currentCategory = category;
   hisnState.searchTerm = '';
   const searchInput = document.getElementById('hisnSearchInput');
   if (searchInput) searchInput.value = '';
   
-  // تحديث الـ dropdown
   const dropdown = document.getElementById('hisnCategorySelect');
   if (dropdown) dropdown.value = category;
   
   renderHisnContent();
 }
 
-// عرض المحتوى
 function renderHisnContent() {
   const container = document.getElementById('hisnContent');
   if (!container) return;
@@ -2603,56 +2705,86 @@ function renderHisnContent() {
   }
 }
 
-// إنشاء بطاقة ذكر
 function createHisnCard(title, data) {
   const card = document.createElement('div');
   card.className = 'hisn-card fade-in-text';
   
   const isFavorite = hisnState.favorites.includes(title);
   const counter = hisnState.counters[title] || 0;
-  const safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
   
-  let html = `
-    <div class="hisn-title">
-      <span>${title}</span>
-      <button class="hisn-fav-btn ${isFavorite ? 'favorited' : ''}" 
-              onclick="toggleHisnFavorite('${safeTitle}')">
-        ${isFavorite ? '⭐ مفضل' : '☆ إضافة'}
-      </button>
-    </div>
-  `;
+  const titleDiv = document.createElement('div');
+  titleDiv.className = 'hisn-title';
+  
+  const titleSpan = document.createElement('span');
+  titleSpan.textContent = title;
+  
+  const favBtn = document.createElement('button');
+  favBtn.className = `hisn-fav-btn ${isFavorite ? 'favorited' : ''}`;
+  favBtn.textContent = isFavorite ? '⭐ مفضل' : '☆ إضافة';
+  favBtn.onclick = () => toggleHisnFavorite(title);
+  
+  titleDiv.appendChild(titleSpan);
+  titleDiv.appendChild(favBtn);
+  card.appendChild(titleDiv);
   
   if (data.text && Array.isArray(data.text)) {
     data.text.forEach(text => {
-      html += `<div class="hisn-text">${text}</div>`;
+      const textDiv = document.createElement('div');
+      textDiv.className = 'hisn-text';
+      textDiv.textContent = text;
+      card.appendChild(textDiv);
     });
   }
   
   if (data.footnote && Array.isArray(data.footnote) && data.footnote.length > 0) {
-    html += '<div class="hisn-footnote">';
+    const footnoteDiv = document.createElement('div');
+    footnoteDiv.className = 'hisn-footnote';
     data.footnote.forEach(note => {
-      html += `<div style="margin-bottom:.3rem">• ${note}</div>`;
+      const noteDiv = document.createElement('div');
+      noteDiv.style.marginBottom = '.3rem';
+      noteDiv.textContent = '• ' + note;
+      footnoteDiv.appendChild(noteDiv);
     });
-    html += '</div>';
+    card.appendChild(footnoteDiv);
   }
   
-  html += `
-    <div class="hisn-actions">
-      <div class="counter-box">
-        <button class="counter-btn" onclick="decrementCounter('${safeTitle}')">−</button>
-        <span class="counter-display">${counter}</span>
-        <button class="counter-btn" onclick="incrementCounter('${safeTitle}')">+</button>
-        <button class="counter-btn reset-counter" onclick="resetCounter('${safeTitle}')" title="إعادة تعيين">↻</button>
-      </div>
-    </div>
-  `;
+  const actionsDiv = document.createElement('div');
+  actionsDiv.className = 'hisn-actions';
   
-  card.innerHTML = html;
+  const counterBox = document.createElement('div');
+  counterBox.className = 'counter-box';
+  
+  const decrementBtn = document.createElement('button');
+  decrementBtn.className = 'counter-btn';
+  decrementBtn.textContent = '−';
+  decrementBtn.onclick = () => decrementCounter(title);
+  
+  const counterDisplay = document.createElement('span');
+  counterDisplay.className = 'counter-display';
+  counterDisplay.textContent = counter;
+  
+  const incrementBtn = document.createElement('button');
+  incrementBtn.className = 'counter-btn';
+  incrementBtn.textContent = '+';
+  incrementBtn.onclick = () => incrementCounter(title);
+  
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'counter-btn reset-counter';
+  resetBtn.textContent = '↻';
+  resetBtn.title = 'إعادة تعيين';
+  resetBtn.onclick = () => resetCounter(title);
+  
+  counterBox.appendChild(decrementBtn);
+  counterBox.appendChild(counterDisplay);
+  counterBox.appendChild(incrementBtn);
+  counterBox.appendChild(resetBtn);
+  actionsDiv.appendChild(counterBox);
+  card.appendChild(actionsDiv);
+  
   return card;
 }
 
-// تبديل المفضلة
-window.toggleHisnFavorite = function(title) {
+function toggleHisnFavorite(title) {
   const index = hisnState.favorites.indexOf(title);
   if (index > -1) {
     hisnState.favorites.splice(index, 1);
@@ -2664,41 +2796,35 @@ window.toggleHisnFavorite = function(title) {
   localStorage.setItem('hisnFavorites', JSON.stringify(hisnState.favorites));
   renderHisnContent();
   updateFavoritesHisn();
-};
+}
 
-// زيادة العداد
-window.incrementCounter = function(title) {
+function incrementCounter(title) {
   hisnState.counters[title] = (hisnState.counters[title] || 0) + 1;
   localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
   renderHisnContent();
-};
+}
 
-// إنقاص العداد
-window.decrementCounter = function(title) {
+function decrementCounter(title) {
   if (hisnState.counters[title] > 0) {
     hisnState.counters[title]--;
     localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
     renderHisnContent();
   }
-};
+}
 
-// إعادة تعيين العداد
-window.resetCounter = function(title) {
+function resetCounter(title) {
   hisnState.counters[title] = 0;
   localStorage.setItem('hisnCounters', JSON.stringify(hisnState.counters));
   renderHisnContent();
   showToast('↻ تم إعادة تعيين العداد');
-};
+}
 
-// البحث
 function searchHisn() {
   hisnState.searchTerm = document.getElementById('hisnSearchInput').value;
   hisnState.currentCategory = null;
-  document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
   renderHisnContent();
 }
 
-// تحديث قسم المفضلة بأذكار حصن المسلم
 function updateFavoritesHisn() {
   const favSection = document.getElementById('favoritesSection');
   if (!favSection) return;
@@ -2731,7 +2857,6 @@ function updateFavoritesHisn() {
   favHisnContainer.innerHTML = html;
 }
 
-// تهيئة حصن المسلم
 function initHisn() {
   const hisnSearchInput = document.getElementById('hisnSearchInput');
   if (hisnSearchInput) {
@@ -2741,8 +2866,6 @@ function initHisn() {
   loadHisnData();
 }
 
-
-// Initialize Hisn Al-Muslim
 window.addEventListener('load', initHisn);
 </script>
 </body>
