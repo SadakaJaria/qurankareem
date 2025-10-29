@@ -28,6 +28,7 @@
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--gold:#d4af37;--gold-dark:#b8941f;--emerald:#059669;--emerald-dark:#047857;--emerald-light:#10b981;--ink:#0f172a;--warm:#f5f1e8;--deep:#0f172a;--slate:#1e293b}
+*,*::before,*::after{box-sizing:border-box}
 body{font-family:"Noto Naskh Arabic","Amiri",serif;overflow-x:hidden;transition:background .3s,color .3s;padding-bottom:6rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 input,textarea,select{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
 .theme-day{background:linear-gradient(135deg,var(--warm),#fff);color:var(--ink)}
@@ -43,9 +44,11 @@ input,textarea,select{-webkit-user-select:text;-moz-user-select:text;-ms-user-se
 .btn-emerald{background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:#fff}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
 .btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
-select,input[type="number"],input[type="text"],textarea{background:#fff;color:#000;border:2px solid rgba(212,175,55,.5);border-radius:.7rem;padding:.45rem .6rem;min-height:38px;font-weight:600;transition:border-color .2s}
+select,input[type="number"],input[type="text"],textarea{background:#fff;color:#000;border:2px solid rgba(212,175,55,.5);border-radius:.7rem;padding:.4rem .55rem;min-height:38px;font-weight:600;font-size:.9rem;transition:border-color .2s;box-sizing:border-box;max-width:100%}
+.theme-night select,.theme-night input[type="number"],.theme-night input[type="text"],.theme-night textarea{background:#1e293b!important;color:#e5e7eb!important;border-color:rgba(212,175,55,.6)}
+.theme-special select,.theme-special input[type="number"],.theme-special input[type="text"],.theme-special textarea{background:#2d5a3d!important;color:#fefce8!important;border-color:rgba(212,175,55,.6)}
 select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.25)}
-header#appHeader{padding:1rem;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.25);position:sticky;top:0;z-index:40;min-height:70px;display:flex;align-items:center}
+header#appHeader{padding:1rem 0.5rem;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.25);position:sticky;top:0;z-index:40;min-height:70px;display:flex;align-items:center;gap:0.5rem}
 .theme-night header#appHeader{background:rgba(15,23,42,.95)}
 .theme-special header#appHeader{background:rgba(30,58,46,.95)}
 #themeToggle,#whatsappTop{width:3rem;height:3rem;border-radius:1rem;display:flex;align-items:center;justify-content:center;transition:transform .2s}
@@ -55,13 +58,13 @@ header#appHeader{padding:1rem;background:rgba(255,255,255,.95);backdrop-filter:b
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(212,175,55,.25);padding:.5rem;z-index:50;transition:transform .25s ease}
 .theme-night .bottom-nav{background:rgba(15,23,42,.98)}
 .theme-special .bottom-nav{background:rgba(30,58,46,.98)}
-.nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;overflow-x:auto;gap:0.15rem;padding:0 .25rem}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .4rem;border-radius:.75rem;min-width:50px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex-shrink:0}
+.nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;gap:0.15rem;padding:0 .25rem}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .3rem;border-radius:.75rem;min-width:45px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex:1}
 .nav-item:hover{background:rgba(212,175,55,.1)}
 .nav-item.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
 .nav-icon{font-size:1.3rem;transition:transform .2s}
 .nav-item:hover .nav-icon{transform:scale(1.1)}
-.nav-text{font-size:.68rem;font-weight:800}
+.nav-text{font-size:.65rem;font-weight:800;white-space:nowrap}
 .section{display:none;min-height:calc(100vh - 140px);padding:1rem;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
 .section.active{display:block;opacity:1;transform:translateY(0)}
 .quran-topbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.6rem}
@@ -81,8 +84,9 @@ header#appHeader{padding:1rem;background:rgba(255,255,255,.95);backdrop-filter:b
 .read-check{position:absolute;top:.75rem;right:.75rem;background:rgba(16,185,129,.95);color:#fff;border-radius:9999px;font-size:.85rem;padding:.25rem .5rem;display:none;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .loading-spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-radius:50%;border-top-color:#fff;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.theme-day select,.theme-special select,select,.theme-day input[type="number"],.theme-special input[type="number"],#pageNum{color:#000!important;background:#fff!important}
 select option{color:#000!important;background:#fff!important}
+.theme-night select option{color:#e5e7eb!important;background:#1e293b!important}
+.theme-special select option{color:#fefce8!important;background:#2d5a3d!important}
 .modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:70;animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{width:90%;max-width:420px;max-height:70vh;overflow:hidden;background:#fff;border-radius:1rem;box-shadow:0 20px 40px rgba(0,0,0,.4);animation:slideUp .3s ease}
@@ -114,7 +118,6 @@ select option{color:#000!important;background:#fff!important}
 .hadith-card:hover{transform:translateX(-3px);box-shadow:0 8px 20px rgba(0,0,0,.12)}
 .hadith-text{font-size:1.1rem;line-height:2;margin-bottom:.8rem;text-align:justify}
 .hadith-meta{font-size:.9rem;opacity:.75;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
-#hadithSearchInput{width:100%;padding:.6rem;border-radius:.8rem;border:2px solid rgba(212,175,55,.5);font-size:1rem}
 .prayer-time-card{background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(255,255,255,.05));border:2px solid rgba(212,175,55,.3);border-radius:1rem;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;transition:all .3s;margin-bottom:.8rem}
 .prayer-time-card:hover{transform:translateX(-3px);border-color:var(--gold)}
 .prayer-time-card.current{background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:#fff;border-color:var(--emerald-light);box-shadow:0 8px 20px rgba(5,150,105,.4);animation:pulse 2s infinite}
@@ -125,6 +128,14 @@ select option{color:#000!important;background:#fff!important}
 .countdown-box{background:rgba(0,0,0,.1);border-radius:.7rem;padding:.8rem 1.2rem;text-align:center;margin:1rem 0}
 .countdown-time{font-size:2rem;font-weight:900;font-family:monospace;color:var(--emerald)}
 .countdown-label{font-size:.85rem;opacity:.75;margin-top:.3rem}
+
+/* City list item styles */
+.city-list-item{background:rgba(0,0,0,.05);color:#111827}
+.city-list-item:hover{background:rgba(0,0,0,.1)}
+.theme-night .city-list-item{background:rgba(255,255,255,.05);color:#e5e7eb}
+.theme-night .city-list-item:hover{background:rgba(255,255,255,.1)}
+.theme-special .city-list-item{background:rgba(255,255,255,.05);color:#fefce8}
+.theme-special .city-list-item:hover{background:rgba(255,255,255,.1)}
 
 /* Fullscreen styles for iPhone */
 .fullscreen-mode {
@@ -364,7 +375,7 @@ body.fullscreen-active .bottom-nav {
 .space-y-2>*+*{margin-top:0.5rem}
 .space-y-3>*+*{margin-top:0.75rem}
 .space-y-4>*+*{margin-top:1rem}
-.w-full{width:100%}
+.w-full{width:100%;box-sizing:border-box}
 .w-6{width:1.5rem}
 .h-6{height:1.5rem}
 .w-24{width:6rem}
@@ -691,11 +702,11 @@ body.fullscreen-active .bottom-nav {
       
       <div class="mb-4 space-y-3">
         <input type="text" id="hisnSearchInput" placeholder="🔍 ابحث في الأذكار..." 
-               class="w-full p-3 border-2 border-gold-300 rounded-lg text-base font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
+               class="w-full border-2 border-gold-300 rounded-lg font-semibold focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-200">
         
-        <div class="flex gap-2 items-center w-full">
+        <div class="flex gap-2 items-center w-full overflow-hidden">
           <label class="font-bold text-sm whitespace-nowrap flex-shrink-0">📑 الفئة:</label>
-          <select id="hisnCategorySelect" class="flex-1 min-w-0 p-2 border-2 border-gold-300 rounded-lg font-semibold bg-white" style="max-width: 100%;">
+          <select id="hisnCategorySelect" class="flex-1 min-w-0 border-2 border-gold-300 rounded-lg font-semibold" style="max-width: calc(100% - 70px);">
             <option value="">جميع الفئات (134)</option>
           </select>
         </div>
@@ -1137,8 +1148,7 @@ function populateSurahList(){
   ul.innerHTML='';
   chapters.forEach(ch=>{
     const li=document.createElement('li');
-    li.className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition font-medium";
-    li.style.color='#111827';
+    li.className="city-list-item p-3 rounded-lg cursor-pointer transition font-medium";
     li.innerHTML=`${ch.id}. ${ch.name_arabic}`;
     li.onclick=()=>{
       const target=SURAH_START_PAGES[ch.id]||1;
@@ -1880,8 +1890,7 @@ function populateCityList(filter=''){
   list.innerHTML='';
   filtered.forEach(city=>{
     const li=document.createElement('li');
-    li.className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer transition font-medium";
-    li.style.color='#111827';
+    li.className="city-list-item p-3 rounded-lg cursor-pointer transition font-medium";
     li.textContent=city.name;
     li.onclick=()=>selectCity(city.name,city.lat,city.lng,city.country);
     list.appendChild(li);
