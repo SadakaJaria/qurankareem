@@ -1,0 +1,169 @@
+{
+  "name": "القرآن الكريم - صدقة جارية",
+  "short_name": "القرآن الكريم",
+  "description": "تطبيق قراءة واستماع للقرآن الكريم مع مواقيت الصلاة والأحاديث النبوية وحصن المسلم",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#1e3a2e",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": [
+    "education",
+    "lifestyle",
+    "books",
+    "utilities",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/audio-player.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "مشغل القرآن الكريم"
+    },
+    {
+      "src": "/screenshots/quran-reader.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "قراءة المصحف الشريف"
+    },
+    {
+      "src": "/screenshots/prayer-times.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "مواقيت الصلاة"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "استماع للقرآن",
+      "short_name": "استماع",
+      "description": "فتح مشغل القرآن الكريم",
+      "url": "/#audio",
+      "icons": [
+        {
+          "src": "/icons/shortcut-audio.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "قراءة المصحف",
+      "short_name": "قراءة",
+      "description": "فتح قارئ المصحف",
+      "url": "/#quran",
+      "icons": [
+        {
+          "src": "/icons/shortcut-quran.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "مواقيت الصلاة",
+      "short_name": "المواقيت",
+      "description": "عرض مواقيت الصلاة",
+      "url": "/#prayer",
+      "icons": [
+        {
+          "src": "/icons/shortcut-prayer.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "حصن المسلم",
+      "short_name": "الأذكار",
+      "description": "فتح حصن المسلم",
+      "url": "/#hisn",
+      "icons": [
+        {
+          "src": "/icons/shortcut-hisn.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+quran",
+      "url": "/?surah=%s"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "iarc_rating_id": "",
+  "features": [
+    "offline",
+    "push-notifications",
+    "background-sync",
+    "share-target",
+    "fullscreen",
+    "audio-playback"
+  ]
+}

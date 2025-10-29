@@ -1,0 +1,1605 @@
+/* ===================================
+   القرآن الكريم - صدقة جارية
+   Optimized Stylesheet v2.0
+   =================================== */
+
+/* ===== CSS Variables ===== */
+:root {
+  /* Colors */
+  --gold: #d4af37;
+  --gold-dark: #b8941f;
+  --gold-light: #f0d573;
+  --emerald: #059669;
+  --emerald-dark: #047857;
+  --emerald-light: #10b981;
+  --ink: #0f172a;
+  --warm: #f5f1e8;
+  --deep: #0f172a;
+  --slate: #1e293b;
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+  
+  /* Typography */
+  --font-main: "Noto Naskh Arabic", "Amiri", serif;
+  --font-mono: "Courier New", monospace;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  
+  /* Z-index */
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-modal: 50;
+  --z-toast: 100;
+  --z-tooltip: 200;
+}
+
+/* ===== Reset & Base Styles ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background var(--transition-slow), color var(--transition-slow);
+  padding-bottom: 6rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Disable text selection by default */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Enable text selection for inputs */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* ===== Theme Styles ===== */
+.theme-day {
+  background: linear-gradient(135deg, var(--warm), #fff);
+  color: var(--ink);
+}
+
+.theme-night {
+  background: linear-gradient(135deg, var(--slate), var(--deep));
+  color: #e5e7eb;
+}
+
+.theme-special {
+  background: linear-gradient(135deg, #1e3a2e, #2d5a3d);
+  color: #fefce8;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ===== Accessibility ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--ink);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  z-index: 1000;
+  transition: top var(--transition-base);
+}
+
+.skip-link:focus {
+  top: var(--spacing-sm);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.theme-night .card {
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.theme-special .card {
+  background: rgba(45, 90, 61, 0.9);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  display: inline-flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-emerald {
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  color: #fff;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #111827;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+  color: #fff;
+}
+
+.icon-btn,
+.icon-btn-gold {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-base);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.icon-btn:hover,
+.icon-btn-gold:hover {
+  transform: scale(1.05);
+}
+
+.icon-btn {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #111827;
+}
+
+.icon-btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #111827;
+  min-width: 40px;
+  min-height: 40px;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.whatsapp-btn {
+  background: linear-gradient(135deg, #25D366, #1da851);
+  color: #fff;
+}
+
+/* ===== Form Elements ===== */
+select,
+input[type="number"],
+input[type="text"],
+textarea {
+  background: #fff;
+  color: #000;
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.6rem;
+  min-height: 38px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: border-color var(--transition-base);
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+
+.theme-day select,
+.theme-special select,
+select,
+.theme-day input[type="number"],
+.theme-special input[type="number"],
+#pageNum {
+  color: #000 !important;
+  background: #fff !important;
+}
+
+select option {
+  color: #000 !important;
+  background: #fff !important;
+}
+
+/* Radio & Checkbox */
+.radio-label,
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+}
+
+/* ===== Header ===== */
+.app-header {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  min-height: 70px;
+}
+
+.theme-night .app-header {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.theme-special .app-header {
+  background: rgba(30, 58, 46, 0.95);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-logo {
+  height: 75px;
+  width: auto;
+  max-width: 350px;
+  object-fit: contain;
+  display: block;
+}
+
+.header-date {
+  text-align: right;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.date-hijri {
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.date-gregorian {
+  opacity: 0.75;
+}
+
+/* ===== Navigation ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 0.5rem;
+  z-index: var(--z-modal);
+  transition: transform 0.25s ease;
+}
+
+.theme-night .bottom-nav {
+  background: rgba(15, 23, 42, 0.98);
+}
+
+.theme-special .bottom-nav {
+  background: rgba(30, 58, 46, 0.98);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-x: auto;
+  gap: 0.15rem;
+  padding: 0 0.25rem;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: var(--radius-md);
+  min-width: 50px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.nav-item:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #111827;
+}
+
+.nav-icon {
+  font-size: 1.3rem;
+  transition: transform var(--transition-base);
+}
+
+.nav-item:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-text {
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+/* ===== Sections ===== */
+.section {
+  display: none;
+  min-height: calc(100vh - 140px);
+  padding: 1rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Quran Reader ===== */
+.quran-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+#imageWrapper {
+  width: 100%;
+  height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+#quranPage {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  border-radius: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  box-shadow: var(--shadow-md);
+  transition: opacity var(--transition-slow);
+}
+
+#quranPage.loading {
+  opacity: 0.3;
+}
+
+.read-mark {
+  outline: 3px solid rgba(16, 185, 129, 0.9);
+  box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.2);
+  animation: readPulse 1s ease;
+}
+
+@keyframes readPulse {
+  0% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.read-check {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(16, 185, 129, 0.95);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  display: none;
+  z-index: 5;
+  box-shadow: var(--shadow-sm);
+}
+
+.page-indicator {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  backdrop-filter: blur(8px);
+}
+
+/* Fullscreen Styles */
+.fullscreen-mode {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  background: #000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.fullscreen-mode #quranPage {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  object-fit: contain !important;
+}
+
+body.fullscreen-active {
+  overflow: hidden !important;
+}
+
+body.fullscreen-active .app-header,
+body.fullscreen-active .bottom-nav {
+  display: none !important;
+}
+
+.exit-fullscreen-btn {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.exit-fullscreen-btn:hover {
+  background: rgba(0, 0, 0, 0.85);
+  transform: scale(1.05);
+}
+
+/* ===== Statistics Cards ===== */
+.stat-card {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* ===== Float Button ===== */
+.float-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.35);
+  z-index: 100;
+  transition: all var(--transition-slow);
+  cursor: pointer;
+  border: none;
+}
+
+.float-btn:hover {
+  transform: scale(1.12) rotate(8deg);
+  box-shadow: 0 10px 28px rgba(4, 120, 87, 0.45);
+}
+
+.float-btn:active {
+  transform: scale(0.95);
+}
+
+.float-btn.hide {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.7);
+}
+
+/* ===== Audio Player ===== */
+.audio-player {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  overflow: visible;
+}
+
+.audio-player audio {
+  width: 100%;
+  outline: none;
+  max-width: 100%;
+}
+
+/* ===== Prayer Times ===== */
+.prayer-time-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--transition-slow);
+  margin-bottom: 0.8rem;
+}
+
+.prayer-time-card:hover {
+  transform: translateX(-3px);
+  border-color: var(--gold);
+}
+
+.prayer-time-card.current {
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  color: #fff;
+  border-color: var(--emerald-light);
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.prayer-time-card.next {
+  border-color: var(--gold);
+  border-width: 3px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+}
+
+.prayer-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.prayer-time {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+}
+
+.countdown-box {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.8rem 1.2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.countdown-time {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  color: var(--emerald);
+}
+
+.countdown-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  margin-top: 0.3rem;
+}
+
+/* ===== Hadith Cards ===== */
+.hadith-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  border-right: 4px solid var(--gold);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.theme-night .hadith-card {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.theme-special .hadith-card {
+  background: rgba(45, 90, 61, 0.95);
+}
+
+.hadith-card:hover {
+  transform: translateX(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hadith-text {
+  font-size: 1.1rem;
+  line-height: 2;
+  margin-bottom: 0.8rem;
+  text-align: justify;
+}
+
+.hadith-meta {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ===== Hisn Al-Muslim ===== */
+.hisn-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  border-right: 4px solid var(--gold);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.theme-night .hisn-card {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.theme-special .hisn-card {
+  background: rgba(45, 90, 61, 0.95);
+}
+
+.hisn-card:hover {
+  transform: translateX(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hisn-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  color: var(--gold);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hisn-text {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  margin-bottom: 0.6rem;
+  text-align: justify;
+}
+
+.hisn-footnote {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.hisn-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.counter-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-sm);
+}
+
+.counter-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 800;
+  transition: all var(--transition-base);
+}
+
+.counter-btn:hover {
+  transform: scale(1.1);
+}
+
+.counter-btn:active {
+  transform: scale(0.95);
+}
+
+.counter-btn.reset-counter {
+  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+}
+
+.counter-display {
+  font-size: 1.1rem;
+  font-weight: 800;
+  min-width: 40px;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.hisn-fav-btn {
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #111827;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.hisn-fav-btn:hover {
+  transform: translateY(-2px);
+}
+
+.hisn-fav-btn.favorited {
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  color: #fff;
+}
+
+/* ===== Modals ===== */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: 90%;
+  max-width: 420px;
+  max-height: 70vh;
+  overflow: hidden;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.theme-night .modal {
+  background: #0b1220;
+  color: #e5e7eb;
+}
+
+.theme-special .modal {
+  background: #1e3a2e;
+  color: #fefce8;
+}
+
+.modal-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  font-weight: 800;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.modal-body {
+  max-height: 60vh;
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+.modal-close {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 800;
+  border: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+
+.modal-close:hover {
+  background: var(--danger-dark);
+}
+
+/* ===== Toast Notifications ===== */
+.toast {
+  position: fixed;
+  top: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  z-index: var(--z-toast);
+  box-shadow: var(--shadow-lg);
+  animation: toastSlide 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes toastSlide {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ===== Loading Spinner ===== */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.global-loading {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-toast);
+  backdrop-filter: blur(4px);
+}
+
+.global-loading .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+/* ===== Splash Screen ===== */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #1e3a2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+.splash-screen img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  margin-bottom: 2rem;
+}
+
+.splash-loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--gold);
+  animation: spin 1s linear infinite;
+}
+
+/* ===== Playlist Items ===== */
+.playlist-item {
+  transition: all var(--transition-base);
+}
+
+.playlist-item:hover {
+  background: rgba(212, 175, 55, 0.15) !important;
+}
+
+/* ===== Animations ===== */
+.fade-in-text {
+  animation: fadeInText 0.4s ease;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Utility Classes ===== */
+.hidden {
+  display: none !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+
+  #imageWrapper {
+    height: calc(100vh - 160px);
+  }
+
+  .nav-text {
+    font-size: 0.62rem;
+  }
+
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+
+  .nav-item {
+    padding: 0.3rem 0.35rem;
+    min-width: 48px;
+    gap: 0.15rem;
+  }
+
+  .quran-topbar {
+    gap: 0.4rem;
+  }
+
+  .app-header h1 {
+    font-size: 0.85rem;
+  }
+
+  .app-header {
+    min-height: auto !important;
+    padding: 0.6rem 1rem !important;
+  }
+
+  .header-logo {
+    height: 42px !important;
+    max-width: 200px !important;
+  }
+
+  .header-date {
+    font-size: 0.65rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .icon-btn,
+  .whatsapp-btn {
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+  }
+
+  .btn {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+    min-height: 38px;
+  }
+
+  .quran-topbar .btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  select,
+  input[type="number"],
+  input[type="text"],
+  textarea {
+    font-size: 16px !important;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .stat-card {
+    padding: 0.7rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+  }
+
+  .modal {
+    width: 95%;
+    max-height: 80vh;
+  }
+
+  .modal-body {
+    max-height: 65vh;
+  }
+
+  .float-btn {
+    width: 48px;
+    height: 48px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .audio-player {
+    padding: 1.2rem;
+  }
+
+  .audio-player audio {
+    height: 58px !important;
+    min-height: 58px !important;
+    border-radius: 0.6rem;
+  }
+
+  .hadith-text {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .hadith-card {
+    padding: 1rem;
+  }
+
+  .prayer-time-card {
+    padding: 0.8rem 1rem;
+  }
+
+  .prayer-name {
+    font-size: 1.1rem;
+  }
+
+  .prayer-time {
+    font-size: 1.3rem;
+  }
+
+  .countdown-time {
+    font-size: 1.5rem;
+  }
+
+  .hisn-card {
+    padding: 1rem;
+  }
+
+  .hisn-title {
+    font-size: 1.05rem;
+  }
+
+  .hisn-text {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .hisn-footnote {
+    font-size: 0.8rem;
+  }
+
+  .counter-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .counter-display {
+    font-size: 1rem;
+    min-width: 35px;
+  }
+}
+
+@media (max-width: 380px) {
+  .app-header h1 {
+    font-size: 0.75rem;
+  }
+
+  .nav-text {
+    font-size: 0.58rem;
+  }
+
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+
+  .nav-item {
+    padding: 0.25rem 0.3rem;
+    min-width: 45px;
+  }
+
+  #pageNum {
+    width: 50px;
+  }
+
+  .quran-topbar {
+    gap: 0.3rem;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-header {
+    padding: 0.5rem 1rem;
+  }
+
+  #imageWrapper {
+    height: calc(100vh - 100px);
+  }
+
+  .bottom-nav {
+    padding: 0.3rem;
+  }
+
+  .nav-item {
+    padding: 0.3rem 0.4rem;
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .app-header,
+  .bottom-nav,
+  .float-btn,
+  .btn,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .section {
+    display: block !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ===== Performance Optimizations ===== */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.1rem;
+  opacity: 0.6;
+}
+
+/* Grid Classes */
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Flex utilities */
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* Color utilities */
+.text-emerald-600 {
+  color: var(--emerald);
+}
+
+.text-emerald-400 {
+  color: var(--emerald-light);
+}
+
+.text-emerald-500 {
+  color: var(--emerald);
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-80 {
+  opacity: 0.8;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+/* Misc */
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-opacity-20 {
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
