@@ -48,18 +48,18 @@ select,input[type="number"],input[type="text"],textarea{background:#fff;color:#0
 .theme-night select,.theme-night input[type="number"],.theme-night input[type="text"],.theme-night textarea{background:#1e293b!important;color:#e5e7eb!important;border-color:rgba(212,175,55,.6)}
 .theme-special select,.theme-special input[type="number"],.theme-special input[type="text"],.theme-special textarea{background:#2d5a3d!important;color:#fefce8!important;border-color:rgba(212,175,55,.6)}
 select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.25)}
-header#appHeader{padding:1rem 0.5rem;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.25);position:sticky;top:0;z-index:40;min-height:70px;display:flex;align-items:center;gap:0.5rem}
+header#appHeader{padding:1rem 1.5rem;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.25);position:sticky;top:0;z-index:40;min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .theme-night header#appHeader{background:rgba(15,23,42,.95)}
 .theme-special header#appHeader{background:rgba(30,58,46,.95)}
 #themeToggle,#whatsappTop{width:3rem;height:3rem;border-radius:1rem;display:flex;align-items:center;justify-content:center;transition:transform .2s}
 #themeToggle:hover,#whatsappTop:hover{transform:scale(1.05)}
 #themeToggle{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
 #whatsappTop{background:linear-gradient(135deg,#25D366,#1da851);color:#fff}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(212,175,55,.25);padding:.5rem;z-index:50;transition:transform .25s ease}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(212,175,55,.25);padding:.5rem;z-index:50;transition:transform .25s ease;overflow-x:auto;overflow-y:hidden}
 .theme-night .bottom-nav{background:rgba(15,23,42,.98)}
 .theme-special .bottom-nav{background:rgba(30,58,46,.98)}
-.nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;gap:0.15rem;padding:0 .25rem}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .3rem;border-radius:.75rem;min-width:45px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex:1}
+.nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;gap:0.15rem;padding:0 .25rem;min-width:max-content}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .3rem;border-radius:.75rem;min-width:60px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex:0 0 auto}
 .nav-item:hover{background:rgba(212,175,55,.1)}
 .nav-item.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
 .nav-icon{font-size:1.3rem;transition:transform .2s}
@@ -178,7 +178,7 @@ body.fullscreen-active .bottom-nav {
   .nav-item{padding:.3rem .35rem;min-width:48px;gap:.15rem}
   .quran-topbar{gap:.4rem}
   header#appHeader h1{font-size:0.85rem}
-  header#appHeader{min-height:auto!important;padding:0.6rem 1rem!important}
+  header#appHeader{min-height:auto!important;padding:0.8rem 1rem!important}
   header#appHeader img[alt=""]{height:42px!important;max-width:200px!important}
   header#appHeader .text-xs{font-size:0.65rem!important;line-height:1.3!important}
   #hijriLine,#gregLine{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -454,15 +454,15 @@ body.fullscreen-active .bottom-nav {
   <img src="splash.png" alt="صدقة جارية" style="max-width:85%;max-height:85%;object-fit:contain">
 </div>
 
-<header id="appHeader" class="sticky top-0 z-40 flex items-center justify-between gap-3">
-  <div class="flex items-center gap-3">
+<header id="appHeader" class="sticky top-0 z-40">
+  <div class="flex items-center gap-2">
     <button id="themeToggle" aria-label="تغيير الثيم"><span id="themeIcon">🌞</span></button>
     <a id="whatsappTop" href="https://wa.me/905533331339" target="_blank" aria-label="واتساب" title="تواصل معنا">
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
     </a>
-    <img src="logo.png" alt="" style="height:75px;width:auto;max-width:350px;object-fit:contain;display:block">
+    <img src="logo.png" alt="" style="height:55px;width:auto;max-width:250px;object-fit:contain;display:block">
   </div>
-  <div class="text-xs sm:text-sm text-right leading-tight">
+  <div class="text-xs text-right leading-tight" style="min-width:140px">
     <div id="hijriLine" class="opacity-90 font-semibold">—</div>
     <div id="gregLine" class="opacity-75">—</div>
   </div>
@@ -568,7 +568,7 @@ body.fullscreen-active .bottom-nav {
       <div class="card p-4">
         <div class="flex items-center justify-between mb-3">
           <h3 class="font-semibold text-lg">📋 قائمة التشغيل</h3>
-          <button id="clearBtn" class="btn btn-danger text-sm">🗑️ مسح الكل</button>
+          <button id="clearBtn" class="btn btn-danger text-sm">✕ مسح الكل</button>
         </div>
         <ul id="playlist" class="space-y-2"></ul>
       </div>
@@ -634,7 +634,6 @@ body.fullscreen-active .bottom-nav {
         <div id="loadingOverlay" class="absolute inset-0 bg-black bg-opacity-40 hidden items-center justify-center"><div class="loading-spinner"></div></div>
         <button id="readingFloatBtn" class="float-btn hide" title="تأكيد قراءة الصفحة">✔</button>
       </div>
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">صفحة <span id="currentPageIndicator">1</span></div>
     </div>
     <div class="mt-4 grid grid-cols-3 gap-3">
       <div class="stat-card"><span class="stat-number" id="statRead">0</span><span class="stat-label">مقروءة</span></div>
@@ -732,9 +731,9 @@ body.fullscreen-active .bottom-nav {
           <option value="nawawi">الأربعون النووية</option>
         </select>
         
-        <div class="flex gap-2">
-          <input id="hadithSearchInput" type="text" placeholder="🔍 ابحث في الأحاديث..." class="flex-1">
-          <button id="hadithSearchBtn" class="btn btn-emerald px-4">بحث</button>
+        <div class="flex flex-col gap-2">
+          <input id="hadithSearchInput" type="text" placeholder="🔍 ابحث في الأحاديث..." class="w-full">
+          <button id="hadithSearchBtn" class="btn btn-emerald w-full">بحث</button>
         </div>
         
         <div class="flex gap-2 items-center flex-wrap">
@@ -762,7 +761,7 @@ body.fullscreen-active .bottom-nav {
     <div class="card p-4">
       <div class="flex items-center justify-between mb-3">
         <h3 class="font-semibold text-lg">⭐ المفضلة (استماع)</h3>
-        <button id="clearFavBtn" class="btn btn-danger text-sm">🗑️ مسح الكل</button>
+        <button id="clearFavBtn" class="btn btn-danger text-sm">✕ مسح الكل</button>
       </div>
       <ul id="favorites" class="space-y-2 mb-6"></ul>
       <div class="border-t pt-4 mt-4">
@@ -772,7 +771,7 @@ body.fullscreen-active .bottom-nav {
       <div class="border-t pt-4 mt-4">
         <div class="flex items-center justify-between mb-3">
           <h4 class="font-semibold text-base">⭐ أحاديث مفضلة</h4>
-          <button id="clearFavHadithBtn" class="btn btn-danger text-sm px-2 py-1">🗑️ مسح</button>
+          <button id="clearFavHadithBtn" class="btn btn-danger text-sm px-2 py-1">✕ مسح</button>
         </div>
         <ul id="favoritesHadith" class="space-y-2"></ul>
       </div>
@@ -1092,7 +1091,6 @@ function applyPageReadVisual(){
 function loadPage(n,byUser=true){
   const p=Math.max(1,Math.min(TOTAL_PAGES,parseInt(n)||1));
   pageInput().value=p;
-  document.getElementById('currentPageIndicator').textContent=p;
   
   const el=imgEl();
   const src=`https://raw.githubusercontent.com/SadakaJaria/qurankareem/main/images/${p}.png`;
@@ -1293,7 +1291,7 @@ function renderFavoritesPages(){
     
     const deleteBtn=document.createElement('button');
     deleteBtn.className='btn btn-danger text-sm px-2 py-1';
-    deleteBtn.textContent='🗑️';
+    deleteBtn.textContent='✕';
     deleteBtn.onclick=()=>removeFavPageAt(i);
     
     btnContainer.appendChild(openBtn);
@@ -1406,7 +1404,7 @@ function render(auto=false){
     
     const delBtn=document.createElement('button');
     delBtn.className='p-2 hover:scale-110 transition';
-    delBtn.textContent='🗑️';
+    delBtn.textContent='✕';
     delBtn.onclick=()=>removeAt(i);
     
     btnContainer.appendChild(favBtn);
@@ -1563,7 +1561,7 @@ function renderFavorites(){
     
     const delBtn=document.createElement('button');
     delBtn.className='p-2 hover:scale-110 transition';
-    delBtn.textContent='🗑️';
+    delBtn.textContent='✕';
     delBtn.onclick=()=>removeFav(i);
     
     btnContainer.appendChild(playBtn);
@@ -1699,7 +1697,7 @@ async function fetchPrayerTimes(lat,lng){
   try{
     const date=new Date();
     const d=`${String(date.getDate()).padStart(2,'0')}-${String(date.getMonth()+1).padStart(2,'0')}-${date.getFullYear()}`;
-    const url=`https://api.aladhan.com/v1/timings/${d}?latitude=${lat}&longitude=${lng}&method=2`;
+    const url=`https://api.aladhan.com/v1/timings/${d}?latitude=${lat}&longitude=${lng}&method=4`;
     const response=await fetch(url);
     const data=await response.json();
     
@@ -1962,7 +1960,6 @@ async function loadHadithBook(bookKey){
     currentHadithData=data;
     document.getElementById('hadithLoadingMsg').classList.add('hidden');
     
-    // تصفية الأحاديث الفارغة
     const validHadiths = data.hadiths.filter(h => {
       const text = h.text || h.hadith || h.arab || h.arabic || h.body || h.htext || '';
       return text && text.trim().length >= 10;
@@ -2000,12 +1997,10 @@ function displayHadiths(hadiths,append=false){
   }
   
   hadiths.forEach((h,index)=>{
-    // محاولة استخراج النص من حقول مختلفة
     let hadithText = h.text || h.hadith || h.arab || h.arabic || h.body || h.htext || '';
     
-    // إذا كان النص فارغاً أو قصير جداً، نتجاهل الحديث
     if(!hadithText || hadithText.trim().length < 10){
-      return; // تخطي هذا الحديث
+      return;
     }
     
     const card=document.createElement('div');
@@ -2051,7 +2046,6 @@ function displayHadiths(hadiths,append=false){
     container.appendChild(card);
   });
   
-  // إذا لم يتم إضافة أي أحاديث (كلها فارغة)
   if(container.children.length === 0){
     container.innerHTML='<div class="card p-6 text-center opacity-75"><p>⚠️ لم يتم العثور على أحاديث صالحة في هذا النطاق. جرب البحث أو رقم حديث آخر.</p></div>';
   }
@@ -2078,7 +2072,6 @@ function addHadithToFavorites(index){
     return;
   }
   
-  // استخراج النص من حقول متعددة
   const hadithText = hadith.text || hadith.hadith || hadith.arab || hadith.arabic || hadith.body || hadith.htext || 'نص الحديث غير متوفر';
   
   const favHadith={
@@ -2135,7 +2128,7 @@ function renderFavoritesHadith(){
     
     const delBtn=document.createElement('button');
     delBtn.className='btn btn-danger text-sm px-2 py-1';
-    delBtn.textContent='🗑️';
+    delBtn.textContent='✕';
     delBtn.onclick=()=>removeFavHadith(i);
     
     btnContainer.appendChild(viewBtn);
@@ -2292,7 +2285,6 @@ function searchHadiths(){
   const results=currentHadithData.hadiths.filter(h=>{
     const text=(h.text||h.hadith||h.arab||h.arabic||h.body||h.htext||'');
     
-    // تخطي الأحاديث الفارغة
     if(!text || text.trim().length < 10) return false;
     
     const normalizedText=text.replace(/[\u064B-\u065F]/g,'');
@@ -2679,7 +2671,6 @@ function initializeEvents(){
 }
 
 async function initialize(){
-  // إخفاء السبلاش بعد 2.5 ثانية
   setTimeout(()=>{
     const splash=document.getElementById('splash');
     if(splash){
