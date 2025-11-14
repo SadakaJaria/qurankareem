@@ -22,34 +22,32 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" as="style"/>
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
 <style>
-:root{--gold:#D4AF37;--gold-dark:#B8941F;--gold-muted:#D4AF37;--emerald:#1E5B45;--emerald-dark:#16472F;--emerald-light:#28805E;--ink:#0E3B2E;--warm:#F2F2F2;--deep:#0E3B2E;--slate:#1e293b;--danger:#C94C4C;--danger-dark:#B03A3A}
+:root{--gold:#d4af37;--gold-dark:#b8941f;--emerald:#059669;--emerald-dark:#047857;--emerald-light:#10b981;--ink:#0f172a;--warm:#f5f1e8;--deep:#0f172a;--slate:#1e293b}
 *,*::before,*::after{box-sizing:border-box}
-body{font-family:"Cairo","Tajawal","Noto Naskh Arabic",serif;overflow-x:hidden;transition:background .3s,color .3s;padding-bottom:6rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+body{font-family:"Noto Naskh Arabic","Amiri",serif;overflow-x:hidden;transition:background .3s,color .3s;padding-bottom:6rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 input,textarea,select{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
-.theme-day{background:linear-gradient(135deg,#f5f1e8 0%,#ffffff 50%,#f0f9ff 100%);color:var(--ink)}
-.theme-night{background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#334155 100%);color:#e5e7eb}
-.theme-special{background:linear-gradient(135deg,#1a2e23 0%,#2d5a3d 50%,#3d7051 100%);color:#fefce8}
-.card{background:rgba(255,255,255,.95);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:18px;transition:transform .3s,box-shadow .3s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;margin-bottom:16px}
+.theme-day{background:linear-gradient(135deg,var(--warm),#fff);color:var(--ink)}
+.theme-night{background:linear-gradient(135deg,var(--slate),var(--deep));color:#e5e7eb}
+.theme-special{background:linear-gradient(135deg,#1e3a2e,#2d5a3d);color:#fefce8}
+.card{background:rgba(255,255,255,.9);border-radius:1rem;box-shadow:0 8px 24px rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .theme-night .card{background:rgba(30,41,59,.9)}
 .theme-special .card{background:rgba(45,90,61,.9)}
-.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.15)}
-.btn{padding:12px 20px;border-radius:12px;font-weight:600;display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:44px;cursor:pointer;transition:all .3s;-webkit-tap-highlight-color:rgba(212,175,55,0.2);-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;position:relative;overflow:hidden}
-.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.5);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
-.btn:active::after{width:300px;height:300px}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+.btn{padding:.6rem .9rem;border-radius:.8rem;font-weight:700;display:inline-flex;gap:.5rem;align-items:center;justify-content:center;min-height:40px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:rgba(212,175,55,0.2);-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .btn:active{transform:translateY(0)}
-.btn-emerald{background:linear-gradient(135deg,#28805E,#1E5B45);color:#fff}
+.btn-emerald{background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:#fff}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
-.btn-danger{background:linear-gradient(135deg,#C94C4C,#B03A3A);color:#fff}
-select,input[type="number"],input[type="text"],textarea{background:#fff;color:#000;border:2px solid rgba(212,175,55,.4);border-radius:12px;padding:12px 16px;min-height:44px;font-weight:500;font-size:.95rem;transition:all .3s ease;box-sizing:border-box;max-width:100%}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+select,input[type="number"],input[type="text"],textarea{background:#fff;color:#000;border:2px solid rgba(212,175,55,.5);border-radius:.7rem;padding:.4rem .55rem;min-height:38px;font-weight:600;font-size:.9rem;transition:border-color .2s;box-sizing:border-box;max-width:100%}
 .theme-night select,.theme-night input[type="number"],.theme-night input[type="text"],.theme-night textarea{background:#1e293b!important;color:#e5e7eb!important;border-color:rgba(212,175,55,.6)}
 .theme-special select,.theme-special input[type="number"],.theme-special input[type="text"],.theme-special textarea{background:#2d5a3d!important;color:#fefce8!important;border-color:rgba(212,175,55,.6)}
-select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.15)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.25)}
 header#appHeader{padding:1rem 1.5rem;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.25);position:sticky;top:0;z-index:40;min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .theme-night header#appHeader{background:rgba(15,23,42,.95)}
 .theme-special header#appHeader{background:rgba(30,58,46,.95)}
@@ -61,17 +59,17 @@ header#appHeader{padding:1rem 1.5rem;background:rgba(255,255,255,.95);backdrop-f
 .theme-night .bottom-nav{background:rgba(15,23,42,.98)}
 .theme-special .bottom-nav{background:rgba(30,58,46,.98)}
 .nav-container{display:flex;justify-content:space-around;align-items:center;max-width:800px;margin:0 auto;gap:0.15rem;padding:0 .25rem;min-width:max-content}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 12px;border-radius:12px;min-width:68px;cursor:pointer;transition:all .3s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex:0 0 auto}
-.nav-item:hover{background:rgba(212,175,55,.15);transform:translateY(-2px)}
-.nav-item.active{background:linear-gradient(135deg,#E8D4A0,var(--gold));color:#111827;box-shadow:0 4px 12px rgba(212,175,55,.4);transform:translateY(-2px)}
-.nav-icon{font-size:28px;transition:transform .3s}
-.nav-item:hover .nav-icon{transform:scale(1.15)}
-.nav-text{font-size:.7rem;font-weight:700;white-space:nowrap;letter-spacing:0.3px}
-.section{display:none;min-height:calc(100vh - 140px);padding:16px;opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.35rem .3rem;border-radius:.75rem;min-width:60px;cursor:pointer;transition:all .2s;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;flex:0 0 auto}
+.nav-item:hover{background:rgba(212,175,55,.1)}
+.nav-item.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#111827}
+.nav-icon{font-size:1.3rem;transition:transform .2s}
+.nav-item:hover .nav-icon{transform:scale(1.1)}
+.nav-text{font-size:.65rem;font-weight:800;white-space:nowrap}
+.section{display:none;min-height:calc(100vh - 140px);padding:1rem;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
 .section.active{display:block;opacity:1;transform:translateY(0)}
 .quran-topbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.6rem}
-#imageWrapper{width:100%;height:calc(75vh - 100px);display:flex;align-items:center;justify-content:center;background:#000;border-radius:16px;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.2)}
-#quranPage{max-width:100%;max-height:100%;height:auto;border-radius:0;user-select:none;-webkit-user-drag:none;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:opacity .4s ease,transform .4s ease}
+#imageWrapper{width:100%;height:calc(100vh - 160px);display:flex;align-items:center;justify-content:center;background:#000;border-radius:0;position:relative;overflow:hidden}
+#quranPage{max-width:100%;max-height:100%;height:auto;border-radius:0;user-select:none;-webkit-user-drag:none;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:opacity .3s}
 #quranPage.loading{opacity:0.3}
 .audio-player{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));border:1px solid rgba(212,175,55,.25);border-radius:1rem;padding:1rem;overflow:visible}
 .audio-player audio{width:100%;outline:none;max-width:100%}
@@ -129,7 +127,6 @@ select option{color:#000!important;background:#fff!important}
 .prayer-time{font-size:1.5rem;font-weight:900;font-family:monospace}
 .countdown-box{background:rgba(0,0,0,.1);border-radius:.7rem;padding:.8rem 1.2rem;text-align:center;margin:1rem 0}
 .countdown-time{font-size:2rem;font-weight:900;font-family:monospace;color:var(--emerald)}
-.theme-special .countdown-time{color:#1E5B45}
 .countdown-label{font-size:.85rem;opacity:.75;margin-top:.3rem}
 
 /* City list item styles */
@@ -433,244 +430,6 @@ body.fullscreen-active .bottom-nav {
 .relative{position:relative}
 .absolute{position:absolute}
 .inset-0{inset:0}
-
-/* ==================== Side Menu (القائمة الجانبية) ==================== */
-#sideMenu{
-  position:fixed;
-  top:0;
-  right:-240px;
-  width:220px;
-  height:100vh;
-  background:rgba(14,59,46,0.98);
-  backdrop-filter:blur(20px);
-  z-index:9999;
-  transition:right 0.4s ease;
-  box-shadow:-4px 0 20px rgba(0,0,0,0.3);
-  overflow-y:auto;
-  padding:16px;
-}
-#sideMenu.open{right:0}
-.theme-night #sideMenu{background:rgba(15,23,42,0.98)}
-.theme-special #sideMenu{background:rgba(30,58,46,0.98)}
-#menuOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  z-index:9998;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.4s ease;
-}
-#menuOverlay.show{opacity:1;pointer-events:all}
-#menuToggle{
-  background:linear-gradient(135deg,#D4AF37,#B8941F);
-  color:#0E3B2E;
-  width:48px;
-  height:48px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  transition:transform 0.3s ease;
-  cursor:pointer;
-  border:none;
-  box-shadow:0 4px 12px rgba(212,175,55,0.3);
-}
-#menuToggle:hover{transform:scale(1.08)}
-.menu-item{
-  padding:10px 12px;
-  margin-bottom:6px;
-  background:rgba(255,255,255,0.08);
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#F2F2F2;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  text-decoration:none;
-  font-size:14px;
-}
-.menu-item:hover{
-  background:rgba(212,175,55,0.2);
-  transform:translateX(-5px);
-}
-.menu-item-icon{
-  font-size:18px;
-  width:24px;
-  text-align:center;
-}
-.menu-item-text{
-  font-size:14px;
-  font-weight:600;
-}
-.menu-close{
-  position:absolute;
-  top:12px;
-  left:12px;
-  background:rgba(255,255,255,0.1);
-  color:#F2F2F2;
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-  cursor:pointer;
-  border:none;
-  transition:background 0.3s ease;
-}
-.menu-close:hover{background:rgba(255,255,255,0.2)}
-
-/* ==================== Tabs (التبويبات) ==================== */
-.tabs-container{
-  display:flex;
-  gap:8px;
-  margin-bottom:20px;
-  border-bottom:2px solid rgba(212,175,55,0.2);
-  overflow-x:auto;
-  padding-bottom:4px;
-}
-.tab-btn{
-  padding:12px 20px;
-  background:transparent;
-  border:none;
-  border-bottom:3px solid transparent;
-  color:inherit;
-  opacity:0.6;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  font-weight:600;
-  font-size:15px;
-  white-space:nowrap;
-  border-radius:8px 8px 0 0;
-}
-.tab-btn:hover{
-  opacity:0.9;
-  background:rgba(212,175,55,0.08);
-}
-.tab-btn.active{
-  opacity:1;
-  border-bottom-color:#D4AF37;
-  background:rgba(212,175,55,0.12);
-  color:#D4AF37;
-}
-.tab-content{display:none}
-.tab-content.active{display:block;animation:fadeIn 0.4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-
-/* ==================== Ripple Effect ==================== */
-.ripple-effect{
-  position:absolute;
-  border-radius:50%;
-  background:rgba(255,255,255,0.5);
-  transform:scale(0);
-  animation:ripple-animation 0.6s ease-out;
-  pointer-events:none;
-}
-@keyframes ripple-animation{
-  to{
-    transform:scale(4);
-    opacity:0;
-  }
-}
-
-/* ==================== Toast محسّن ==================== */
-.toast{
-  position:fixed;
-  top:90px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(14,59,46,0.95);
-  color:#F2F2F2;
-  padding:14px 24px;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:600;
-  z-index:9999;
-  box-shadow:0 8px 24px rgba(0,0,0,0.4);
-  animation:toastSlideIn 0.4s ease;
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(212,175,55,0.3);
-  display:flex;
-  align-items:center;
-  gap:10px;
-  max-width:90%;
-}
-.theme-night .toast{background:rgba(15,23,42,0.95)}
-.theme-special .toast{background:rgba(30,58,46,0.95)}
-@keyframes toastSlideIn{
-  from{opacity:0;transform:translate(-50%,-15px)}
-  to{opacity:1;transform:translate(-50%,0)}
-}
-.toast-icon{font-size:20px}
-.toast-success{border-left:4px solid #10b981}
-.toast-error{border-left:4px solid #C94C4C}
-.toast-info{border-left:4px solid #3b82f6}
-
-/* ==================== Progress Bar (شريط التقدم) ==================== */
-.progress-container{
-  width:100%;
-  background:rgba(212,175,55,0.15);
-  border-radius:8px;
-  height:8px;
-  overflow:hidden;
-  margin:16px 0;
-  position:relative;
-}
-.progress-bar-fill{
-  height:100%;
-  background:linear-gradient(90deg,#D4AF37,#28805E);
-  border-radius:8px;
-  transition:width 0.5s ease;
-  box-shadow:0 0 12px rgba(212,175,55,0.5);
-  position:relative;
-}
-.progress-bar-fill::after{
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  width:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
-  animation:shimmer 2s infinite;
-}
-@keyframes shimmer{
-  0%{transform:translateX(-100%)}
-  100%{transform:translateX(100%)}
-}
-.progress-text{
-  text-align:center;
-  font-size:13px;
-  margin-top:6px;
-  opacity:0.8;
-  font-weight:600;
-}
-
-/* ==================== Copy Button (زر النسخ) ==================== */
-.copy-btn{
-  background:linear-gradient(135deg,#D4AF37,#B8941F);
-  color:#0E3B2E;
-  padding:6px 12px;
-  border-radius:8px;
-  font-size:13px;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-}
-.copy-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(212,175,55,0.4);
-}
-.copy-btn:active{transform:translateY(0)}
-
 @media(min-width:640px){
   .sm\:text-sm{font-size:0.875rem;line-height:1.25rem}
 }
@@ -697,47 +456,17 @@ body.fullscreen-active .bottom-nav {
 
 <header id="appHeader" class="sticky top-0 z-40">
   <div class="flex items-center gap-2">
-    <button id="menuToggle" aria-label="القائمة">☰</button>
     <button id="themeToggle" aria-label="تغيير الثيم"><span id="themeIcon">🌞</span></button>
+    <a id="whatsappTop" href="https://wa.me/905533331339" target="_blank" aria-label="واتساب" title="تواصل معنا">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+    </a>
     <img src="logo.png" alt="" style="height:55px;width:auto;max-width:250px;object-fit:contain;display:block">
   </div>
-  <div class="text-xs text-right leading-tight" style="min-width:140px;margin-right:-16px">
+  <div class="text-xs text-right leading-tight" style="min-width:140px">
     <div id="hijriLine" class="opacity-90 font-semibold">—</div>
     <div id="gregLine" class="opacity-75">—</div>
   </div>
 </header>
-
-<!-- القائمة الجانبية -->
-<div id="menuOverlay"></div>
-<div id="sideMenu">
-  <button class="menu-close" id="menuClose">✕</button>
-  <h2 style="color:#D4AF37;font-size:17px;font-weight:800;margin:24px 0 16px 0;text-align:center">القائمة</h2>
-  
-  <a href="https://wa.me/905533331339" target="_blank" class="menu-item">
-    <span class="menu-item-icon">📱</span>
-    <span class="menu-item-text">تواصل معنا (واتساب)</span>
-  </a>
-  
-  <div class="menu-item" onclick="shareApp()">
-    <span class="menu-item-icon">📤</span>
-    <span class="menu-item-text">مشاركة التطبيق</span>
-  </div>
-  
-  <div class="menu-item" onclick="showAbout()">
-    <span class="menu-item-icon">ℹ️</span>
-    <span class="menu-item-text">عن التطبيق</span>
-  </div>
-  
-  <div class="menu-item" onclick="resetApp()">
-    <span class="menu-item-icon">🔄</span>
-    <span class="menu-item-text">إعادة تعيين التطبيق</span>
-  </div>
-  
-  <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);text-align:center;color:#F2F2F2;opacity:0.7;font-size:11px">
-    <p>صدقة جارية 🤲</p>
-    <p style="margin-top:6px">جعله الله في ميزان حسناتك</p>
-  </div>
-</div>
 
 <main>
   <section id="audioSection" class="section active">
@@ -826,13 +555,6 @@ body.fullscreen-active .bottom-nav {
           <div id="playerBox" class="text-center mb-3">
             <div class='text-gray-500'>اختر سورة للبدء</div>
           </div>
-          
-          <!-- شريط التقدم -->
-          <div class="progress-container">
-            <div class="progress-bar-fill" id="audioProgress" style="width:0%"></div>
-          </div>
-          <div class="progress-text" id="progressText">00:00 / 00:00</div>
-          
           <div class="flex items-center justify-center gap-3 mt-3">
             <button id="rewind10" class="btn btn-emerald px-4 py-2 text-sm">⟲ 10</button>
             <div class="text-center text-sm opacity-75">
@@ -855,9 +577,9 @@ body.fullscreen-active .bottom-nav {
 
   <section id="quranSection" class="section">
     <div class="quran-topbar">
-      <button id="openSurahModal" class="flex-1 btn btn-gold flex items-center justify-between px-4 py-3 rounded-lg" style="min-height:50px;font-size:1rem">
+      <button id="openSurahModal" class="flex-1 btn btn-gold flex items-center justify-between px-3 py-2 rounded-lg">
         <span id="currentSurahLabel">📖 سورة الفاتحة</span>
-        <span class="opacity-80" style="font-size:1.2rem">▾</span>
+        <span class="opacity-80">▾</span>
       </button>
       <select id="juzSelect" class="btn btn-emerald px-3 py-2 rounded-lg text-sm font-bold" style="min-width:120px;">
         <option value="">📗 اختر الجزء</option>
@@ -912,12 +634,6 @@ body.fullscreen-active .bottom-nav {
         <div id="loadingOverlay" class="absolute inset-0 bg-black bg-opacity-40 hidden items-center justify-center"><div class="loading-spinner"></div></div>
         <button id="readingFloatBtn" class="float-btn hide" title="تأكيد قراءة الصفحة">✔</button>
       </div>
-      
-      <!-- شريط التقدم -->
-      <div class="progress-container">
-        <div class="progress-bar-fill" id="quranProgressBar" style="width:0%"></div>
-      </div>
-      <div class="progress-text" id="quranProgressText">صفحة 1 من 604</div>
     </div>
     <div class="mt-4 grid grid-cols-3 gap-3">
       <div class="stat-card"><span class="stat-number" id="statRead">0</span><span class="stat-label">مقروءة</span></div>
@@ -1016,7 +732,7 @@ body.fullscreen-active .bottom-nav {
         </select>
         
         <div class="flex flex-col gap-2">
-          <input id="hadithSearchInput" type="text" placeholder="🔍 البحث..." class="w-full">
+          <input id="hadithSearchInput" type="text" placeholder="🔍 ابحث في الأحاديث..." class="w-full">
           <button id="hadithSearchBtn" class="btn btn-emerald w-full">بحث</button>
         </div>
         
@@ -1043,52 +759,22 @@ body.fullscreen-active .bottom-nav {
 
   <section id="favoritesSection" class="section">
     <div class="card p-4">
-      <h2 class="font-bold text-2xl mb-4 text-center" style="color:var(--gold)">⭐ المفضلة</h2>
-      
-      <!-- Tabs -->
-      <div class="tabs-container">
-        <button class="tab-btn active" data-tab="tab-listening">🎧 استماع</button>
-        <button class="tab-btn" data-tab="tab-pages">📖 صفحات</button>
-        <button class="tab-btn" data-tab="tab-hadiths">📜 أحاديث</button>
-        <button class="tab-btn" data-tab="tab-azkar">🤲 أذكار</button>
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-lg">⭐ المفضلة (استماع)</h3>
+        <button id="clearFavBtn" class="btn btn-danger text-sm">✕ مسح الكل</button>
       </div>
-      
-      <!-- Tab: الاستماع -->
-      <div id="tab-listening" class="tab-content active">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-lg">🎧 الاستماع المفضل</h3>
-          <button id="clearFavBtn" class="btn btn-danger btn-sm">🗑️ مسح الكل</button>
-        </div>
-        <ul id="favorites" class="space-y-2"></ul>
-      </div>
-      
-      <!-- Tab: الصفحات -->
-      <div id="tab-pages" class="tab-content">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-lg">📖 الصفحات المفضلة</h3>
-          <button id="clearFavPagesBtn" class="btn btn-danger btn-sm">🗑️ مسح الكل</button>
-        </div>
+      <ul id="favorites" class="space-y-2 mb-6"></ul>
+      <div class="border-t pt-4 mt-4">
+        <h4 class="font-semibold mb-3 text-base">⭐ صفحات مفضلة</h4>
         <ul id="favoritesPages" class="space-y-2"></ul>
       </div>
-      
-      <!-- Tab: الأحاديث -->
-      <div id="tab-hadiths" class="tab-content">
+      <div class="border-t pt-4 mt-4">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-lg">📜 الأحاديث المفضلة</h3>
-          <button id="clearFavHadithBtn" class="btn btn-danger btn-sm">🗑️ مسح الكل</button>
+          <h4 class="font-semibold text-base">⭐ أحاديث مفضلة</h4>
+          <button id="clearFavHadithBtn" class="btn btn-danger text-sm px-2 py-1">✕ مسح</button>
         </div>
         <ul id="favoritesHadith" class="space-y-2"></ul>
       </div>
-      
-      <!-- Tab: الأذكار -->
-      <div id="tab-azkar" class="tab-content">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-lg">🤲 الأذكار المفضلة</h3>
-          <button id="clearFavAzkarBtn" class="btn btn-danger btn-sm">🗑️ مسح الكل</button>
-        </div>
-        <div id="favoritesAzkar"></div>
-      </div>
-      
     </div>
   </section>
 </main>
@@ -1259,38 +945,16 @@ const state={
   notifiedPrayers:JSON.parse(localStorage.getItem('notified_prayers')||'{}')
 };
 
-function showToast(message, type = 'success', duration = 2500) {
-  // إزالة أي toast موجود
-  const existingToast = document.querySelector('.toast');
-  if (existingToast) existingToast.remove();
-  
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  
-  // تحديد الأيقونة حسب النوع
-  let icon = '';
-  if (type === 'success') icon = '✅';
-  else if (type === 'error') icon = '❌';
-  else if (type === 'info') icon = 'ℹ️';
-  else if (type === 'warning') icon = '⚠️';
-  
-  toast.innerHTML = `
-    <span class="toast-icon">${icon}</span>
-    <span>${message}</span>
-  `;
-  
-  document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    setTimeout(() => toast.remove(), 300);
-  }, duration);
+function showToast(m,d=2500){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.textContent=m;
+  document.body.appendChild(t);
+  setTimeout(()=>{
+    t.style.opacity='0';
+    setTimeout(()=>t.remove(),300);
+  },d);
 }
-
-// دالة مساعدة للاستخدام السريع
-function showSuccessToast(msg) { showToast(msg, 'success'); }
-function showErrorToast(msg) { showToast(msg, 'error'); }
-function showInfoToast(msg) { showToast(msg, 'info'); }
 
 const THEMES=["day","night","special"];
 let ti=0;
@@ -1447,7 +1111,7 @@ function loadPage(n,byUser=true){
     el.onerror=()=>{
       el.classList.remove('loading');
       overlay.classList.add('hidden');
-      showToast('⚠️ خطأ في تحميل الصفحة', 'error');
+      showToast('⚠️ خطأ في تحميل الصفحة');
     };
   }
   
@@ -1458,22 +1122,10 @@ function loadPage(n,byUser=true){
   
   updateReadingButton();
   applyPageReadVisual();
-  updateQuranProgress(p);
 }
 
 function nextPage(){loadPage((parseInt(pageInput().value)||1)+1)}
 function prevPage(){loadPage((parseInt(pageInput().value)||1)-1)}
-
-function updateQuranProgress(pageNum) {
-  const progressBar = document.getElementById('quranProgressBar');
-  const progressText = document.getElementById('quranProgressText');
-  
-  if (progressBar && progressText) {
-    const percentage = (pageNum / 604) * 100;
-    progressBar.style.width = percentage.toFixed(1) + '%';
-    progressText.textContent = `صفحة ${pageNum} من 604`;
-  }
-}
 
 function jumpToLastPage(){
   if(state.lastPage&&state.lastPage!==parseInt(pageInput().value)){
@@ -2878,12 +2530,12 @@ function initializeEvents(){
     state.loop=e.target.checked;
     const a=document.getElementById('player');
     if(a)a.loop=state.loop;
-    showToast(state.loop?'تكرار مفعل':'تكرار متوقف', state.loop?'success':'info');
+    showToast(state.loop?'تكرار مُفعل 🔁':'تكرار متوقف ⏸️');
   });
   
   document.getElementById('autoPlayToggle').addEventListener('change',e=>{
     state.autoPlay=e.target.checked;
-    showToast(state.autoPlay?'التشغيل التلقائي مفعل':'التشغيل التلقائي متوقف', state.autoPlay?'success':'info');
+    showToast(state.autoPlay?'التشغيل التلقائي مُفعل ▶️':'التشغيل التلقائي متوقف ⏸️');
   });
 
   document.getElementById('clearBtn').onclick=()=>{
@@ -2937,7 +2589,7 @@ function initializeEvents(){
       const tick=()=>{
         const mins=Math.floor(state.sleepRemaining/60);
         const secs=String(state.sleepRemaining%60).padStart(2,'0');
-        const txt=`مؤقت النوم — ${String(mins).padStart(2,'0')}:${secs}`;
+        const txt=`⏳ مؤقّت النوم — ${String(mins).padStart(2,'0')}:${secs}`;
         sleepStatusTop.textContent=txt;
         sleepStatusPlayer.textContent=txt;
         state.sleepRemaining--;
@@ -2947,7 +2599,7 @@ function initializeEvents(){
           const a=document.getElementById('player');
           if(a){
             a.pause();
-            showToast('تم الإيقاف — انتهى مؤقت النوم', 'info');
+            showToast('🔕 تم الإيقاف — انتهى مؤقّت النوم');
           }
           sleepStatusTop.textContent='';
           sleepStatusPlayer.textContent='';
@@ -2956,9 +2608,9 @@ function initializeEvents(){
       
       tick();
       state.sleepInterval=setInterval(tick,1000);
-      showToast(`تم تفعيل مؤقت النوم لـ ${m} دقيقة`, 'success');
+      showToast(`⏱️ تم تفعيل مؤقت النوم لـ ${m} دقيقة`);
     }else{
-      showToast('حدد الوقت بالدقائق', 'warning');
+      showToast('حدد الوقت بالدقائق');
     }
   };
 
@@ -2968,7 +2620,7 @@ function initializeEvents(){
     state.sleepRemaining=0;
     sleepStatusTop.textContent='';
     sleepStatusPlayer.textContent='';
-    showToast('تم إلغاء مؤقت النوم', 'info');
+    showToast('تم إلغاء مؤقّت النوم');
   };
 
   document.getElementById('khitmahBtn').onclick=toggleKhitmah;
@@ -3274,45 +2926,9 @@ function createHisnCard(title, data) {
   counterBox.appendChild(incrementBtn);
   counterBox.appendChild(resetBtn);
   actionsDiv.appendChild(counterBox);
-  
-  // زر النسخ
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.innerHTML = '📋 نسخ';
-  copyBtn.onclick = () => copyToClipboard(data.text, title);
-  actionsDiv.appendChild(copyBtn);
-  
   card.appendChild(actionsDiv);
   
   return card;
-}
-
-// دالة النسخ للحافظة
-function copyToClipboard(text, title) {
-  const textToCopy = Array.isArray(text) ? text.join('\n\n') : text;
-  
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      showToast(`تم نسخ: ${title}`, 'success');
-    }).catch(() => {
-      showToast('فشل النسخ', 'error');
-    });
-  } else {
-    // fallback للمتصفحات القديمة
-    const textarea = document.createElement('textarea');
-    textarea.value = textToCopy;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
-      showToast(`تم نسخ: ${title}`, 'success');
-    } catch (err) {
-      showToast('فشل النسخ', 'error');
-    }
-    document.body.removeChild(textarea);
-  }
 }
 
 function toggleHisnFavorite(title) {
@@ -3398,252 +3014,6 @@ function initHisn() {
 }
 
 window.addEventListener('load', initHisn);
-
-// ==================== التبويبات (Tabs) ====================
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const targetTab = btn.getAttribute('data-tab');
-    
-    // إزالة active من جميع الأزرار والمحتويات
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    
-    // إضافة active للزر والمحتوى المحدد
-    btn.classList.add('active');
-    document.getElementById(targetTab).classList.add('active');
-  });
-});
-
-// ==================== Tabs للمفضلة ====================
-function initTabs() {
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-  
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetTab = btn.dataset.tab;
-      
-      // إزالة active من كل الأزرار والمحتوى
-      tabButtons.forEach(b => b.classList.remove('active'));
-      tabContents.forEach(c => c.classList.remove('active'));
-      
-      // إضافة active للزر والمحتوى المحدد
-      btn.classList.add('active');
-      const targetContent = document.getElementById(targetTab);
-      if (targetContent) {
-        targetContent.classList.add('active');
-      }
-    });
-  });
-}
-
-// تفعيل Tabs عند التحميل
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initTabs);
-} else {
-  initTabs();
-}
-
-// ==================== تأثير Ripple على الأزرار ====================
-function createRipple(event) {
-  const button = event.currentTarget;
-  
-  // إزالة ripple سابق إن وجد
-  const existingRipple = button.querySelector('.ripple-effect');
-  if (existingRipple) {
-    existingRipple.remove();
-  }
-  
-  const circle = document.createElement('span');
-  const diameter = Math.max(button.clientWidth, button.clientHeight);
-  const radius = diameter / 2;
-  
-  const rect = button.getBoundingClientRect();
-  circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${event.clientX - rect.left - radius}px`;
-  circle.style.top = `${event.clientY - rect.top - radius}px`;
-  circle.classList.add('ripple-effect');
-  
-  button.appendChild(circle);
-  
-  setTimeout(() => circle.remove(), 600);
-}
-
-// تطبيق Ripple على كل الأزرار
-function initRipple() {
-  const buttons = document.querySelectorAll('.btn, .nav-item, .menu-item, .tab-btn');
-  buttons.forEach(button => {
-    button.addEventListener('click', createRipple);
-  });
-}
-
-// تفعيل Ripple
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initRipple);
-} else {
-  initRipple();
-}
-
-// ==================== القائمة الجانبية ====================
-const menuToggle = document.getElementById('menuToggle');
-const menuClose = document.getElementById('menuClose');
-const sideMenu = document.getElementById('sideMenu');
-const menuOverlay = document.getElementById('menuOverlay');
-
-function openMenu() {
-  sideMenu.classList.add('open');
-  menuOverlay.classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMenu() {
-  sideMenu.classList.remove('open');
-  menuOverlay.classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-if (menuToggle) {
-  menuToggle.addEventListener('click', openMenu);
-}
-
-if (menuClose) {
-  menuClose.addEventListener('click', closeMenu);
-}
-
-if (menuOverlay) {
-  menuOverlay.addEventListener('click', closeMenu);
-}
-
-function shareApp() {
-  const text = '📖 القرآن الكريم - تطبيق مبارك\n\n🌟 صدقة جارية\n🎧 استماع وقراءة القرآن\n🕌 مواقيت الصلاة\n📿 حصن المسلم\n📜 الأحاديث النبوية\n\nشاركه لتكسب الأجر!';
-  
-  if (navigator.share) {
-    navigator.share({
-      title: 'القرآن الكريم',
-      text: text,
-      url: window.location.href
-    }).catch(() => {});
-  } else {
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n' + window.location.href)}`;
-    window.open(whatsappUrl, '_blank');
-  }
-  closeMenu();
-}
-
-function showAbout() {
-  const aboutText = `📖 تطبيق القرآن الكريم
-━━━━━━━━━━━━━━━━━━━━
-
-✨ صدقة جارية بإذن الله تعالى
-
-🎯 المميزات الرئيسية:
-
-📗 قراءة القرآن الكريم
-• 604 صفحة بجودة عالية
-• اختيار الجزء والسورة بسهولة
-• حفظ آخر صفحة مقروءة
-• إمكانية الختمة التلقائية
-
-🎧 الاستماع والتلاوة
-• اختيار من عدة قراء مشهورين
-• التشغيل التلقائي والتكرار
-• قائمة تشغيل مخصصة
-• مؤقت النوم
-
-🕌 مواقيت الصلاة
-• تحديد موقعك تلقائياً
-• عرض جميع أوقات الصلاة
-• العد التنازلي للصلاة القادمة
-
-📿 حصن المسلم
-• مجموعة شاملة من الأذكار
-• البحث في الأذكار
-• عداد التسبيح
-• حفظ الأذكار المفضلة
-
-📜 الأحاديث النبوية
-• مئات الأحاديث الصحيحة
-• البحث السريع
-• حفظ الأحاديث المفضلة
-
-⭐ المفضلة
-• حفظ الصفحات المفضلة
-• حفظ السور للاستماع
-• حفظ الأحاديث والأذكار
-
-🎨 التصميم
-• 3 ثيمات (نهاري، ليلي، خاص)
-• تصميم عصري وسهل
-• متوافق مع جميع الأجهزة
-
-━━━━━━━━━━━━━━━━━━━━
-
-🤲 الدعاء
-
-اللهم اجعل هذا العمل خالصاً لوجهك الكريم
-اللهم انفع به المسلمين واجعله في ميزان حسناتنا
-اللهم بارك في من ساهم في نشره
-
-━━━━━━━━━━━━━━━━━━━━
-
-💝 صدقة جارية
-"إذا مات ابن آدم انقطع عمله إلا من ثلاث:
-صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له"
-
-📱 شارك التطبيق لتكسب الأجر`;
-  
-  alert(aboutText);
-  closeMenu();
-}
-
-function resetApp() {
-  if (confirm('⚠️ هل أنت متأكد من إعادة تعيين التطبيق بالكامل؟\n\nسيتم حذف:\n• جميع المفضلات\n• الإحصائيات\n• الإعدادات\n• قائمة التشغيل\n\nهذا الإجراء لا يمكن التراجع عنه!')) {
-    localStorage.clear();
-    location.reload();
-  }
-  closeMenu();
-}
-
-// ==================== شريط التقدم للصوت ====================
-function updateAudioProgress() {
-  const audioElements = document.querySelectorAll('audio');
-  audioElements.forEach(audio => {
-    audio.addEventListener('timeupdate', () => {
-      const progressBar = document.getElementById('audioProgress');
-      const progressText = document.getElementById('progressText');
-      
-      if (audio.duration && progressBar) {
-        const percent = (audio.currentTime / audio.duration) * 100;
-        progressBar.style.width = percent + '%';
-        
-        const currentMin = Math.floor(audio.currentTime / 60);
-        const currentSec = Math.floor(audio.currentTime % 60);
-        const totalMin = Math.floor(audio.duration / 60);
-        const totalSec = Math.floor(audio.duration % 60);
-        
-        if (progressText) {
-          progressText.textContent = `${currentMin}:${currentSec.toString().padStart(2,'0')} / ${totalMin}:${totalSec.toString().padStart(2,'0')}`;
-        }
-      }
-    });
-    
-    audio.addEventListener('ended', () => {
-      const progressBar = document.getElementById('audioProgress');
-      if (progressBar) progressBar.style.width = '0%';
-    });
-  });
-}
-
-// تشغيل عند تحميل الصفحة
-window.addEventListener('load', () => {
-  updateAudioProgress();
-  
-  // مراقبة إضافة عناصر audio جديدة
-  const observer = new MutationObserver(() => {
-    updateAudioProgress();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-});
 </script>
 </body>
 </html>
